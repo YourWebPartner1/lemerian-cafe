@@ -1,3 +1,4 @@
+"use client";
 import { Coffee, Menu, X } from "lucide-react";
 import { useState, useEffect } from "react";
 
@@ -18,20 +19,26 @@ export default function Navbar() {
 
   return (
     <nav
-  className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-    isScrolled ? "bg-white/95 shadow-md backdrop-blur-md" : "bg-white"
-  }`}
->
-
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-700 ease-[cubic-bezier(0.25,0.1,0.25,1)] ${
+        isScrolled
+          ? "h-16 bg-white/80 shadow-lg backdrop-blur-xl border-b border-gray-200/60"
+          : "h-16 bg-gradient-to-b from-white/10 to-transparent text-white"
+      }`}
+    >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center h-20">
-          
+        <div className="flex justify-between items-center h-full py-1">
           {/* Logo */}
-          <div className="flex items-center space-x-2 cursor-pointer" onClick={() => scrollToSection("hero")}>
-            <Coffee className="w-8 h-8 text-[#f44545]" />
-            <span className="text-2xl font-bold bg-gradient-to-r from-[#f44545] to-[#265999] bg-clip-text text-transparent">
-              Lemerian Workin Café
-            </span>
+          <div
+            className="flex items-center cursor-pointer"
+            onClick={() => scrollToSection("hero")}
+          >
+            <img
+              src={`${import.meta.env.BASE_URL}logo1-removebg-preview.png`}
+              alt="Lemerian Workin Café Logo"
+              className={`object-contain drop-shadow-md transition-all duration-500 logo-glow ${
+                isScrolled ? "h-10 mt-[2px] scale-95" : "h-12 mt-[6px] scale-100"
+              }`}
+            />
           </div>
 
           {/* Desktop Menu */}
@@ -40,7 +47,9 @@ export default function Navbar() {
               <button
                 key={section}
                 onClick={() => scrollToSection(section)}
-                className="text-gray-700 hover:text-[#f44545] transition-colors font-medium relative group"
+                className={`font-medium relative group transition-colors ${
+                  isScrolled ? "text-gray-800" : "text-white"
+                }`}
               >
                 {section.charAt(0).toUpperCase() + section.slice(1)}
                 <span className="absolute left-0 bottom-0 w-0 h-[2px] bg-[#f44545] group-hover:w-full transition-all duration-300"></span>
@@ -49,16 +58,26 @@ export default function Navbar() {
 
             <button
               onClick={() => scrollToSection("contact")}
-              className="bg-gradient-to-r from-[#f44545] to-[#265999] text-white px-6 py-2 rounded-full hover:shadow-xl transition-all duration-300 hover:scale-105"
+              className={`px-6 py-2 rounded-full transition-all duration-300 transform hover:scale-105 btn-shine ${
+                isScrolled
+                  ? "bg-gradient-to-r from-[#f44545] to-[#265999] text-white"
+                  : "bg-white/10 text-white border border-white/30 backdrop-blur-sm"
+              }`}
             >
               Contact
             </button>
           </div>
 
           {/* Mobile Toggle */}
-          <button className="md:hidden text-gray-700" onClick={() => setIsOpen(!isOpen)}>
-            {isOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-          </button>
+          <div className="md:hidden">
+            <button
+              className={`${isScrolled ? "text-gray-800" : "text-white"}`}
+              onClick={() => setIsOpen(!isOpen)}
+              aria-label="Toggle menu"
+            >
+              {isOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+            </button>
+          </div>
         </div>
       </div>
 
@@ -66,15 +85,17 @@ export default function Navbar() {
       {isOpen && (
         <div className="md:hidden bg-white border-t animate-slideDown">
           <div className="px-4 py-4 space-y-3">
-            {["about", "packages", "events", "gallery", "contact"].map((section) => (
-              <button
-                key={section}
-                onClick={() => scrollToSection(section)}
-                className="block w-full text-left py-2 text-gray-700 hover:text-[#f44545] font-medium transition"
-              >
-                {section.charAt(0).toUpperCase() + section.slice(1)}
-              </button>
-            ))}
+            {["about", "packages", "events", "gallery", "contact"].map(
+              (section) => (
+                <button
+                  key={section}
+                  onClick={() => scrollToSection(section)}
+                  className="block w-full text-left py-2 text-gray-700 hover:text-[#f44545] font-medium transition"
+                >
+                  {section.charAt(0).toUpperCase() + section.slice(1)}
+                </button>
+              )
+            )}
           </div>
         </div>
       )}
