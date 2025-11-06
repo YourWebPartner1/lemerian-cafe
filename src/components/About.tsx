@@ -35,15 +35,17 @@ export default function About() {
 
         {/* Right Image */}
         <div className="relative" data-aos="fade-left">
-          <div className="absolute -bottom-6 inset-x-6 h-24 blur-3xl bg-[#e2c7ff]/40 rounded-full"></div>
-          <img
-            src="/about.jpeg"
-            alt="Cafe Interior"
-            className="relative rounded-3xl shadow-[0_10px_40px_rgba(0,0,0,0.18)] object-cover w-full"
-          />
-        </div>
+  <div className="absolute -bottom-6 inset-x-6 h-24 blur-3xl bg-[#e2c7ff]/40 rounded-full"></div>
+  <img
+    src={`${import.meta.env.BASE_URL}about.jpeg`}
+    alt="Cafe Interior"
+    className="relative rounded-3xl shadow-[0_10px_40px_rgba(0,0,0,0.18)] object-cover w-full"
+  />
+</div>
 
-      </div>
+</div>
+
+
 
       {/* ✅ Feature Icons Row */}
       <div className="max-w-6xl mx-auto px-6 lg:px-12 mt-20 grid grid-cols-2 md:grid-cols-4 gap-8 text-center" data-aos="fade-up">

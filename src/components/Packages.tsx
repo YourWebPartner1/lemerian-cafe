@@ -169,7 +169,7 @@ export default function Packages() {
 
         <Reveal className="mt-20 text-center">
           <h3 className="text-2xl font-bold mb-4">Add-ons</h3>
-          <p className="text-gray-700"><b>Hourly:</b> ₹60/hr | <b>Conference Room:</b> ₹999/hr | <b>Locker:</b> ₹29/day</p>
+          <p className="text-gray-700"><b>Hourly:</b> ₹60/hr | <b>Conference Room:</b> ₹999/hr | <b>Locker:</b> ₹99/day</p>
           <p className="text-gray-500 text-sm mt-2">*Conference room price includes up to 7 persons. Extra ₹100/person.</p>
         </Reveal>
 

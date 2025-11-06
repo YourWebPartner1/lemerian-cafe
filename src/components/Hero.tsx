@@ -13,22 +13,23 @@ export default function Hero() {
   return (
     <section id="hero" className="relative h-screen flex items-center justify-center overflow-hidden">
       <div
-        className="absolute inset-0"
-        style={{
-          backgroundImage: "url('/hero.jpeg')",
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          filter: 'saturate(1.3) contrast(1.1)',
-        }}
-      />
+  className="absolute inset-0"
+  style={{
+    backgroundImage: `url(${import.meta.env.BASE_URL}hero.jpeg)`,
+    backgroundSize: "cover",
+    backgroundPosition: "center",
+    filter: "saturate(1.3) contrast(1.1)",
+  }}
+/>
 
-      <div
-        className="absolute inset-0"
-        style={{
-          background: 'linear-gradient(rgba(0,0,0,0.25), rgba(0,0,0,0.15))',
-          pointerEvents: 'none',
-        }}
-      />
+<div
+  className="absolute inset-0"
+  style={{
+    background: "linear-gradient(rgba(0,0,0,0.25), rgba(0,0,0,0.15))",
+    pointerEvents: "none",
+  }}
+/>
+
 
       <div
         className="absolute inset-0"
