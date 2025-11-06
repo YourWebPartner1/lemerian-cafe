@@ -1,9 +1,8 @@
-"use client";
 import { Coffee, Wifi, Users } from "lucide-react";
 import { useEffect, useState } from "react";
 
 export default function Hero() {
-  const [scroll, setScroll] = useState(0);
+  const [scroll, setScroll] = useState<number>(0);
 
   useEffect(() => {
     const handleScroll = () => setScroll(window.scrollY);
@@ -16,111 +15,126 @@ export default function Hero() {
       id="hero"
       className="relative h-screen flex items-center justify-center overflow-hidden"
     >
-      {/* 🎥 Background Video */}
+      {/* 🎬 Background Video */}
       <video
         autoPlay
         loop
         muted
         playsInline
-        preload="auto"
-        className="absolute inset-0 w-full h-full object-cover"
-        style={{
-          transform: `translateY(${scroll * 0.2}px)`,
-          transition: "transform 0.1s linear",
-        }}
-        onError={(e) => console.error("🎬 Video failed to load:", e)}
+        className="absolute inset-0 w-full h-full object-cover saturate-[1.3] contrast-[1.1]"
       >
-        {/* ✅ GitHub Pages Safe Path */}
-        <source src={`${import.meta.env.BASE_URL}hero.mp4`} type="video/mp4" />
-        {/* fallback if video fails */}
-        <img
-          src={`${import.meta.env.BASE_URL}hero.jpeg`}
-          alt="Cafe background"
-          className="absolute inset-0 w-full h-full object-cover"
+        <source
+          src={`${import.meta.env.BASE_URL}hero.mp4`}
+          type="video/mp4"
         />
-        Your browser does not support the video tag.
       </video>
 
-      {/* ✅ Overlay for readability */}
-      <div className="absolute inset-0 bg-black/25"></div>
-      <div className="absolute inset-0 bg-gradient-to-br from-[#f44545]/20 via-transparent to-[#265999]/20 pointer-events-none"></div>
-
-      {/* ✨ Glow Orbs */}
-      <div className="absolute top-32 right-32 w-24 h-24 bg-[#f44545]/60 blur-3xl animate-pulse" />
+      {/* Gradient & Overlay */}
       <div
-        className="absolute bottom-40 left-24 w-28 h-28 bg-[#265999]/60 blur-3xl animate-pulse"
+        className="absolute inset-0"
+        style={{
+          background: "linear-gradient(rgba(0,0,0,0.25), rgba(0,0,0,0.15))",
+          pointerEvents: "none",
+        }}
+      />
+      <div
+        className="absolute inset-0"
+        style={{
+          background: "rgba(0,0,0,0.45)",
+          backdropFilter: "brightness(0.7)",
+          pointerEvents: "none",
+        }}
+      />
+      <div
+        className="absolute inset-0 bg-gradient-to-br from-[#265999]/20 via-transparent to-[#f44545]/20"
+        style={{ transform: `translateY(${scroll * 0.5}px)` }}
+      />
+
+      {/* Floating Lights */}
+      <div className="absolute top-20 right-10 w-20 h-20 bg-gradient-to-br from-[#f44545] to-[#FFD700] rounded-full blur-3xl opacity-60 animate-pulse" />
+      <div
+        className="absolute bottom-40 left-20 w-32 h-32 bg-gradient-to-br from-[#265999] to-[#f44545] rounded-full blur-3xl opacity-40 animate-pulse"
         style={{ animationDelay: "1s" }}
       />
 
-      {/* 🌟 Content */}
-      <div className="relative z-10 text-center px-6 max-w-5xl mx-auto">
-        <Coffee className="w-16 h-16 text-[#f44545] mx-auto mb-6 animate-bounce" />
+      {/* Main Content */}
+      <div className="relative z-10 text-center px-4 max-w-5xl mx-auto">
+        <div className="mb-8 inline-block animate-bounce fade-in-up fade-in-up-1">
+          <Coffee className="w-16 h-16 text-[#f44545] mx-auto" />
+        </div>
+
         <h1
-          className="text-5xl md:text-7xl font-extrabold mb-4 leading-tight"
-          style={{ textShadow: "0 8px 30px rgba(0,0,0,0.7)" }}
+          className="text-5xl md:text-7xl font-extrabold mb-6 leading-tight fade-in-up fade-in-up-2"
+          style={{ textShadow: "0 10px 45px rgba(0,0,0,0.55)" }}
         >
-          <span className="bg-gradient-to-r from-[#ff5757] via-[#ffd85a] to-[#3b6fdc] bg-clip-text text-transparent">
+          <span
+            className="bg-gradient-to-r from-[#ff5757] via-[#ffd85a] to-[#3b6fdc] bg-clip-text text-transparent"
+            style={{
+              filter: "drop-shadow(0 6px 25px rgba(0,0,0,0.65))",
+              letterSpacing: "-1px",
+            }}
+          >
             Sip. Work. Connect.
           </span>
         </h1>
 
-        <p className="text-xl md:text-2xl text-white font-light opacity-95">
+        <p
+          className="text-xl md:text-3xl text-white mb-4 font-light fade-in-up fade-in-up-3"
+          style={{ textShadow: "0 4px 18px rgba(0,0,0,0.45)" }}
+        >
           A perfect blend of coffee and creativity
         </p>
-        <p className="text-lg md:text-xl text-white opacity-90 max-w-2xl mx-auto mb-12">
-          Where productivity meets comfort in an inspiring atmosphere.
+
+        <p
+          className="text-lg md:text-xl text-white mb-12 max-w-2xl mx-auto fade-in-up fade-in-up-3"
+          style={{ textShadow: "0 4px 18px rgba(0,0,0,0.45)" }}
+        >
+          Where productivity meets comfort in an inspiring atmosphere
         </p>
 
         {/* Buttons */}
-        <div className="flex flex-col sm:flex-row gap-4 justify-center mb-16">
+        <div className="flex flex-col sm:flex-row gap-4 justify-center mb-16 fade-in-up fade-in-up-4">
           <button
             onClick={() =>
               document
                 .getElementById("packages")
                 ?.scrollIntoView({ behavior: "smooth" })
             }
-            className="bg-gradient-to-r from-[#f44545] to-[#265999] text-white px-8 py-4 rounded-full text-lg font-semibold transition-transform duration-300 hover:scale-105 hover:shadow-2xl"
+            className="bg-gradient-to-r from-[#f44545] to-[#265999] text-white px-8 py-4 rounded-full text-lg font-semibold hover:shadow-2xl transform hover:scale-105 transition-all duration-300"
           >
             Explore Packages
           </button>
-
           <button
             onClick={() =>
               document
                 .getElementById("contact")
                 ?.scrollIntoView({ behavior: "smooth" })
             }
-            className="bg-white text-gray-800 px-8 py-4 rounded-full text-lg font-semibold border-2 border-gray-200 transition-transform duration-300 hover:border-[#f44545] hover:shadow-xl hover:scale-105"
+            className="bg-white text-gray-800 px-8 py-4 rounded-full text-lg font-semibold border-2 border-gray-200 hover:border-[#f44545] hover:shadow-xl transform hover:scale-105 transition-all duration-300"
           >
             Get in Touch
           </button>
         </div>
 
         {/* Features */}
-        <div className="flex flex-wrap justify-center gap-8 text-white text-lg opacity-95">
-          <div className="flex items-center space-x-2">
-            <Coffee className="w-6 h-6 text-[#f44545]" />
-            <span>Premium Coffee</span>
-          </div>
-          <div className="flex items-center space-x-2">
-            <Wifi className="w-6 h-6 text-[#265999]" />
-            <span>High-Speed WiFi</span>
-          </div>
-          <div className="flex items-center space-x-2">
-            <Users className="w-6 h-6 text-[#ffd85a]" />
-            <span>Community Space</span>
-          </div>
+        <div
+          className="flex flex-wrap justify-center gap-8 text-white fade-in-up fade-in-up-5"
+          style={{ textShadow: "0 4px 18px rgba(0,0,0,0.45)" }}
+        >
+          <Feature icon={<Coffee className="w-6 h-6 text-[#f44545]" />} text="Premium Coffee" />
+          <Feature icon={<Wifi className="w-6 h-6 text-[#265999]" />} text="High-Speed WiFi" />
+          <Feature icon={<Users className="w-6 h-6 text-[#FFD700]" />} text="Community Space" />
         </div>
       </div>
 
       {/* Scroll Indicator */}
-      <div className="absolute bottom-10 left-1/2 -translate-x-1/2 animate-bounce opacity-80">
-        <div className="w-6 h-10 border-2 border-white/60 rounded-full flex items-start justify-center p-2">
-          <div className="w-1 h-3 bg-white/70 rounded-full animate-pulse" />
+      <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce fade-in-up fade-in-up-5">
+        <div className="w-6 h-10 border-2 border-gray-400 rounded-full flex items-start justify-center p-2">
+          <div className="w-1 h-3 bg-gray-400 rounded-full animate-pulse" />
         </div>
       </div>
 
-      {/* Wave Divider */}
+      {/* Wave SVG */}
       <div className="absolute bottom-0 left-0 w-full overflow-hidden leading-none rotate-180 pointer-events-none">
         <svg
           viewBox="0 0 1200 120"
@@ -133,3 +147,16 @@ export default function Hero() {
     </section>
   );
 }
+
+// ✅ Small helper component for reusability
+interface FeatureProps {
+  icon: JSX.Element;
+  text: string;
+}
+
+const Feature: React.FC<FeatureProps> = ({ icon, text }) => (
+  <div className="flex items-center space-x-2">
+    {icon}
+    <span className="font-medium">{text}</span>
+  </div>
+);
