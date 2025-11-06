@@ -24,7 +24,7 @@ export default function Hero() {
         className="absolute inset-0 w-full h-full object-cover saturate-[1.3] contrast-[1.1]"
       >
         <source
-          src={`${import.meta.env.BASE_URL}hero.mp4`}
+          src={`${import.meta.env.BASE_URL}hero1.mp4`}
           type="video/mp4"
         />
       </video>
@@ -82,15 +82,16 @@ export default function Hero() {
           className="text-xl md:text-3xl text-white mb-4 font-light fade-in-up fade-in-up-3"
           style={{ textShadow: "0 4px 18px rgba(0,0,0,0.45)" }}
         >
-          A perfect blend of coffee and creativity
+          India’s First Working Café
         </p>
 
         <p
           className="text-lg md:text-xl text-white mb-12 max-w-2xl mx-auto fade-in-up fade-in-up-3"
           style={{ textShadow: "0 4px 18px rgba(0,0,0,0.45)" }}
         >
-          Where productivity meets comfort in an inspiring atmosphere
+          “Collaborate, create, and connect over premium coffee, high-speed Wi-Fi, and delicious food — all under one roof.”
         </p>
+        
 
         {/* Buttons */}
         <div className="flex flex-col sm:flex-row gap-4 justify-center mb-16 fade-in-up fade-in-up-4">
