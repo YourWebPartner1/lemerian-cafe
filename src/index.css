@@ -1,0 +1,99 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    font-family: 'Poppins', 'Inter', 'Segoe UI', 'Roboto', sans-serif;
+  }
+}
+
+@layer utilities {
+  .animate-float {
+    animation: float 3s ease-in-out infinite;
+  }
+
+  @keyframes float {
+    0%, 100% {
+      transform: translateY(0px);
+    }
+    50% {
+      transform: translateY(-20px);
+    }
+  }
+
+  .fade-in-up {
+    animation: fadeInUp 0.6s ease-out forwards;
+    opacity: 0;
+  }
+  @keyframes slideDown {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-slideDown {
+  animation: slideDown 0.25s ease-out;
+}
+nav button:focus {
+  outline: none;
+}
+
+
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes fadeInUp {
+  0% {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+@keyframes softBreath {
+  0% { opacity: 0.6; transform: translateY(0px); }
+  50% { opacity: 1; transform: translateY(-4px); }
+  100% { opacity: 0.6; transform: translateY(0px); }
+}
+
+.soft-breath {
+  animation: softBreath 4s ease-in-out infinite;
+}
+
+
+.animate-fadeInUp {
+  animation: fadeInUp 0.8s ease-out forwards;
+}
+
+
+  .fade-in-up-1 { animation-delay: 0s; }
+  .fade-in-up-2 { animation-delay: 0.4s; }
+  .fade-in-up-3 { animation-delay: 0.8s; }
+  .fade-in-up-4 { animation-delay: 1.2s; }
+  .fade-in-up-5 { animation-delay: 1.6s; }
+
+  /* ✅ New Utility Class to Fix Hero Gradient Text Visibility */
+  .hero-gradient-text {
+    background: linear-gradient(90deg, #ff7a57, #f3b445, #a4c54a, #3e8ccf);
+    -webkit-background-clip: text;
+    color: transparent;
+
+    /* Enhances Visibility */
+    -webkit-text-stroke: 2px rgba(0, 0, 0, 0.35);
+    text-shadow: 0 4px 14px rgba(0, 0, 0, 0.55);
+  }
+}
