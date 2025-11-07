@@ -74,16 +74,11 @@ export default function Hero() {
               letterSpacing: "-1px",
             }}
           >
-            Sip. Work. Connect.
+            India’s First Working Café
           </span>
         </h1>
 
-        <p
-          className="text-xl md:text-3xl text-white mb-4 font-light fade-in-up fade-in-up-3"
-          style={{ textShadow: "0 4px 18px rgba(0,0,0,0.45)" }}
-        >
-          India’s First Working Café
-        </p>
+        
 
         <p
           className="text-lg md:text-xl text-white mb-12 max-w-2xl mx-auto fade-in-up fade-in-up-3"

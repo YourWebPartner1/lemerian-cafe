@@ -1,9 +1,17 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
+import path from "path";
 
-// ✅ GitHub Pages configuration
-// This ensures all assets (images, fonts, background) load correctly
 export default defineConfig({
   plugins: [react()],
-  base: "/lemerian-cafe/", // 👈 Must exactly match your GitHub repo name
+  resolve: {
+    alias: {
+      "@": path.resolve(__dirname, "./src"), // 👈 important
+    },
+  },
+  server: {
+    hmr: {
+      overlay: true, // shows the nice Vite error popup
+    },
+  },
 });

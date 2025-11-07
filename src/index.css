@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -13,10 +14,558 @@
 }
 
 @layer utilities {
+    /* ===============================
+     🌟 FINAL CINEMATIC POLISH (LEMIR)
+     =============================== */
+
+  /* Shimmer flow with warm glowing aura */
+  @keyframes shimmerGlow {
+    0% {
+      background-position: 0% 50%;
+      filter: drop-shadow(0 0 6px rgba(255, 200, 90, 0.25));
+    }
+    50% {
+      background-position: 100% 50%;
+      filter: drop-shadow(0 0 12px rgba(255, 200, 90, 0.45));
+    }
+    100% {
+      background-position: 0% 50%;
+      filter: drop-shadow(0 0 6px rgba(255, 200, 90, 0.25));
+    }
+  }
+
+    /* ===============================
+     ✨ FLOATING PARTICLES (LEMIR)
+     =============================== */
+
+  .particles-bg {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  .particle {
+    position: absolute;
+    border-radius: 9999px;
+    background: radial-gradient(circle, rgba(255,255,255,0.9), rgba(255,255,255,0));
+    opacity: 0.4;
+    animation: floatParticle linear infinite;
+  }
+
+  @keyframes floatParticle {
+    0% {
+      transform: translateY(0) translateX(0) scale(1);
+      opacity: 0.2;
+    }
+    50% {
+      transform: translateY(-40px) translateX(20px) scale(1.1);
+      opacity: 0.5;
+    }
+    100% {
+      transform: translateY(0) translateX(0) scale(1);
+      opacity: 0.2;
+    }
+  }
+
+
+  /* Glowing heartbeat pulse for India Map aura */
+  @keyframes pulseGlow {
+    0%, 100% {
+      opacity: 0.6;
+      transform: scale(0.96);
+      filter: drop-shadow(0 0 10px rgba(255, 180, 0, 0.35));
+    }
+    50% {
+      opacity: 1;
+      transform: scale(1.05);
+      filter: drop-shadow(0 0 16px rgba(255, 180, 0, 0.6));
+    }
+  }
+
+  /* Title halo breathing glow (for LEMIR) */
+  @keyframes pulseHalo {
+    0%, 100% {
+      opacity: 0.5;
+      transform: translateX(-50%) scale(0.95);
+    }
+    50% {
+      opacity: 0.8;
+      transform: translateX(-50%) scale(1.05);
+    }
+  }
+
+
+  /* ===============================
+     🌊 FLOATING ANIMATIONS (LEMIR)
+     =============================== */
+
+  @keyframes float1 {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-8px); }
+  }
+  @keyframes float2 {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(6px); }
+  }
+  .icon-float-1 { animation: float1 6s ease-in-out infinite; }
+  .icon-float-2 { animation: float2 7s ease-in-out infinite; }
+  .icon-float-3 { animation: float1 5.5s ease-in-out infinite; }
+
+  /* Tricolor glow + float effect for India Map */
+  .india-hover {
+    animation: float1 6s ease-in-out infinite;
+    filter: drop-shadow(0 0 6px rgba(255,165,0,0.6))
+            drop-shadow(0 0 10px rgba(255,255,255,0.6))
+            drop-shadow(0 0 12px rgba(0,128,0,0.6));
+  }
+
+  /* ===============================
+     ✨ SHIMMER & GRADIENT TEXT
+     =============================== */
+
+  @keyframes shimmer {
+    0% { background-position: 0% 50%; }
+    100% { background-position: 100% 50%; }
+  }
+  .animate-shimmer {
+    background-size: 200% 200%;
+    animation: shimmer 3s linear infinite;
+  }
+
+  @keyframes gradient-x {
+    0%, 100% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+  }
+  .animate-gradient-x {
+    background-size: 200% 200%;
+    animation: gradient-x 6s ease infinite;
+  }
+
+  /* ===============================
+     🌟 TITLE HALO BEHIND “LEMIR”
+     =============================== */
+  .title-focus-halo {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 18rem;
+    height: 18rem;
+    background: linear-gradient(
+      90deg,
+      rgba(231, 90, 90, 0.30),
+      rgba(255, 180, 64, 0.25),
+      rgba(72, 102, 201, 0.30)
+    );
+    filter: blur(40px);
+    border-radius: 9999px;
+    opacity: 0.5;
+    z-index: -1;
+    animation: pulseHalo 6s ease-in-out infinite;
+  }
+
+  @keyframes pulseHalo {
+    0%, 100% { opacity: 0.45; transform: translateX(-50%) scale(0.98); }
+    50% { opacity: 0.6; transform: translateX(-50%) scale(1.02); }
+  }
+
+  /* ===============================
+     🌈 FLOAT + FADE ANIMATIONS
+     =============================== */
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-12px); }
+  }
   .animate-float {
     animation: float 3s ease-in-out infinite;
   }
 
+  @keyframes fadeInUp {
+    0% { opacity: 0; transform: translateY(30px); }
+    100% { opacity: 1; transform: translateY(0); }
+  }
+  .animate-fadeInUp {
+    animation: fadeInUp 0.8s ease-out forwards;
+  }
+  .fade-in-up-1 { animation-delay: 0s; }
+  .fade-in-up-2 { animation-delay: 0.4s; }
+  .fade-in-up-3 { animation-delay: 0.8s; }
+  .fade-in-up-4 { animation-delay: 1.2s; }
+  .fade-in-up-5 { animation-delay: 1.6s; }
+
+  /* ===============================
+     🌬️ SOFT BREATHING MOTION
+     =============================== */
+  @keyframes softBreath {
+    0% { opacity: 0.6; transform: translateY(0); }
+    50% { opacity: 1; transform: translateY(-4px); }
+    100% { opacity: 0.6; transform: translateY(0); }
+  }
+  .soft-breath {
+    animation: softBreath 4s ease-in-out infinite;
+  }
+
+  /* ===============================
+     💫 BUTTONS & NAV POLISH
+     =============================== */
+  @keyframes glowPulse {
+    0%, 100% { box-shadow: 0 0 10px rgba(244,69,69,0.18); }
+    50% { box-shadow: 0 0 22px rgba(38,89,153,0.20); }
+  }
+  .pulse-glow {
+    animation: glowPulse 3s ease-in-out infinite;
+  }
+
+  .nav-link-hover:hover {
+    letter-spacing: 0.6px;
+    transition: letter-spacing 180ms ease;
+  }
+
+  .nav-transform {
+    transition: transform 260ms cubic-bezier(.2,.9,.3,1),
+                background-color 260ms ease,
+                box-shadow 260ms ease;
+  }
+
+  /* Gradient shine animation */
+  @keyframes shine {
+    0% { background-position: -200% center; }
+    100% { background-position: 200% center; }
+  }
+
+  .btn-shine {
+    background-size: 200% auto;
+    transition: background-position 0.8s ease;
+  }
+
+  .btn-shine:hover {
+    background-image: linear-gradient(
+      90deg,
+      #f44545 0%,
+      #ff7b7b 25%,
+      #265999 75%,
+      #f44545 100%
+    );
+    animation: shine 1.5s linear infinite;
+    color: #fff;
+    box-shadow: 0 0 15px rgba(244, 69, 69, 0.3);
+  }
+
+  /* Logo glow */
+  .logo-glow:hover {
+    filter: drop-shadow(0 0 6px rgba(255, 180, 150, 0.7))
+            drop-shadow(0 0 12px rgba(255, 90, 90, 0.5));
+    transform: scale(1.05);
+    transition: all 0.4s ease;
+  }
+
+  /* Hero gradient text */
+  .hero-gradient-text {
+    background: linear-gradient(90deg, #ff7a57, #f3b445, #a4c54a, #3e8ccf);
+    -webkit-background-clip: text;
+    color: transparent;
+    -webkit-text-stroke: 2px rgba(0, 0, 0, 0.35);
+    text-shadow: 0 4px 14px rgba(0, 0, 0, 0.55);
+  }
+    /* ===============================
+     💎 PACKAGES SECTION ANIMATIONS
+     =============================== */
+
+  /* Smooth floating for icons or cards */
+  @keyframes floatSlow {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-8px); }
+  }
+  .animate-floatSlow {
+    animation: floatSlow 6s ease-in-out infinite;
+  }
+
+  /* Soft glowing pulse for featured (center) card */
+  @keyframes pulseGlowCard {
+    0%, 100% {
+      box-shadow:
+        0 0 15px rgba(244, 69, 69, 0.15),
+        0 0 25px rgba(255, 200, 100, 0.15);
+      transform: scale(1);
+    }
+    50% {
+      box-shadow:
+        0 0 25px rgba(244, 69, 69, 0.25),
+        0 0 50px rgba(255, 200, 100, 0.25);
+      transform: scale(1.02);
+    }
+  }
+  .animate-pulseGlow {
+    animation: pulseGlowCard 4s ease-in-out infinite;
+  }
+
+  /* Shimmer effect for price text */
+  @keyframes shimmerPrice {
+    0% { background-position: 0% 50%; }
+    100% { background-position: 100% 50%; }
+  }
+  .animate-shimmer {
+    background-size: 200% auto;
+    animation: shimmerPrice 3s linear infinite;
+  }
+
+  /* Gradient shifting header animation */
+  @keyframes gradient-x {
+    0%, 100% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+  }
+  .animate-gradient-x {
+    background-size: 200% 200%;
+    animation: gradient-x 6s ease infinite;
+  }
+
+  /* Floating decorative dots in the background */
+  @keyframes floatParticle {
+    0% {
+      transform: translateY(0) translateX(0);
+      opacity: 0.3;
+    }
+    50% {
+      transform: translateY(-30px) translateX(15px);
+      opacity: 0.6;
+    }
+    100% {
+      transform: translateY(0) translateX(0);
+      opacity: 0.3;
+    }
+  }
+  .animate-float {
+    animation: floatParticle 5s ease-in-out infinite;
+  }
+
+  /* Slow bounce for the “Most Popular” badge */
+  @keyframes bounceSlow {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-4px); }
+  }
+  .animate-bounce-slow {
+    animation: bounceSlow 2.5s ease-in-out infinite;
+  }
+
+  /* Fade upward reveal (used for section titles) */
+  @keyframes fadeInUp {
+    0% { opacity: 0; transform: translateY(40px); }
+    100% { opacity: 1; transform: translateY(0); }
+  }
+  .animate-fadeInUp {
+    animation: fadeInUp 1s ease-out forwards;
+  }
+
+  /* Optional: subtle ambient sweep (premium highlight) */
+  @keyframes sweepLight {
+    0% {
+      background: linear-gradient(
+        110deg,
+        rgba(255,255,255,0) 0%,
+        rgba(255,255,255,0.3) 20%,
+        rgba(255,255,255,0) 40%
+      );
+      background-size: 200% 100%;
+      background-position: -100% 0;
+    }
+    100% {
+      background-position: 200% 0;
+    }
+  }
+  .animate-sweep {
+    position: relative;
+    overflow: hidden;
+  }
+  .animate-sweep::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      110deg,
+      rgba(255,255,255,0) 0%,
+      rgba(255,255,255,0.25) 20%,
+      rgba(255,255,255,0) 40%
+    );
+    background-size: 200% 100%;
+    animation: sweepLight 5s linear infinite;
+  }
+  :root {
+  --shadow-card: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+  --shadow-elegant: 0 20px 50px -10px rgba(244, 69, 69, 0.15);
+  --event-red: #f44545;
+  --event-blue: #265999;
+  --event-accent: #fafafa;
+}
+@layer base {
+  :root {
+    --background: 18 100% 98%;
+    --foreground: 0 0% 10%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 0 0% 10%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 0 0% 10%;
+
+    --primary: 0 65% 62%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 225 60% 60%;
+    --secondary-foreground: 0 0% 100%;
+
+    --muted: 18 50% 96%;
+    --muted-foreground: 0 0% 45%;
+
+    --accent: 40 100% 50%;
+    --accent-foreground: 0 0% 10%;
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 18 30% 92%;
+    --input: 18 30% 92%;
+    --ring: 0 65% 62%;
+
+    --radius: 1rem;
+
+    /* Lemerian Brand Colors */
+    --lemerian-red: 0 65% 62%;
+    --lemerian-blue: 225 60% 60%;
+    --lemerian-amber: 40 100% 50%;
+    --lemerian-peach: 18 100% 95%;
+    
+    /* Gradients */
+    --gradient-warm: linear-gradient(135deg, hsl(0 65% 62%) 0%, hsl(40 100% 50%) 100%);
+    --gradient-vision: linear-gradient(135deg, hsl(0 65% 62%) 0%, hsl(40 100% 50%) 50%, hsl(270 60% 60%) 100%);
+    --gradient-shimmer: linear-gradient(90deg, hsl(0 65% 62%) 0%, hsl(40 100% 50%) 50%, hsl(225 60% 60%) 100%);
+    
+    /* Shadows */
+    --shadow-glow: 0 10px 40px -10px hsl(0 65% 62% / 0.4);
+    --shadow-lift: 0 20px 60px -15px hsl(0 0% 0% / 0.3);
+    
+    /* Transitions */
+    --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+
+    --sidebar-background: 0 0% 98%;
+    --sidebar-foreground: 240 5.3% 26.1%;
+    --sidebar-primary: 240 5.9% 10%;
+    --sidebar-primary-foreground: 0 0% 98%;
+    --sidebar-accent: 240 4.8% 95.9%;
+    --sidebar-accent-foreground: 240 5.9% 10%;
+    --sidebar-border: 220 13% 91%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+
+  .dark {
+    --background: 222.2 84% 4.9%;
+    --foreground: 210 40% 98%;
+
+    --card: 222.2 84% 4.9%;
+    --card-foreground: 210 40% 98%;
+
+    --popover: 222.2 84% 4.9%;
+    --popover-foreground: 210 40% 98%;
+
+    --primary: 210 40% 98%;
+    --primary-foreground: 222.2 47.4% 11.2%;
+
+    --secondary: 217.2 32.6% 17.5%;
+    --secondary-foreground: 210 40% 98%;
+
+    --muted: 217.2 32.6% 17.5%;
+    --muted-foreground: 215 20.2% 65.1%;
+
+    --accent: 217.2 32.6% 17.5%;
+    --accent-foreground: 210 40% 98%;
+
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 217.2 32.6% 17.5%;
+    --input: 217.2 32.6% 17.5%;
+    --ring: 212.7 26.8% 83.9%;
+    --sidebar-background: 240 5.9% 10%;
+    --sidebar-foreground: 240 4.8% 95.9%;
+    --sidebar-primary: 224.3 76.3% 48%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 240 3.7% 15.9%;
+    --sidebar-accent-foreground: 240 4.8% 95.9%;
+    --sidebar-border: 240 3.7% 15.9%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground font-poppins;
+  }
+}
+
+@layer utilities {
+  /* Gradient text utilities */
+  .gradient-text-warm {
+    background: var(--gradient-warm);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  
+  .gradient-text-vision {
+    background: var(--gradient-vision);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  /* --- Small helpers required for @apply usage --- */
+@layer utilities {
+  /* font-poppins used by @apply in base layer */
+  .font-poppins {
+    font-family: 'Poppins', 'Inter', 'Segoe UI', 'Roboto', sans-serif;
+  }
+
+  /* border-border (if you still need it) */
+  .border-border {
+    /* If your :root defines --border as HSL space-separated, use rgb(var(--border)) */
+    /* If it's a hex or normal color string, replace the next line with border-color: #e6e6e6; */
+    border-color: rgb(var(--border));
+  }
+}
+
+  
+  /* Shimmer animation */
+  @keyframes shimmer {
+    0% {
+      background-position: -200% center;
+    }
+    100% {
+      background-position: 200% center;
+    }
+  }
+  
+  .shimmer {
+    background: linear-gradient(
+      90deg,
+      hsl(0 65% 62%) 0%,
+      hsl(40 100% 50%) 25%,
+      hsl(225 60% 60%) 50%,
+      hsl(40 100% 50%) 75%,
+      hsl(0 65% 62%) 100%
+    );
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: shimmer 3s linear infinite;
+  }
+  
+  /* Float animation */
   @keyframes float {
     0%, 100% {
       transform: translateY(0px);
@@ -25,150 +574,43 @@
       transform: translateY(-20px);
     }
   }
-
-  .fade-in-up {
-    animation: fadeInUp 0.6s ease-out forwards;
-    opacity: 0;
+  
+  .float {
+    animation: float 6s ease-in-out infinite;
   }
-  @keyframes slideDown {
-  from { opacity: 0; transform: translateY(-10px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-.animate-slideDown {
-  animation: slideDown 0.25s ease-out;
-}
-nav button:focus {
-  outline: none;
-}
-
-
-  @keyframes fadeInUp {
-    from {
+  
+  /* Pulse glow */
+  @keyframes pulse-glow {
+    0%, 100% {
+      box-shadow: 0 0 20px hsl(0 65% 62% / 0.4);
+    }
+    50% {
+      box-shadow: 0 0 40px hsl(40 100% 50% / 0.6);
+    }
+  }
+  
+  .pulse-glow {
+    animation: pulse-glow 3s ease-in-out infinite;
+  }
+  
+  /* Particle animation */
+  @keyframes particle-float {
+    0% {
+      transform: translate(0, 0) rotate(0deg);
       opacity: 0;
-      transform: translateY(30px);
     }
-    to {
+    10% {
       opacity: 1;
-      transform: translateY(0);
+    }
+    90% {
+      opacity: 1;
+    }
+    100% {
+      transform: translate(100px, -100px) rotate(360deg);
+      opacity: 0;
     }
   }
-
-  @keyframes fadeInUp {
-  0% {
-    opacity: 0;
-    transform: translateY(30px);
-  }
-  100% {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-@keyframes gradientFlow {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
 }
 
-.animate-gradient {
-  background-size: 200% 200%;
-  animation: gradientFlow 6s ease infinite;
-}
-
-@keyframes softBreath {
-  0% { opacity: 0.6; transform: translateY(0px); }
-  50% { opacity: 1; transform: translateY(-4px); }
-  100% { opacity: 0.6; transform: translateY(0px); }
-}
-
-.soft-breath {
-  animation: softBreath 4s ease-in-out infinite;
-}
-
-
-.animate-fadeInUp {
-  animation: fadeInUp 0.8s ease-out forwards;
-}
-
-
-  .fade-in-up-1 { animation-delay: 0s; }
-  .fade-in-up-2 { animation-delay: 0.4s; }
-  .fade-in-up-3 { animation-delay: 0.8s; }
-  .fade-in-up-4 { animation-delay: 1.2s; }
-  .fade-in-up-5 { animation-delay: 1.6s; }
-
-  /* ✅ New Utility Class to Fix Hero Gradient Text Visibility */
-  .hero-gradient-text {
-    background: linear-gradient(90deg, #ff7a57, #f3b445, #a4c54a, #3e8ccf);
-    -webkit-background-clip: text;
-    color: transparent;
-
-    /* Enhances Visibility */
-    -webkit-text-stroke: 2px rgba(0, 0, 0, 0.35);
-    text-shadow: 0 4px 14px rgba(0, 0, 0, 0.55);
-  }
-  .logo-glow:hover {
-  filter: drop-shadow(0 0 6px rgba(255, 180, 150, 0.7))
-          drop-shadow(0 0 12px rgba(255, 90, 90, 0.5));
-  transform: scale(1.05);
-  transition: all 0.4s ease;
-}
-
-  /* ===== Navbar & Buttons polish ===== */
-
-/* soft pulse glow for contact button */
-@keyframes glowPulse {
-  0%, 100% { box-shadow: 0 0 10px rgba(244,69,69,0.18); }
-  50%     { box-shadow: 0 0 22px rgba(38,89,153,0.20); }
-}
-.pulse-glow {
-  animation: glowPulse 3s ease-in-out infinite;
-}
-
-/* fallback for link hover letter-spacing - small increase */
-.nav-link-hover:hover {
-  letter-spacing: 0.6px;
-  transition: letter-spacing 180ms ease;
-}
-
-/* optional: smoother nav transform */
-.nav-transform {
-  transition: transform 260ms cubic-bezier(.2,.9,.3,1), background-color 260ms ease, box-shadow 260ms ease;
-}
-/* Gradient shine animation */
-@keyframes shine {
-  0% {
-    background-position: -200% center;
-  }
-  100% {
-    background-position: 200% center;
-  }
-}
-
-.btn-shine {
-  background-size: 200% auto;
-  transition: background-position 0.8s ease;
-}
-
-.btn-shine:hover {
-  background-image: linear-gradient(
-    90deg,
-    #f44545 0%,
-    #ff7b7b 25%,
-    #265999 75%,
-    #f44545 100%
-  );
-  animation: shine 1.5s linear infinite;
-  color: #fff;
-  box-shadow: 0 0 15px rgba(244, 69, 69, 0.3);
-}
-
-/* Logo glow */
-.logo-glow:hover {
-  filter: drop-shadow(0 0 6px rgba(255, 180, 150, 0.7))
-    drop-shadow(0 0 12px rgba(255, 90, 90, 0.5));
-  transform: scale(1.05);
-  transition: all 0.4s ease;
-}
 
 }

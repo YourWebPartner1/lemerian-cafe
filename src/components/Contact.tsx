@@ -118,8 +118,8 @@ export default function Contact() {
                   <div>
                     <h4 className="font-semibold text-gray-800 mb-1">Location</h4>
                     <p className="text-gray-600">
-                      123 Work Street, Downtown<br />
-                      Creative District, City 12345
+                      1st floor, Emperado Building, Road No. 12,<br />
+                      opposite mahesh bank, Amudi Nagar, Bhola Nagar, Banjara Hills, Hyderabad, Telangana 500034
                     </p>
                   </div>
                 </div>
@@ -130,7 +130,7 @@ export default function Contact() {
                   </div>
                   <div>
                     <h4 className="font-semibold text-gray-800 mb-1">Phone</h4>
-                    <p className="text-gray-600">+1 (555) 123-4567</p>
+                    <p className="text-gray-600">+91 7075701406</p>
                   </div>
                 </div>
 
@@ -140,7 +140,7 @@ export default function Contact() {
                   </div>
                   <div>
                     <h4 className="font-semibold text-gray-800 mb-1">Email</h4>
-                    <p className="text-gray-600">hello@lemerianworkin.cafe</p>
+                    <p className="text-gray-600">lemerianworkincafe@gmail.com</p>
                   </div>
                 </div>
               </div>
@@ -151,15 +151,15 @@ export default function Contact() {
               <div className="space-y-3 text-gray-700">
                 <div className="flex justify-between">
                   <span className="font-medium">Monday - Friday</span>
-                  <span>7:00 AM - 10:00 PM</span>
+                  <span>8:00 AM - 12:00 AM</span>
                 </div>
                 <div className="flex justify-between">
                   <span className="font-medium">Saturday</span>
-                  <span>8:00 AM - 11:00 PM</span>
+                  <span>8:00 AM - 12:00 AM</span>
                 </div>
                 <div className="flex justify-between">
                   <span className="font-medium">Sunday</span>
-                  <span>9:00 AM - 9:00 PM</span>
+                  <span>8:00 AM - 12:00 AM</span>
                 </div>
               </div>
             </div>

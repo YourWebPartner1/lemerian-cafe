@@ -6,7 +6,7 @@ export default function Gallery() {
 
   const images = [
     {
-      url: '/hero.jpeg',
+      url: 'https://images.pexels.com/photos/1267320/pexels-photo-1267320.jpeg?auto=compress&cs=tinysrgb&w=800',
       title: 'Cozy Work Environment',
     },
     {
