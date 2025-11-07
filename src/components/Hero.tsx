@@ -15,8 +15,9 @@ export default function Hero() {
       id="hero"
       className="relative h-screen flex items-center justify-center overflow-hidden"
     >
-      {/* 🎬 Background Video */}
-     *// <video
+      {/* 🎬 Background Video (Temporarily Disabled) */}
+      {/*
+      <video
         autoPlay
         loop
         muted
@@ -28,7 +29,15 @@ export default function Hero() {
           type="video/mp4"
         />
       </video>
-//*
+      */}
+
+      {/* 🖼️ Background Image Fallback */}
+      <img
+        src={`${import.meta.env.BASE_URL}heronot.jpeg`} // ✅ your image in /public
+        alt="Hero background"
+        className="absolute inset-0 w-full h-full object-cover saturate-[1.3] contrast-[1.1]"
+      />
+
       {/* Gradient & Overlay */}
       <div
         className="absolute inset-0"
@@ -78,15 +87,13 @@ export default function Hero() {
           </span>
         </h1>
 
-        
-
         <p
           className="text-lg md:text-xl text-white mb-12 max-w-2xl mx-auto fade-in-up fade-in-up-3"
           style={{ textShadow: "0 4px 18px rgba(0,0,0,0.45)" }}
         >
-          “Collaborate, create, and connect over premium coffee, high-speed Wi-Fi, and delicious food — all under one roof.”
+          “Collaborate, create, and connect over premium coffee, high-speed Wi-Fi,
+          and delicious food — all under one roof.”
         </p>
-        
 
         {/* Buttons */}
         <div className="flex flex-col sm:flex-row gap-4 justify-center mb-16 fade-in-up fade-in-up-4">
@@ -117,9 +124,18 @@ export default function Hero() {
           className="flex flex-wrap justify-center gap-8 text-white fade-in-up fade-in-up-5"
           style={{ textShadow: "0 4px 18px rgba(0,0,0,0.45)" }}
         >
-          <Feature icon={<Coffee className="w-6 h-6 text-[#f44545]" />} text="Premium Coffee" />
-          <Feature icon={<Wifi className="w-6 h-6 text-[#265999]" />} text="High-Speed WiFi" />
-          <Feature icon={<Users className="w-6 h-6 text-[#FFD700]" />} text="Community Space" />
+          <Feature
+            icon={<Coffee className="w-6 h-6 text-[#f44545]" />}
+            text="Premium Coffee"
+          />
+          <Feature
+            icon={<Wifi className="w-6 h-6 text-[#265999]" />}
+            text="High-Speed WiFi"
+          />
+          <Feature
+            icon={<Users className="w-6 h-6 text-[#FFD700]" />}
+            text="Community Space"
+          />
         </div>
       </div>
 
