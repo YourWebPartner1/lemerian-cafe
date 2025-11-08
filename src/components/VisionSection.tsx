@@ -1,9 +1,9 @@
 import { motion, useInView } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { useRef, useState, useEffect } from "react";
-import visionLaptop from "@/assets/vision-laptop.png";
-import visionSparkle from "@/assets/vision-sparkle.png";
-import visionIndia from "@/assets/vision-india.png";
+import visionLaptop from "@/assets/vision-laptop.jpg";
+import visionIndia from "@/assets/vision-india.jpg";
+import cafehero from "@/assets/cafe-hero.jpg"; // ✅ your café hero image
 
 const VisionSection = () => {
   const ref = useRef(null);
@@ -12,6 +12,7 @@ const VisionSection = () => {
   const fullText =
     "How can we collectively rise above challenges and create a brighter future for India?";
 
+  // Typing animation
   useEffect(() => {
     if (isInView && typedText.length < fullText.length) {
       const timeout = setTimeout(() => {
@@ -49,300 +50,191 @@ const VisionSection = () => {
   ];
 
   return (
-    <section ref={ref} className="relative py-32 px-4 md:px-8 overflow-hidden">
-      {/* Background Glow */}
+    <section
+      ref={ref}
+      className="relative py-32 px-6 md:px-12 bg-gradient-to-b from-[#FFF7F0] via-[#FFEFE3] to-[#FFF8F5] overflow-hidden"
+    >
+      {/* Soft glowing background aura */}
       <motion.div
         initial={{ opacity: 0, scale: 0.8 }}
         animate={isInView ? { opacity: 1, scale: 1 } : {}}
-        transition={{ duration: 1.5 }}
-        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-gradient-to-r from-lemerian-peach/20 via-lemerian-amber/10 to-primary/10 rounded-full blur-3xl"
+        transition={{ duration: 1.2 }}
+        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[1000px] h-[1000px] bg-gradient-to-r from-[#FF8A00]/10 via-[#FF5E8E]/10 to-[#7B61FF]/10 rounded-full blur-3xl"
       />
 
       {/* Floating Particles */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        {[...Array(15)].map((_, i) => (
+        {[...Array(20)].map((_, i) => (
           <motion.div
             key={i}
             className="absolute rounded-full"
             style={{
-              width: Math.random() * 8 + 4,
-              height: Math.random() * 8 + 4,
+              width: Math.random() * 6 + 3,
+              height: Math.random() * 6 + 3,
               left: `${Math.random() * 100}%`,
               top: `${Math.random() * 100}%`,
               background:
                 i % 3 === 0
-                  ? "radial-gradient(circle, rgba(231,90,90,0.4) 0%, transparent 70%)"
+                  ? "rgba(231,90,90,0.25)"
                   : i % 3 === 1
-                  ? "radial-gradient(circle, rgba(255,180,0,0.4) 0%, transparent 70%)"
-                  : "radial-gradient(circle, rgba(123,97,255,0.4) 0%, transparent 70%)",
+                  ? "rgba(255,180,0,0.25)"
+                  : "rgba(72,102,201,0.25)",
             }}
-            animate={{ opacity: [0.3, 0.8, 0.3], scale: [1, 1.2, 1] }}
+            animate={{
+              opacity: [0.3, 0.8, 0.3],
+              scale: [1, 1.3, 1],
+              y: [0, -20, 0],
+            }}
             transition={{
-              duration: Math.random() * 3 + 2,
+              duration: Math.random() * 4 + 2,
               repeat: Infinity,
-              delay: Math.random() * 2,
+              delay: Math.random() * 3,
             }}
           />
         ))}
       </div>
 
-      <div className="container mx-auto relative z-10">
-        {/* ✨ Glowing Gradient Heading */}
-        <motion.div
+      <div className="container mx-auto relative z-10 text-center">
+        {/* Gradient Heading */}
+        <motion.h2
           initial={{ opacity: 0, y: 30 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.8 }}
-          className="text-center mb-16"
+          className="text-5xl md:text-6xl font-extrabold mb-10"
         >
-          <motion.h2
-            className="text-5xl md:text-7xl font-bold mb-8 relative inline-block"
-            initial={{ backgroundPosition: "0% 50%" }}
-            animate={isInView ? { backgroundPosition: "100% 50%" } : {}}
-            transition={{ duration: 4, repeat: Infinity, repeatType: "reverse" }}
-            style={{
-              backgroundImage:
-                "linear-gradient(90deg, #FF8A00, #FF6B00, #FF5E8E)",
-              backgroundSize: "200% 200%",
-              backgroundClip: "text",
-              WebkitBackgroundClip: "text",
-              color: "transparent",
-            }}
-          >
+          <span className="bg-gradient-to-r from-[#FF8A00] to-[#FF5E8E] bg-clip-text text-transparent drop-shadow-sm">
             The Birth of a Vision: LEMIR
-
-            {/* Soft glowing background aura */}
-            <motion.div
-              initial={{ scale: 0.8, opacity: 0 }}
-              animate={isInView ? { scale: 1, opacity: 1 } : {}}
-              transition={{ duration: 1.2, delay: 0.3, ease: "easeOut" }}
-              className="absolute -inset-12 bg-[radial-gradient(circle_at_center,rgba(255,138,0,0.25)_0%,rgba(255,94,142,0.15)_70%,transparent_100%)] blur-3xl -z-10 rounded-full"
-            />
-          </motion.h2>
-        </motion.div>
+          </span>
+        </motion.h2>
 
         {/* Typing Effect Quote */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.8, delay: 0.2 }}
-          className="max-w-4xl mx-auto mb-12 text-center"
+        <motion.p
+          className="text-xl md:text-2xl font-semibold italic text-gray-800 mb-6 max-w-4xl mx-auto leading-relaxed"
+          whileHover={{ scale: 1.02 }}
         >
-          <p className="text-foreground/90 mb-6">
-            It started with a simple yet profound question:
-          </p>
-          <motion.p
-            className="text-2xl md:text-3xl font-semibold text-foreground italic relative inline-block group"
-            whileHover={{ scale: 1.02 }}
-          >
-            "{typedText}"
-            <motion.span
-              animate={{
-                opacity: typedText.length < fullText.length ? [1, 0] : 0,
-              }}
-              transition={{ duration: 0.5, repeat: Infinity }}
-              className="inline-block w-0.5 h-8 bg-lemerian-amber ml-1 align-middle"
-            />
-          </motion.p>
-        </motion.div>
+          "{typedText}"
+          <motion.span
+            animate={{
+              opacity: typedText.length < fullText.length ? [1, 0] : 0,
+            }}
+            transition={{ duration: 0.5, repeat: Infinity }}
+            className="inline-block w-0.5 h-6 bg-[#FF8A00] ml-1 align-middle"
+          />
+        </motion.p>
 
-        {/* Mission Text */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
+        <p className="text-gray-700 text-lg max-w-3xl mx-auto mb-16">
+          From that question came the idea—a mission that would become our
+          identity:
+        </p>
+
+        {/* “Let’s Make India Rich” Highlight */}
+        <motion.h3
+          initial={{ opacity: 0, y: 20 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.8, delay: 0.4 }}
-          className="max-w-4xl mx-auto text-center mb-20"
+          transition={{ duration: 0.6, delay: 0.2 }}
+          className="text-3xl md:text-4xl font-bold mb-14"
         >
-          <p className="text-foreground/90 mb-8">
-            From that question came the idea—a mission that would become our
-            identity:
-          </p>
-          <div className="text-4xl md:text-5xl font-bold relative inline-block">
-            {["Let's", "Make", "India", "Rich"].map((word, index) => (
-              <motion.span
-                key={word}
-                initial={{ opacity: 0, y: 20 }}
-                animate={isInView ? { opacity: 1, y: 0 } : {}}
-                transition={{ duration: 0.6, delay: 0.6 + index * 0.15 }}
-                className="inline-block mx-2 relative"
-                style={{
-                  backgroundImage:
-                    index === 0
-                      ? "linear-gradient(90deg, #E75A5A, #FF8A00)"
-                      : index === 1
-                      ? "linear-gradient(90deg, #FF8A00, #4866C9)"
-                      : index === 2
-                      ? "linear-gradient(90deg, #4866C9, #7B61FF)"
-                      : "linear-gradient(90deg, #7B61FF, #E75A5A)",
-                  backgroundClip: "text",
-                  WebkitBackgroundClip: "text",
-                  color: "transparent",
-                }}
-              >
-                {word}
-              </motion.span>
-            ))}
-          </div>
-        </motion.div>
+          <span className="text-[#E75A5A]">Let's </span>
+          <span className="text-[#FF8A00]">Make </span>
+          <span className="text-[#4866C9]">India </span>
+          <span className="text-[#E75A5A]">Rich</span>
+        </motion.h3>
 
-        {/* Meaning Cards – Clean Outline Version */}
-        <div className="grid md:grid-cols-2 gap-10 max-w-5xl mx-auto mb-20">
+        {/* LEMIR meaning cards */}
+        <div className="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto mb-20">
           {lemirWords.map((item, index) => (
             <motion.div
               key={item.word}
               initial={{ opacity: 0, y: 40 }}
               animate={isInView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.6, delay: 1.2 + index * 0.1 }}
+              transition={{ duration: 0.6, delay: 0.4 + index * 0.1 }}
               whileHover={{
                 y: -6,
-                scale: 1.02,
-                transition: { duration: 0.3 },
+                scale: 1.03,
+                boxShadow: `0 20px 45px -10px ${item.color}40`,
               }}
-              className={`relative p-10 rounded-3xl border-2 ${item.borderColor} bg-gradient-to-br from-white/60 to-white/30 backdrop-blur-md shadow-sm transition-all duration-300 hover:shadow-md`}
+              className={`relative p-10 rounded-3xl border-2 ${item.borderColor} bg-gradient-to-br from-white/80 to-white/40 backdrop-blur-md shadow-sm transition-all`}
             >
-              <div className="relative z-10">
-                <h3
-                  className="text-3xl font-extrabold mb-3 tracking-tight"
-                  style={{ color: item.color }}
-                >
-                  {item.word}
-                </h3>
-                <p className="text-gray-700 text-lg leading-relaxed">
-                  {item.meaning}
-                </p>
-              </div>
-
-              <div
-                className="absolute inset-0 rounded-3xl opacity-30"
-                style={{
-                  background: `radial-gradient(circle at center, ${item.color}1a 0%, transparent 70%)`,
-                }}
-              />
+              <h3
+                className="text-3xl font-extrabold mb-3"
+                style={{ color: item.color }}
+              >
+                {item.word}
+              </h3>
+              <p className="text-gray-700 text-lg">{item.meaning}</p>
             </motion.div>
           ))}
         </div>
 
         {/* Floating Visuals */}
-        <div className="relative h-64 mb-16">
-          {/* Laptop */}
+        <div className="relative h-72 mb-24 flex justify-center items-center gap-24">
+          {/* Left - India Image */}
           <motion.div
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={
-              isInView
-                ? {
-                    opacity: 1,
-                    scale: 1,
-                    y: [-15, 15, -15],
-                    x: [-10, 10, -10],
-                  }
-                : {}
-            }
-            transition={{
-              y: { duration: 6, repeat: Infinity, ease: "easeInOut" },
-              x: { duration: 6, repeat: Infinity, ease: "easeInOut" },
-            }}
-            className="absolute left-1/4 -translate-x-1/2 top-8"
+            initial={{ opacity: 0, y: 20, rotate: -5 }}
+            animate={isInView ? { opacity: 1, y: 0, rotate: 0 } : {}}
+            transition={{ duration: 1 }}
+            whileHover={{ scale: 1.1 }}
+            className="relative"
           >
-            <img
-              src={visionLaptop}
-              alt="Innovation through technology"
-              className="w-32 h-32 object-contain drop-shadow-[0_0_40px_rgba(255,180,0,0.4)]"
-            />
-          </motion.div>
-
-          {/* India Map */}
-          <motion.div
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={
-              isInView
-                ? {
-                    opacity: 1,
-                    scale: 1,
-                    y: [15, -15, 15],
-                    x: [10, -10, 10],
-                  }
-                : {}
-            }
-            transition={{
-              y: { duration: 5, repeat: Infinity, ease: "easeInOut" },
-              x: { duration: 5, repeat: Infinity, ease: "easeInOut" },
-            }}
-            className="absolute right-1/4 translate-x-1/2 top-8"
-          >
-            <img
+            <motion.img
               src={visionIndia}
-              alt="Unity and vision for India"
-              className="w-32 h-32 object-contain drop-shadow-[0_0_40px_rgba(255,138,0,0.4)]"
+              alt="India"
+              className="w-36 h-36 object-contain drop-shadow-[0_0_45px_rgba(255,138,0,0.6)]"
             />
           </motion.div>
 
-          {/* Sparkle */}
+          {/* Center - Café Hero (replaces sparkle) */}
           <motion.div
-            initial={{ opacity: 0, scale: 0.8 }}
+            initial={{ opacity: 0 }}
             animate={
               isInView
-                ? {
-                    opacity: 1,
-                    scale: 1,
-                    y: [-10, 20, -10],
-                    rotate: [0, 360],
-                  }
+                ? { opacity: 1, rotate: [0, 360], scale: [1, 1.05, 1] }
                 : {}
             }
             transition={{
-              y: { duration: 7, repeat: Infinity, ease: "easeInOut" },
-              rotate: { duration: 20, repeat: Infinity, ease: "linear" },
+              duration: 16,
+              repeat: Infinity,
+              ease: "linear",
             }}
-            className="absolute left-1/2 -translate-x-1/2 top-0"
+            className="relative"
           >
             <img
-              src={visionSparkle}
-              alt="Creative energy and innovation"
-              className="w-40 h-40 object-contain drop-shadow-[0_0_50px_rgba(231,90,90,0.5)]"
+              src={cafehero}
+              alt="Cafe Hero"
+              className="w-44 h-44 object-cover rounded-2xl shadow-xl drop-shadow-[0_0_70px_rgba(255,94,142,0.6)]"
+            />
+            <div className="absolute inset-0 bg-gradient-to-r from-[#FF5E8E]/30 to-[#FF8A00]/30 blur-2xl rounded-full" />
+          </motion.div>
+
+          {/* Right - Laptop */}
+          <motion.div
+            initial={{ opacity: 0, y: -20, rotate: 5 }}
+            animate={isInView ? { opacity: 1, y: 0, rotate: 0 } : {}}
+            transition={{ duration: 1 }}
+            whileHover={{ scale: 1.1 }}
+            className="relative"
+          >
+            <motion.img
+              src={visionLaptop}
+              alt="Laptop"
+              className="w-36 h-36 object-contain drop-shadow-[0_0_60px_rgba(72,102,201,0.6)]"
             />
           </motion.div>
         </div>
 
-        {/* CTA */}
+        {/* CTA Button */}
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.8, delay: 1.8 }}
-          className="text-center"
+          whileHover={{ scale: 1.08 }}
+          transition={{ duration: 0.3 }}
+          className="relative inline-block"
         >
-          <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-            <Button
-              size="lg"
-              className="relative text-xl px-12 py-7 overflow-hidden group"
-              style={{
-                background:
-                  "linear-gradient(90deg, hsl(var(--lemerian-red)), hsl(var(--lemerian-amber)), hsl(var(--lemerian-blue)))",
-                backgroundSize: "200% 100%",
-              }}
-            >
-              <motion.span
-                className="relative z-10"
-                animate={{
-                  backgroundPosition: ["0% 50%", "100% 50%", "0% 50%"],
-                }}
-                transition={{ duration: 3, repeat: Infinity }}
-              >
-                Join the Lemerian Community
-              </motion.span>
-
-              {/* Shine sweep */}
-              <motion.div
-                className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent"
-                initial={{ x: "-100%" }}
-                animate={{ x: "200%" }}
-                transition={{
-                  duration: 2,
-                  repeat: Infinity,
-                  repeatDelay: 1,
-                  ease: "easeInOut",
-                }}
-              />
-            </Button>
-          </motion.div>
+          <motion.div className="absolute inset-0 bg-gradient-to-r from-[#FF5E8E] to-[#FF8A00] rounded-full blur-lg opacity-50 animate-pulse" />
+          <Button
+            size="lg"
+            className="relative z-10 text-lg font-semibold px-12 py-6 bg-gradient-to-r from-[#FF5E8E] to-[#FF8A00] text-white shadow-xl rounded-full hover:opacity-95 transition-all"
+          >
+            Join the Lemerian Community
+          </Button>
         </motion.div>
       </div>
     </section>

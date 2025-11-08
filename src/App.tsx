@@ -1,6 +1,6 @@
 import React from "react";
 import { Toaster } from "@/components/ui/toaster";
-import Sonner from "@/components/ui/sonner"; // <- default import
+import Sonner from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
@@ -15,18 +15,20 @@ const App: React.FC = () => {
   return (
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>
-        {/* Global toasters */}
         <Toaster />
         <Sonner />
 
         <BrowserRouter>
-          <div className="min-h-screen bg-white">
-            {/* Navbar stays visible on all pages */}
+          <div className="min-h-screen bg-white text-gray-900">
+            {/* Navbar visible globally */}
             <Navbar />
+
+            <style>{`
+              html { scroll-behavior: smooth; }
+            `}</style>
 
             <Routes>
               <Route path="/" element={<Index />} />
-              {/* add other routes here */}
               <Route path="*" element={<NotFound />} />
             </Routes>
           </div>
