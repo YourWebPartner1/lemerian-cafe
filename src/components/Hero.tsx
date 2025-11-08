@@ -10,12 +10,20 @@ export default function Hero() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  // Optional: Fade-in effect when video is ready
+  useEffect(() => {
+    const video = document.querySelector("video");
+    if (video) {
+      video.addEventListener("canplay", () => video.classList.add("ready"));
+    }
+  }, []);
+
   return (
     <section
       id="hero"
       className="relative h-screen flex items-center justify-center overflow-hidden"
     >
-{/* 🎬 Local Fullscreen Background Video */}
+      {/* 🎬 Cloudinary Fullscreen Background Video */}
 <div className="absolute inset-0 w-full h-full overflow-hidden">
   <video
     autoPlay
@@ -23,14 +31,14 @@ export default function Hero() {
     loop
     playsInline
     preload="auto"
-    className="absolute top-1/2 left-1/2 w-[300%] h-[300%] -translate-x-1/2 -translate-y-1/2 scale-150 sm:scale-125 md:scale-110 lg:scale-100 object-cover"
+    className="absolute top-1/2 left-1/2 min-w-full min-h-full w-auto h-auto -translate-x-1/2 -translate-y-1/2 object-cover"
   >
-    <source src="/hero.mp4" type="video/mp4" />
-    Your browser does not support the video tag.
+    <source
+      src="https://res.cloudinary.com/dfgpwngl5/video/upload/q_auto,f_auto/v1762596879/hero_gauoit.mp4"
+      type="video/mp4"
+    />
   </video>
 </div>
-
-
 
 
       {/* Gradient & Overlay */}
