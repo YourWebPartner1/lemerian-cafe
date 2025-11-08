@@ -15,28 +15,23 @@ export default function Hero() {
       id="hero"
       className="relative h-screen flex items-center justify-center overflow-hidden"
     >
-      {/* 🎬 Background Video (Temporarily Disabled) */}
-      {/*
-      <video
-        autoPlay
-        loop
-        muted
-        playsInline
-        className="absolute inset-0 w-full h-full object-cover saturate-[1.3] contrast-[1.1]"
-      >
-        <source
-          src={`${import.meta.env.BASE_URL}hero1.mp4`}
-          type="video/mp4"
-        />
-      </video>
-      */}
+{/* 🎬 Local Fullscreen Background Video */}
+<div className="absolute inset-0 w-full h-full overflow-hidden">
+  <video
+    autoPlay
+    muted
+    loop
+    playsInline
+    preload="auto"
+    className="absolute top-1/2 left-1/2 w-[300%] h-[300%] -translate-x-1/2 -translate-y-1/2 scale-150 sm:scale-125 md:scale-110 lg:scale-100 object-cover"
+  >
+    <source src="/hero.mp4" type="video/mp4" />
+    Your browser does not support the video tag.
+  </video>
+</div>
 
-      {/* 🖼️ Background Image Fallback */}
-      <img
-        src={`${import.meta.env.BASE_URL}heronot.jpeg`} // ✅ your image in /public
-        alt="Hero background"
-        className="absolute inset-0 w-full h-full object-cover saturate-[1.3] contrast-[1.1]"
-      />
+
+
 
       {/* Gradient & Overlay */}
       <div
@@ -160,7 +155,7 @@ export default function Hero() {
   );
 }
 
-// ✅ Small helper component for reusability
+// ✅ Reusable Feature component
 interface FeatureProps {
   icon: JSX.Element;
   text: string;
