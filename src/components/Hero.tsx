@@ -10,7 +10,6 @@ export default function Hero() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // Optional: Fade-in effect when video is ready
   useEffect(() => {
     const video = document.querySelector("video");
     if (video) {
@@ -23,23 +22,22 @@ export default function Hero() {
       id="hero"
       className="relative h-screen flex items-center justify-center overflow-hidden"
     >
-      {/* 🎬 Cloudinary Fullscreen Background Video */}
-<div className="absolute inset-0 w-full h-full overflow-hidden">
-  <video
-    autoPlay
-    muted
-    loop
-    playsInline
-    preload="auto"
-    className="absolute top-1/2 left-1/2 min-w-full min-h-full w-auto h-auto -translate-x-1/2 -translate-y-1/2 object-cover"
-  >
-    <source
-      src="https://res.cloudinary.com/dfgpwngl5/video/upload/q_auto,f_auto/v1762596879/hero_gauoit.mp4"
-      type="video/mp4"
-    />
-  </video>
-</div>
-
+      {/* 🎬 Fullscreen Background Video */}
+      <div className="absolute inset-0 w-full h-full overflow-hidden">
+        <video
+          autoPlay
+          muted
+          loop
+          playsInline
+          preload="auto"
+          className="absolute top-1/2 left-1/2 min-w-full min-h-full w-auto h-auto -translate-x-1/2 -translate-y-1/2 object-cover"
+        >
+          <source
+            src="https://res.cloudinary.com/dfgpwngl5/video/upload/q_auto,f_auto/v1762596879/hero_gauoit.mp4"
+            type="video/mp4"
+          />
+        </video>
+      </div>
 
       {/* Gradient & Overlay */}
       <div
@@ -71,9 +69,7 @@ export default function Hero() {
 
       {/* Main Content */}
       <div className="relative z-10 text-center px-4 max-w-5xl mx-auto">
-        <div className="mb-8 inline-block animate-bounce fade-in-up fade-in-up-1">
-          <Coffee className="w-16 h-16 text-[#f44545] mx-auto" />
-        </div>
+        {/* 🚫 Removed the top coffee icon here */}
 
         <h1
           className="text-5xl md:text-7xl font-extrabold mb-6 leading-tight fade-in-up fade-in-up-2"

@@ -78,9 +78,9 @@ const About = () => {
               className="space-y-8"
             >
               <h1 className="text-5xl md:text-6xl font-extrabold leading-tight text-[#1a1a1a]">
-                Where Coffee Meets{" "}
+            
                 <span className="bg-gradient-to-r from-[#FF5E8E] to-[#FF8A00] bg-clip-text text-transparent">
-                  Productivity
+                  Where Coffee Meets{" "} Productivity
                 </span>
               </h1>
 

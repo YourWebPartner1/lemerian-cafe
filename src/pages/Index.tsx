@@ -30,6 +30,7 @@ const Index: React.FC = () => {
       <EventsSection />
       <Gallery />
       <Contact />
+
     </main>
   );
 };
