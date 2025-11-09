@@ -19,16 +19,26 @@ export default function Navbar() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  const scrollToSection = (id: string) => {
-    setActive(id);
-    if (location.pathname === "/") {
-      const el = document.getElementById(id);
-      if (el) el.scrollIntoView({ behavior: "smooth" });
+// inside Navbar component
+const scrollToSection = (id: string) => {
+  setActive(id);
+  // If already on home page => scroll directly
+  if (location.pathname === "/") {
+    const el = document.getElementById(id);
+    if (el) {
+      // small delay for smoothness when element may not be fully mounted
+      el.scrollIntoView({ behavior: "smooth", block: "start" });
     } else {
-      navigate("/", { state: { scrollTo: id } });
+      // fallback: scroll to top if id not found
+      window.scrollTo({ top: 0, behavior: "smooth" });
     }
-    setIsOpen(false);
-  };
+  } else {
+    // navigate to home and pass a state telling Home which section to scroll to
+    navigate("/", { state: { scrollTo: id } });
+  }
+  setIsOpen(false);
+};
+
 
   return (
     <motion.nav
