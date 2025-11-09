@@ -5,6 +5,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 
 export default function Navbar() {
+  const [isContactClicked, setIsContactClicked] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [active, setActive] = useState("hero");
@@ -93,20 +94,23 @@ const scrollToSection = (id: string) => {
             ))}
 
             <motion.button
-              onClick={() => scrollToSection("contact")}
-              whileHover={{ scale: 1.05 }}
-              className={`relative px-6 py-2 rounded-full font-semibold transition-all duration-300 ${
-                isScrolled
-                  ? "bg-gradient-to-r from-[#f44545] to-[#265999] text-white shadow-md hover:shadow-lg"
-                  : "bg-white/10 text-white border border-white/20 hover:bg-white/20"
-              }`}
-            >
-              <span className="relative z-10">Contact</span>
-              <motion.div
-                className="absolute inset-0 bg-gradient-to-r from-[#f44545] to-[#265999] opacity-0 rounded-full"
-                whileHover={{ opacity: 0.3 }}
-              />
-            </motion.button>
+  onClick={() => {
+    scrollToSection("contact");
+    setIsContactClicked(true);
+    setTimeout(() => setIsContactClicked(false), 600);
+  }}
+  whileHover={{ scale: 1.05 }}
+  transition={{ duration: 0.3 }}
+  className={`relative px-6 py-2 rounded-full font-semibold text-lg shadow-md hover:shadow-lg transition-all duration-500
+    ${
+      isContactClicked
+        ? "bg-gradient-to-r from-[#265999] to-[#FFD700] text-white" // 💛 blue → gold when clicked
+        : "bg-gradient-to-r from-[#f44545] to-[#265999] text-white" // ❤️ red → blue always visible
+    }`}
+>
+  <span className="relative z-10">Contact</span>
+</motion.button>
+
           </div>
 
           {/* 🔸 Mobile Toggle */}

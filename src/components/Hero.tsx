@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 
 export default function Hero() {
   const [scroll, setScroll] = useState<number>(0);
+  const [isClicked, setIsClicked] = useState(false); // ✅ Added state for click effect
 
   useEffect(() => {
     const handleScroll = () => setScroll(window.scrollY);
@@ -94,6 +95,7 @@ export default function Hero() {
           transition={{ delay: 0.5, duration: 0.8 }}
           className="flex flex-col sm:flex-row gap-4 justify-center mb-16"
         >
+          {/* ✅ Explore Packages Button */}
           <button
             onClick={() => scrollToSection("packages")}
             className="px-8 py-4 rounded-full text-lg font-semibold bg-gradient-to-r from-[#f44545] to-[#265999] shadow-lg hover:shadow-2xl hover:scale-105 transition-all duration-300"
@@ -101,9 +103,18 @@ export default function Hero() {
             Explore Packages
           </button>
 
+          {/* ✅ Get in Touch Button with Color Change on Click */}
           <button
-            onClick={() => scrollToSection("contact")}
-            className="px-8 py-4 rounded-full text-lg font-semibold bg-white/90 text-gray-800 border-2 border-transparent hover:border-[#f44545] shadow-md hover:shadow-xl hover:scale-105 transition-all duration-300"
+            onClick={() => {
+              scrollToSection("contact");
+              setIsClicked(true);
+              setTimeout(() => setIsClicked(false), 600);
+            }}
+            className={`relative px-8 py-4 rounded-full text-lg font-semibold text-white shadow-lg hover:shadow-2xl hover:scale-105 transition-all duration-500 ${
+              isClicked
+                ? "bg-gradient-to-r from-[#265999] to-[#FFD700]" // 💛 blue to gold when clicked
+                : "bg-gradient-to-r from-[#f44545] to-[#265999]" // ❤️ red to blue default
+            }`}
           >
             Get in Touch
           </button>

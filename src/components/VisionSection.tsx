@@ -3,9 +3,11 @@
 import { motion, useInView } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { useRef, useState, useEffect, useMemo } from "react";
-import visionLaptop from "@/assets/vision-laptop.jpg";
-import visionIndia from "@/assets/vision-india.jpg";
-import cafehero from "@/assets/cafe-hero.jpg"; // ✅ Café hero image
+import visionLaptop from "@/assets/about/vision-laptop.jpg";
+import visionIndia from "@/assets/about/vision-india.jpg";
+import cafehero from "@/assets/about/cafe-hero.jpg";
+
+
 
 export default function VisionSection() {
   const ref = useRef(null);
@@ -122,7 +124,7 @@ export default function VisionSection() {
           className="text-5xl md:text-6xl font-extrabold mb-10"
         >
           <span className="bg-gradient-to-r from-[#FF8A00] to-[#FF5E8E] bg-clip-text text-transparent drop-shadow-sm">
-            The Birth of a Vision: LEMIR
+            The Birth of a Vision: LE.MI.R
           </span>
         </motion.h2>
 

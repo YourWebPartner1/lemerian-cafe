@@ -10,20 +10,27 @@ import Contact from "../components/Contact";
 const Home: React.FC = () => {
   const location = useLocation();
 
-  // ✅ Scroll to section if navigated with { state: { scrollTo: "..." } }
   useEffect(() => {
+    // 👇 Detect if the user navigated here with a target section
     const target = (location.state as any)?.scrollTo;
     if (target) {
-      setTimeout(() => {
+      const handleScroll = () => {
         const el = document.getElementById(target);
-        if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
-        window.history.replaceState({}, document.title); // clear scroll state
-      }, 100);
+        if (el) {
+          el.scrollIntoView({ behavior: "smooth", block: "start" });
+          // Clean the scroll state to avoid repeating the scroll
+          window.history.replaceState({}, document.title);
+        }
+      };
+
+      // Delay ensures elements are fully mounted before scroll
+      const timeout = setTimeout(handleScroll, 200);
+      return () => clearTimeout(timeout);
     }
   }, [location.state]);
 
   return (
-    <main className="min-h-screen bg-white">
+    <main className="min-h-screen bg-white scroll-smooth">
       <section id="hero">
         <Hero />
       </section>
