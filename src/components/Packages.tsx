@@ -1,15 +1,6 @@
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import {
-  Coffee,
-  Clock,
-  Briefcase,
-  Gift,
-  Users,
-  Lock,
-  Star,
-  X,
-} from "lucide-react";
+import {Coffee,Clock,Briefcase,Gift,Users,Lock,Star,X,} from "lucide-react";
 
 interface Feature {
   text: string;
@@ -102,8 +93,11 @@ const Packages = () => {
 
   const itemVariants = {
     hidden: { opacity: 0, y: 30 },
-    visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" as const
- } },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: { duration: 0.6, ease: "easeOut" as const },
+    },
   };
 
   const [showCompare, setShowCompare] = useState(false);
@@ -119,6 +113,25 @@ const Packages = () => {
 
   return (
     <section className="min-h-screen bg-gradient-to-br from-amber-50 via-orange-50 to-pink-50 py-20 px-4 sm:px-6 lg:px-8">
+      {/* ===== MODERN BACKGROUND ONLY ===== */}
+      <motion.div
+        className="absolute inset-0 -z-10 bg-gradient-to-br from-rose-100 via-orange-100 to-amber-50"
+        animate={{
+          backgroundPosition: ["0% 0%", "100% 100%", "0% 0%"],
+        }}
+        transition={{
+          duration: 25,
+          repeat: Infinity,
+          ease: "linear",
+        }}
+        style={{ backgroundSize: "200% 200%" }}
+      ></motion.div>
+
+      {/* soft glowing shapes */}
+      <div className="absolute -top-40 -left-40 w-[450px] h-[450px] bg-orange-300 opacity-30 blur-[140px] rounded-full"></div>
+      <div className="absolute bottom-0 right-0 w-[600px] h-[600px] bg-pink-400 opacity-25 blur-[180px] rounded-full"></div>
+      <div className="absolute top-1/3 left-1/2 -translate-x-1/2 w-[400px] h-[400px] bg-amber-200 opacity-20 blur-[120px] rounded-full"></div>
+
       <div className="max-w-7xl mx-auto">
         {/* ===== HEADER ===== */}
         <motion.div
@@ -224,17 +237,23 @@ const Packages = () => {
                       ))}
                     </ul>
                     <button
-                      className={`w-full py-4 rounded-xl font-semibold text-white bg-gradient-to-r ${plan.gradient} shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105`}
-                    >
-                      Get Started
-                    </button>
+  onClick={() => {
+    const message = `Hi! I'm interested in the ${plan.title} Daily Pass (${plan.price}${plan.period}) plan.`;
+    const phoneNumber = "7075701406"; // ✅ Replace with your real WhatsApp number
+    const url = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
+    window.open(url, "_blank");
+  }}
+  className={`w-full py-4 rounded-xl font-semibold text-white bg-gradient-to-r ${plan.gradient} shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105`}
+>
+  Get Started
+</button>
+
                   </div>
                 </div>
               </motion.div>
             ))}
           </div>
         </motion.div>
-
         {/* ===== MEMBERSHIP ===== */}
         <motion.div
           variants={containerVariants}
@@ -323,10 +342,17 @@ const Packages = () => {
                       ))}
                     </ul>
                     <button
-                      className={`w-full py-4 rounded-xl font-semibold text-white bg-gradient-to-r ${plan.gradient} shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105`}
-                    >
-                      Subscribe Now
-                    </button>
+  onClick={() => {
+    const message = `Hi! I'm interested in the ${plan.title} Membership (${plan.price}${plan.period}) plan.`;
+    const phoneNumber = "7075701406"; // ✅ Replace with your real WhatsApp number
+    const url = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
+    window.open(url, "_blank");
+  }}
+  className={`w-full py-4 rounded-xl font-semibold text-white bg-gradient-to-r ${plan.gradient} shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105`}
+>
+  Subscribe Now
+</button>
+
                   </div>
                 </div>
               </motion.div>
