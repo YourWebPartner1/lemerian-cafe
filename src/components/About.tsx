@@ -80,7 +80,7 @@ const About = () => {
               <h1 className="text-5xl md:text-6xl font-extrabold leading-tight text-[#1a1a1a]">
             
                 <span className="bg-gradient-to-r from-[#FF5E8E] to-[#FF8A00] bg-clip-text text-transparent">
-                  Where Coffee Meets{" "} Productivity
+                  Where Coffee Meets{" "}Productivity
                 </span>
               </h1>
 
