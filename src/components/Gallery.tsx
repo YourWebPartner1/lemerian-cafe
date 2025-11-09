@@ -7,15 +7,15 @@ export default function Gallery() {
   const SLIDE_INTERVAL = 5000;
 
   const images = [
-    { url: "/Cozy Work Environment.jpg", title: "Cozy Work Environment" },
-    { url: "/Modern Interior.jpg", title: "Modern Interior" },
-    { url: "/Lemerian Signature Soup.jpg", title: "Lemerian Signature Soup" },
-    { url: "/Collaborative Spaces.jpg", title: "Collaborative Spaces" },
-    { url: "/Chef’s Signature Meal.jpg", title: "Chef’s Signature Meal" },
-    { url: "/Productive Workspace.jpg", title: "Productive Workspace" },
-    { url: "/Delicious Pastries.jpg", title: "Creamy Garlic Pasta" },
-    { url: "/Community Events.jpg", title: "Community Events" },
-    { url: "/Private Meeting Rooms.jpg", title: "Private Meeting Rooms" },
+    { url: "/src/assets/gallery/Cozy Work Environment.jpg", title: "Cozy Work Environment" },
+    { url: "/src/assets/gallery/Modern Interior.jpg", title: "Modern Interior" },
+    { url: "/src/assets/gallery/Lemerian Signature Soup.jpg", title: "Lemerian Signature Soup" },
+    { url: "/src/assets/gallery/Collaborative Spaces.jpg", title: "Collaborative Spaces" },
+    { url: "/src/assets/gallery/Chef’s Signature Meal.jpg", title: "Chef’s Signature Meal" },
+    { url: "/src/assets/gallery/Productive Workspace.jpg", title: "Productive Workspace" },
+    { url: "/src/assets/gallery/Delicious Pastries.jpg", title: "Creamy Garlic Pasta" },
+    { url: "/src/assets/gallery/Community Events.jpg", title: "Community Events" },
+    { url: "/src/assets/gallery/Private Meeting Rooms.jpg", title: "Private Meeting Rooms" },
   ];
 
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
@@ -65,7 +65,9 @@ export default function Gallery() {
     }
   }, [selectedIndex, isHoveredLightbox]);
 
+  // Card tilt logic (desktop only)
   const handleCardMouseMove = (index: number, e: React.MouseEvent<HTMLDivElement>) => {
+    if (window.innerWidth < 768) return; // disable tilt on mobile
     const el = e.currentTarget;
     const rect = el.getBoundingClientRect();
     const px = (e.clientX - rect.left) / rect.width;
@@ -97,7 +99,7 @@ export default function Gallery() {
   };
 
   return (
-    <section className="relative py-24 overflow-hidden bg-gradient-to-br from-[#fefefe] via-[#eef4fb] to-[#e9f1fb]">
+    <section className="relative py-16 sm:py-20 md:py-24 overflow-hidden bg-gradient-to-br from-[#fefefe] via-[#eef4fb] to-[#e9f1fb]">
       {/* Background aurora */}
       <div className="pointer-events-none absolute inset-0 -z-10">
         <motion.div
@@ -111,25 +113,25 @@ export default function Gallery() {
         />
       </div>
 
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 md:px-8 relative z-10">
         {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: 40 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
           viewport={{ once: true }}
-          className="text-center mb-16"
+          className="text-center mb-12 sm:mb-16"
         >
-          <h2 className="text-4xl md:text-5xl font-extrabold mb-3 bg-gradient-to-r from-[#f44545] to-[#265999] bg-clip-text text-transparent">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold mb-3 bg-gradient-to-r from-[#f44545] to-[#265999] bg-clip-text text-transparent">
             Experience the Atmosphere
           </h2>
-          <p className="text-gray-600 max-w-2xl mx-auto">
+          <p className="text-gray-600 max-w-2xl mx-auto text-sm sm:text-base md:text-lg">
             Step inside our world — where comfort meets creativity and every corner tells a story.
           </p>
         </motion.div>
 
         {/* Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
           {images.map((img, idx) => {
             const transform = cardTransforms[idx] ?? "perspective(1000px) rotateX(0) rotateY(0)";
             const isActive = hoveredIndex === idx;
@@ -137,8 +139,8 @@ export default function Gallery() {
             return (
               <motion.div
                 key={idx}
-                whileHover={{ y: -6 }}
-                className="relative rounded-3xl overflow-hidden shadow-lg group cursor-pointer transition-all duration-500"
+                whileHover={{ y: -4 }}
+                className="relative rounded-2xl sm:rounded-3xl overflow-hidden shadow-lg group cursor-pointer transition-all duration-500"
                 onMouseMove={(e) => handleCardMouseMove(idx, e)}
                 onMouseLeave={(e) => handleCardMouseLeave(idx, e)}
                 onClick={() => setSelectedIndex(idx)}
@@ -147,7 +149,7 @@ export default function Gallery() {
                 <img
                   src={img.url}
                   alt={img.title}
-                  className="w-full h-80 object-cover transition-transform duration-700 group-hover:scale-105"
+                  className="w-full h-56 sm:h-64 md:h-72 lg:h-80 object-cover transition-transform duration-700 group-hover:scale-105"
                 />
 
                 {/* Overlay glow */}
@@ -162,7 +164,7 @@ export default function Gallery() {
                 />
 
                 {/* Title */}
-                <div className="absolute bottom-4 left-4 bg-black/60 backdrop-blur-md px-3 py-1.5 rounded-full text-white text-sm font-medium shadow-lg">
+                <div className="absolute bottom-3 sm:bottom-4 left-3 sm:left-4 bg-black/60 backdrop-blur-md px-2.5 sm:px-3 py-1.5 rounded-full text-white text-xs sm:text-sm font-medium shadow-lg">
                   {img.title}
                 </div>
 
@@ -182,19 +184,20 @@ export default function Gallery() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm"
+            className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4"
             onClick={() => setSelectedIndex(null)}
             onMouseEnter={() => setIsHoveredLightbox(true)}
             onMouseLeave={() => setIsHoveredLightbox(false)}
           >
+            {/* Close */}
             <button
               onClick={(e) => {
                 e.stopPropagation();
                 setSelectedIndex(null);
               }}
-              className="absolute top-6 right-6 z-50 text-white hover:text-gray-300"
+              className="absolute top-4 sm:top-6 right-4 sm:right-6 z-50 text-white hover:text-gray-300"
             >
-              <X className="w-8 h-8" />
+              <X className="w-7 sm:w-8 h-7 sm:h-8" />
             </button>
 
             {/* Prev / Next */}
@@ -203,9 +206,9 @@ export default function Gallery() {
                 e.stopPropagation();
                 handlePrev();
               }}
-              className="absolute left-6 z-50 p-3 rounded-full bg-black/40 hover:bg-black/60 transition"
+              className="absolute left-3 sm:left-6 z-50 p-2 sm:p-3 rounded-full bg-black/40 hover:bg-black/60 transition"
             >
-              <ChevronLeft className="w-8 h-8 text-white" />
+              <ChevronLeft className="w-6 sm:w-8 h-6 sm:h-8 text-white" />
             </button>
 
             <button
@@ -213,9 +216,9 @@ export default function Gallery() {
                 e.stopPropagation();
                 handleNext();
               }}
-              className="absolute right-6 z-50 p-3 rounded-full bg-black/40 hover:bg-black/60 transition"
+              className="absolute right-3 sm:right-6 z-50 p-2 sm:p-3 rounded-full bg-black/40 hover:bg-black/60 transition"
             >
-              <ChevronRight className="w-8 h-8 text-white" />
+              <ChevronRight className="w-6 sm:w-8 h-6 sm:h-8 text-white" />
             </button>
 
             {/* Image */}
@@ -224,16 +227,16 @@ export default function Gallery() {
               initial={{ x: direction > 0 ? 200 : -200, opacity: 0, scale: 0.9 }}
               animate={{ x: 0, opacity: 1, scale: 1 }}
               exit={{ x: direction < 0 ? 200 : -200, opacity: 0, scale: 0.9 }}
-              transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+              transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
               onClick={(e) => e.stopPropagation()}
-              className="flex flex-col items-center"
+              className="flex flex-col items-center max-w-full max-h-[90vh]"
             >
               <img
                 src={images[selectedIndex].url}
                 alt={images[selectedIndex].title}
-                className="max-w-full max-h-[80vh] object-contain rounded-2xl shadow-2xl"
+                className="max-w-[90vw] max-h-[80vh] object-contain rounded-xl sm:rounded-2xl shadow-2xl"
               />
-              <p className="mt-4 text-white text-lg font-semibold">
+              <p className="mt-3 sm:mt-4 text-white text-base sm:text-lg font-semibold text-center">
                 {images[selectedIndex].title}
               </p>
             </motion.div>
