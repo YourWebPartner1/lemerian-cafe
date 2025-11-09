@@ -119,7 +119,7 @@ export default function VisionSection() {
         <Reveal>
           <h2 className="text-4xl sm:text-5xl md:text-6xl font-extrabold mb-10">
             <span className="bg-gradient-to-r from-[#FF8A00] to-[#FF5E8E] bg-clip-text text-transparent drop-shadow-sm">
-              The Birth of a Vision: LE.MI.R
+              The Birth of a Vision: LE.M.I.R
             </span>
           </h2>
         </Reveal>
