@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { useRef, useState, useEffect } from "react";
 import visionLaptop from "@/assets/vision-laptop.jpg";
 import visionIndia from "@/assets/vision-india.jpg";
-import cafehero from "@/assets/cafe-hero.jpg"; // ✅ your café hero image
+import cafehero from "@/assets/cafe-hero.jpg"; // ✅ Café hero image
 
 const VisionSection = () => {
   const ref = useRef(null);
@@ -166,58 +166,51 @@ const VisionSection = () => {
           ))}
         </div>
 
-        {/* Floating Visuals */}
-        <div className="relative h-72 mb-24 flex justify-center items-center gap-24">
+        {/* Floating Visuals (All Equal Sized) */}
+        <div className="relative h-[400px] mb-24 flex justify-center items-center gap-20">
           {/* Left - India Image */}
           <motion.div
             initial={{ opacity: 0, y: 20, rotate: -5 }}
             animate={isInView ? { opacity: 1, y: 0, rotate: 0 } : {}}
             transition={{ duration: 1 }}
-            whileHover={{ scale: 1.1 }}
+            whileHover={{ scale: 1.08 }}
             className="relative"
           >
             <motion.img
               src={visionIndia}
               alt="India"
-              className="w-36 h-36 object-contain drop-shadow-[0_0_45px_rgba(255,138,0,0.6)]"
+              className="w-60 h-60 object-cover rounded-3xl shadow-xl drop-shadow-[0_0_50px_rgba(255,138,0,0.6)]"
             />
           </motion.div>
 
-          {/* Center - Café Hero (replaces sparkle) */}
+          {/* Center - Café Hero (Static, No Rotation) */}
           <motion.div
-            initial={{ opacity: 0 }}
-            animate={
-              isInView
-                ? { opacity: 1, rotate: [0, 360], scale: [1, 1.05, 1] }
-                : {}
-            }
-            transition={{
-              duration: 16,
-              repeat: Infinity,
-              ease: "linear",
-            }}
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={isInView ? { opacity: 1, scale: 1 } : {}}
+            transition={{ duration: 1 }}
+            whileHover={{ scale: 1.08 }}
             className="relative"
           >
             <img
               src={cafehero}
               alt="Cafe Hero"
-              className="w-44 h-44 object-cover rounded-2xl shadow-xl drop-shadow-[0_0_70px_rgba(255,94,142,0.6)]"
+              className="w-60 h-60 object-cover rounded-3xl shadow-2xl drop-shadow-[0_0_80px_rgba(255,94,142,0.6)]"
             />
-            <div className="absolute inset-0 bg-gradient-to-r from-[#FF5E8E]/30 to-[#FF8A00]/30 blur-2xl rounded-full" />
+            <div className="absolute inset-0 bg-gradient-to-r from-[#FF5E8E]/25 to-[#FF8A00]/25 blur-3xl rounded-full" />
           </motion.div>
 
           {/* Right - Laptop */}
           <motion.div
-            initial={{ opacity: 0, y: -20, rotate: 5 }}
+            initial={{ opacity: 0, y: 20, rotate: -5 }}
             animate={isInView ? { opacity: 1, y: 0, rotate: 0 } : {}}
             transition={{ duration: 1 }}
-            whileHover={{ scale: 1.1 }}
+            whileHover={{ scale: 1.08 }}
             className="relative"
           >
             <motion.img
               src={visionLaptop}
               alt="Laptop"
-              className="w-36 h-36 object-contain drop-shadow-[0_0_60px_rgba(72,102,201,0.6)]"
+              className="w-60 h-60 object-cover rounded-3xl shadow-xl drop-shadow-[0_0_60px_rgba(72,102,201,0.6)]"
             />
           </motion.div>
         </div>
