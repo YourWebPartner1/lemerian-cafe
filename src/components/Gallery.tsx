@@ -7,16 +7,18 @@ export default function Gallery() {
   const SLIDE_INTERVAL = 5000;
 
   const images = [
-    { url: "/src/assets/gallery/cozy-work-environment.jpg", title: "Cozy Work Environment" },
-    { url: "/src/assets/gallery/modern-interior.jpg", title: "Modern Interior" },
-    { url: "/src/assets/gallery/lemerian-signature-soup.jpg", title: "Lemerian Signature Soup" },
-    { url: "/src/assets/gallery/collaborative-spaces.jpg", title: "Collaborative Spaces" },
-    { url: "/src/assets/gallery/chefs-signature-meal.jpg", title: "Chef’s Signature Meal" },
-    { url: "/src/assets/gallery/productive-workspace.jpg", title: "Productive Workspace" },
-    { url: "/src/assets/gallery/creamy-garlic-pasta.jpg", title: "Creamy Garlic Pasta" },
-    { url: "/src/assets/gallery/community-events.jpg", title: "Community Events" },
-    { url: "/src/assets/gallery/private-meeting-rooms.jpg", title: "Private Meeting Rooms" },
-  ];
+  { url: "/gallery/cozy-work-environment.jpg", title: "Cozy Work Environment" },
+  { url: "/gallery/modern-interior.jpg", title: "Modern Interior" },
+  { url: "/gallery/lemerian-signature-soup.jpg", title: "Lemerian Signature Soup" },
+  { url: "/gallery/collaborative-spaces.jpg", title: "Collaborative Spaces" },
+  { url: "/gallery/chefs-signature-meal.jpg", title: "Chef’s Signature Meal" },
+  { url: "/gallery/productive-workspace.jpg", title: "Productive Workspace" },
+  { url: "/gallery/creamy-garlic-pasta.jpg", title: "Creamy Garlic Pasta" },
+  { url: "/gallery/community-events.jpg", title: "Community Events" },
+  { url: "/gallery/private-meeting-rooms.jpg", title: "Private Meeting Rooms" },
+];
+
+
 
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
   const [direction, setDirection] = useState(0);

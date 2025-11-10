@@ -6,6 +6,8 @@ import Packages from "../components/Packages";
 import EventsSection from "../components/EventsSection";
 import Gallery from "../components/Gallery";
 import Contact from "../components/Contact";
+import CaseStudyTestimonials from "../components/CaseStudyTestimonials";
+
 
 const Home: React.FC = () => {
   const location = useLocation();
@@ -18,12 +20,11 @@ const Home: React.FC = () => {
         const el = document.getElementById(target);
         if (el) {
           el.scrollIntoView({ behavior: "smooth", block: "start" });
-          // Clean the scroll state to avoid repeating the scroll
           window.history.replaceState({}, document.title);
         }
       };
 
-      // Delay ensures elements are fully mounted before scroll
+      // Delay ensures elements are mounted before scroll
       const timeout = setTimeout(handleScroll, 200);
       return () => clearTimeout(timeout);
     }
@@ -49,6 +50,11 @@ const Home: React.FC = () => {
 
       <section id="gallery">
         <Gallery />
+      </section>
+
+      {/* ✅ Add Testimonial section here */}
+      <section id="CaseStudyTestimonials">
+        <CaseStudyTestimonials />
       </section>
 
       <section id="contact">

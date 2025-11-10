@@ -13,6 +13,7 @@
     "deploy": "gh-pages -d dist"
   },
   "dependencies": {
+    "@radix-ui/react-dialog": "^1.1.15",
     "@radix-ui/react-portal": "^1.1.10",
     "@radix-ui/react-slot": "^1.2.4",
     "@radix-ui/react-toast": "^1.2.15",
@@ -30,6 +31,8 @@
     "react-pageflip": "^2.0.3",
     "react-parallax-tilt": "^1.7.311",
     "react-router-dom": "^7.9.5",
+    "react-slick": "^0.31.0",
+    "slick-carousel": "^1.8.1",
     "sonner": "^2.0.7",
     "swiper": "^11.2.10",
     "tailwind-merge": "^3.3.1"

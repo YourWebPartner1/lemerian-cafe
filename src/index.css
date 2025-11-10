@@ -33,6 +33,22 @@
       filter: drop-shadow(0 0 6px rgba(255, 200, 90, 0.25));
     }
   }
+  @keyframes bgFlow {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.animate-bgFlow {
+  animation: bgFlow 25s ease-in-out infinite alternate;
+}
+
 
     /* ===============================
      ✨ FLOATING PARTICLES (LEMIR)
@@ -52,7 +68,34 @@
     background: radial-gradient(circle, rgba(255,255,255,0.9), rgba(255,255,255,0));
     opacity: 0.4;
     animation: floatParticle linear infinite;
+
   }
+@keyframes gradientMove {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.animate-gradientMove {
+  animation: gradientMove 16s ease-in-out infinite alternate;
+}
+
+
+.animate-gradientMove {
+  animation: gradientMove 16s ease-in-out infinite alternate;
+}
+
+
+.animate-gradientMove {
+  animation: gradientMove 16s ease-in-out infinite alternate;
+}
+
 
   @keyframes floatParticle {
     0% {
