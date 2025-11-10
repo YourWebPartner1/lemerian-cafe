@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { Coffee, Briefcase, Heart, Zap } from "lucide-react";
 import VisionSection from "@/components/VisionSection";
-import about from "@/assets/about/about.jpeg"; // ensure this path is correct
 
 type FeatureItem = {
   icon: React.ComponentType<{ className?: string }>;
@@ -174,7 +173,7 @@ const About: React.FC = () => {
               className="relative rounded-2xl overflow-hidden shadow-2xl flex justify-center items-center"
             >
               <img
-                src={about}
+                src="/about/about.jpeg"
                 alt="Lemerian Workin Café Workspace"
                 className="w-full h-auto max-w-xs sm:max-w-md md:max-w-lg lg:max-w-xl rounded-2xl object-cover"
                 // remove fixed large heights so image is responsive

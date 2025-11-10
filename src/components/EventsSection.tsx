@@ -12,9 +12,9 @@ const eventsData = [
     description:
       "Professional meeting spaces equipped with modern amenities for productive business discussions.",
     images: [
-      "/src/assets/events/DSC_5454.jpg",
-      "/src/assets/events/IMG_5205.jpg",
-      "/src/assets/events/WhatsApp Image 2025-11-08 at 23.23.16_f8e1348e.jpg",
+      "/events/DSC_5454.jpg",
+      "/events/IMG_5205.jpg",
+      "/events/WhatsApp Image 2025-11-08 at 23.23.16_f8e1348e.jpg",
     ],
   },
   {
@@ -24,9 +24,9 @@ const eventsData = [
     description:
       "Elegant spaces designed for team meetings, workshops, and collaborative sessions.",
     images: [
-      "/src/assets/events/WhatsApp Image 2025-11-08 at 23.23.16_6d2a0eff.jpg",
-      "/src/assets/events/DSC_0337.jpg",
-      "/src/assets/events/DSC_0714.jpg",
+      "/events/WhatsApp Image 2025-11-08 at 23.23.16_6d2a0eff.jpg",
+      "/events/DSC_0337.jpg",
+      "/events/DSC_0714.jpg",
     ],
   },
   {
@@ -36,9 +36,9 @@ const eventsData = [
     description:
       "Sophisticated dining atmosphere perfect for client dinners and networking events.",
     images: [
-      "/src/assets/events/VAR02557.jpg",
-      "/src/assets/events/DSC_0414.jpg",
-      "/src/assets/events/DSC_0335.jpg",
+      "/events/VAR02557.jpg",
+      "/events/DSC_0414.jpg",
+      "/events/DSC_0335.jpg",
     ],
   },
 ];

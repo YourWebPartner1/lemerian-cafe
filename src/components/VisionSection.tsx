@@ -5,13 +5,14 @@ import { Button } from "@/components/ui/button";
 import { useRef, useState, useEffect, useMemo } from "react";
 import Reveal from "@/components/Reveal";
 
-import visionLaptop from "@/assets/about/vision-laptop.jpg";
-import visionIndia from "@/assets/about/vision-india.jpg";
-import cafehero from "@/assets/about/cafe-hero.jpg";
-
 export default function VisionSection() {
   const ref = useRef(null);
   const [typedText, setTypedText] = useState("");
+
+  // ✅ define image paths here instead of using <img> outside the component
+  const visionLaptop = "/about/vision-laptop.jpg";
+  const visionIndia = "/about/vision-india.jpg";
+  const cafehero = "/about/cafe-hero.jpg";
 
   const fullText =
     "How can we collectively rise above challenges and create a brighter future for India?";
