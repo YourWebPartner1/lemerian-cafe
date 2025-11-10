@@ -241,31 +241,58 @@ export default function Contact() {
               </div>
             </motion.div>
 
-            {/* Social Media */}
-            <motion.div
-              initial={{ opacity: 0, y: 40 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6 }}
-              className="bg-gradient-to-r from-[#f44545] to-[#265999] p-6 sm:p-8 rounded-2xl shadow-lg text-white"
-            >
-              <h3 className="text-xl sm:text-2xl font-bold mb-4">Follow Us</h3>
-              <p className="mb-6 opacity-90 text-sm sm:text-base">
-                Stay connected with our community
-              </p>
-              <div className="flex space-x-4 sm:space-x-6">
-                {[Instagram, Facebook, Twitter].map((Icon, i) => (
-                  <motion.a
-                    key={i}
-                    href="#"
-                    whileHover={{ scale: 1.15, rotate: 10 }}
-                    transition={{ duration: 0.3 }}
-                    className="w-10 sm:w-12 h-10 sm:h-12 bg-white/20 rounded-xl flex items-center justify-center hover:bg-white/30"
-                  >
-                    <Icon className="w-5 sm:w-6 h-5 sm:h-6" />
-                  </motion.a>
-                ))}
-              </div>
-            </motion.div>
+{/* Social Media */}
+<motion.div
+  initial={{ opacity: 0, y: 40 }}
+  whileInView={{ opacity: 1, y: 0 }}
+  transition={{ duration: 0.6 }}
+  className="bg-gradient-to-r from-[#f44545] to-[#265999] p-6 sm:p-8 rounded-2xl shadow-lg text-white"
+>
+  <h3 className="text-xl sm:text-2xl font-bold mb-4">Follow Us</h3>
+  <p className="mb-6 opacity-90 text-sm sm:text-base">
+    Stay connected with our community — get updates, behind-the-scenes, and stories!
+  </p>
+
+  <div className="flex space-x-4 sm:space-x-6">
+    {/* Instagram */}
+    <motion.a
+      href="https://www.instagram.com/lemerianworkincafe/"
+      target="_blank"
+      rel="noopener noreferrer"
+      whileHover={{ scale: 1.15, rotate: 10 }}
+      transition={{ duration: 0.3 }}
+      className="w-10 sm:w-12 h-10 sm:h-12 bg-white/20 rounded-xl flex items-center justify-center hover:bg-white/30"
+    >
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        fill="white"
+        viewBox="0 0 24 24"
+        className="w-6 sm:w-7 h-6 sm:h-7"
+      >
+        <path d="M7.5 2C4.46 2 2 4.46 2 7.5v9C2 19.54 4.46 22 7.5 22h9c3.04 0 5.5-2.46 5.5-5.5v-9C22 4.46 19.54 2 16.5 2h-9zM12 7a5 5 0 110 10 5 5 0 010-10zm0 8.2a3.2 3.2 0 100-6.4 3.2 3.2 0 000 6.4zm5.75-9.45a1.05 1.05 0 11-2.1 0 1.05 1.05 0 012.1 0z" />
+      </svg>
+    </motion.a>
+
+    {/* YouTube */}
+    <motion.a
+      href="https://www.youtube.com/@lemerianworkincafe"
+      target="_blank"
+      rel="noopener noreferrer"
+      whileHover={{ scale: 1.15, rotate: 10 }}
+      transition={{ duration: 0.3 }}
+      className="w-10 sm:w-12 h-10 sm:h-12 bg-white/20 rounded-xl flex items-center justify-center hover:bg-white/30"
+    >
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        fill="white"
+        viewBox="0 0 24 24"
+        className="w-6 sm:w-7 h-6 sm:h-7"
+      >
+        <path d="M23.498 6.186a2.97 2.97 0 00-2.09-2.1C19.551 3.667 12 3.667 12 3.667s-7.55 0-9.408.419a2.97 2.97 0 00-2.09 2.1C0 8.046 0 12 0 12s0 3.954.502 5.814a2.97 2.97 0 002.09 2.1C4.45 20.333 12 20.333 12 20.333s7.55 0 9.408-.419a2.97 2.97 0 002.09-2.1C24 15.954 24 12 24 12s0-3.954-.502-5.814zM9.546 15.568V8.432L15.818 12l-6.272 3.568z" />
+      </svg>
+    </motion.a>
+  </div>
+</motion.div>
           </div>
         </div>
       </div>
