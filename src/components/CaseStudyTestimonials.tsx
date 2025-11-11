@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence, useInView } from "framer-motion";
 import { ChevronLeft, ChevronRight, Volume2, VolumeX } from "lucide-react";
 
+// --- Data remains untouched ---
 const videos = [
   {
     src: "https://res.cloudinary.com/dfgpwngl5/video/upload/v1762785178/TESTIMONIAL_2_h8lrxw.mp4",
@@ -90,8 +91,6 @@ export default function CaseStudyTestimonials() {
   const inView = useInView(sectionRef, { once: false, amount: 0.45 });
 
   useEffect(() => setIsVisible(inView), [inView]);
-
-  // Progress bar update
   useEffect(() => {
     const v = videoRef.current;
     if (!v) return;
@@ -100,20 +99,16 @@ export default function CaseStudyTestimonials() {
     v.addEventListener("timeupdate", update);
     return () => v.removeEventListener("timeupdate", update);
   }, [current]);
-
-  // Move to next video automatically when one ends
   useEffect(() => {
     const v = videoRef.current;
     if (!v) return;
-    const onEnd = () => {
+    const handleEnd = () => {
       setDirection(1);
-      setTimeout(() => setCurrent((c) => (c + 1) % videos.length), 400);
+      setTimeout(() => setCurrent((c) => (c + 1) % videos.length), 500);
     };
-    v.addEventListener("ended", onEnd);
-    return () => v.removeEventListener("ended", onEnd);
+    v.addEventListener("ended", handleEnd);
+    return () => v.removeEventListener("ended", handleEnd);
   }, [current]);
-
-  // Auto play when section visible
   useEffect(() => {
     const v = videoRef.current;
     if (!v) return;
@@ -125,8 +120,6 @@ export default function CaseStudyTestimonials() {
       v.pause();
     }
   }, [isVisible, current, soundEnabled]);
-
-  // Reset + auto play when changing video
   useEffect(() => {
     const v = videoRef.current;
     if (!v) return;
@@ -136,8 +129,6 @@ export default function CaseStudyTestimonials() {
     setShowText(true);
     setProgress(0);
   }, [current, soundEnabled]);
-
-  // Enable sound after first click
   useEffect(() => {
     const enableSound = () => {
       const v = videoRef.current;
@@ -155,26 +146,18 @@ export default function CaseStudyTestimonials() {
       window.removeEventListener("touchstart", enableSound);
     };
   }, []);
-
-  // ✅ FIXED: Toggle mute/unmute seamlessly without restart
   const toggleSound = () => {
     const v = videoRef.current;
     if (!v) return;
     const currentTime = v.currentTime;
-    const wasPaused = v.paused;
-
-    // Toggle mute only
+    const wasPlaying = !v.paused;
     v.muted = !v.muted;
     setSoundEnabled(!v.muted);
-
-    // Continue from same timestamp
-    v.currentTime = currentTime;
-    if (!wasPaused) {
+    if (wasPlaying) {
+      v.currentTime = currentTime;
       v.play().catch(() => {});
     }
   };
-
-  // Next/Prev videos
   const changeVideo = (index: number, dir: number) => {
     setDirection(dir);
     setShowText(false);
@@ -188,16 +171,16 @@ export default function CaseStudyTestimonials() {
       }
       setShowText(true);
       setProgress(0);
-    }, 200);
+    }, 250);
   };
-
   const next = () => changeVideo((current + 1) % videos.length, 1);
   const prev = () =>
     changeVideo(current === 0 ? videos.length - 1 : current - 1, -1);
 
   return (
     <section ref={sectionRef} className="relative overflow-hidden py-20 text-center">
-      {/* Gradient Background */}
+      
+      {/* 1. ORIGINAL GRADIENT BACKGROUND */}
       <div
         className="absolute inset-0 bg-[length:300%_300%] animate-gradientGlow"
         style={{
@@ -206,18 +189,102 @@ export default function CaseStudyTestimonials() {
         }}
       />
 
-      {/* Heading */}
+      {/* 2. NEW: FLOATING BOKEH ORBS (Framer Motion) */}
+      <motion.div
+        className="absolute top-1/4 left-1/4 w-72 h-72 bg-pink-300/50 rounded-full blur-3xl z-[1] pointer-events-none"
+        animate={{
+          x: [-50, 50, -50],
+          y: [-50, 50, -50],
+        }}
+        transition={{
+          duration: 30,
+          repeat: Infinity,
+          repeatType: "mirror",
+          ease: "easeInOut",
+        }}
+      />
+      <motion.div
+        className="absolute top-1/2 right-1/4 w-96 h-96 bg-orange-200/40 rounded-full blur-3xl z-[1] pointer-events-none"
+        animate={{
+          x: [50, -50, 50],
+          y: [50, -50, 50],
+        }}
+        transition={{
+          duration: 35,
+          repeat: Infinity,
+          repeatType: "mirror",
+          ease: "easeInOut",
+          delay: 5,
+        }}
+      />
+
+      {/* ANIMATED FLOATING FLOWERS (Kept) */}
+      <motion.div
+        initial={{ opacity: 0, x: -50, y: -50 }}
+        animate={inView ? { opacity: 1, x: 0, y: 0 } : {}}
+        transition={{ delay: 0.5, duration: 1.5, type: "spring", stiffness: 50 }}
+        className="absolute top-10 left-10 z-0 hidden lg:block animate-float"
+      >
+        <FlowerCluster className="w-40 h-40 text-pink-300 transform -rotate-12" />
+      </motion.div>
+      <motion.div
+        initial={{ opacity: 0, x: 50, y: -50 }}
+        animate={inView ? { opacity: 1, x: 0, y: 0 } : {}}
+        transition={{ delay: 0.7, duration: 1.5, type: "spring", stiffness: 50 }}
+        className="absolute top-20 right-20 z-0 hidden md:block animate-float"
+        style={{ animationDelay: '1s' }}
+      >
+        <SingleFlower className="w-24 h-24 text-red-300 transform rotate-45" />
+      </motion.div>
+      <motion.div
+        initial={{ opacity: 0, x: 50, y: 50 }}
+        animate={inView ? { opacity: 1, x: 0, y: 0 } : {}}
+        transition={{ delay: 1.1, duration: 1.5, type: "spring", stiffness: 50 }}
+        className="absolute bottom-10 right-10 z-0 hidden lg:block animate-float"
+        style={{ animationDelay: '2s' }}
+      >
+        <FlowerCluster className="w-36 h-36 text-yellow-300 transform rotate-12" />
+      </motion.div>
+      
+      {/* HEADING WITH GLOW (Kept) */}
       <motion.h2
         initial={{ opacity: 0, y: 30 }}
         animate={inView ? { opacity: 1, y: 0 } : {}}
         transition={{ duration: 1 }}
-        className="relative z-10 text-5xl font-extrabold mb-10 bg-gradient-to-r from-orange-400 to-pink-500 bg-clip-text text-transparent animate-textGlow"
+        className="relative z-10 text-5xl font-extrabold mb-10 bg-gradient-to-r from-orange-400 to-pink-500 bg-clip-text text-transparent animate-textGlow
+                   [text-shadow:0_4px_16px_rgba(255,100,150,0.3)]"
       >
         Voices of Our Guests
       </motion.h2>
 
+      {/* Content Container */}
       <div className="relative z-10 flex flex-col items-center justify-center space-y-10">
-        {/* Video Box */}
+
+        {/* "NOW FEATURING" METADATA (Kept) */}
+        <AnimatePresence mode="wait">
+          {showText && (
+            <motion.div
+              key={current}
+              initial={{ opacity: 0, y: -20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              transition={{ duration: 0.5 }}
+              className="mb-4 relative z-10 text-center"
+            >
+              <p className="text-sm font-medium text-pink-600/80 uppercase tracking-widest">
+                Now Featuring
+              </p>
+              <h3 className="text-3xl font-bold text-gray-800 tracking-tight">
+                {videos[current].caseStudy.name}
+              </h3>
+              <p className="text-md text-gray-500 italic">
+                {videos[current].caseStudy.background}
+              </p>
+            </motion.div>
+          )}
+        </AnimatePresence>
+
+        {/* Video Section (Untouched) */}
         <div className="relative w-[90%] max-w-[950px] h-[550px] md:h-[420px] rounded-[2rem] overflow-hidden border border-pink-100 bg-white/50 backdrop-blur-md shadow-lg">
           <AnimatePresence mode="wait" custom={direction}>
             <motion.video
@@ -240,10 +307,14 @@ export default function CaseStudyTestimonials() {
             />
           </AnimatePresence>
 
-          {/* Mute Button */}
+          {/* POLISHED "GLASS" UI BUTTONS (Kept) */}
+          
+          {/* Sound Button */}
           <button
             onClick={toggleSound}
-            className="absolute bottom-5 right-5 flex items-center gap-2 px-4 py-2 rounded-full bg-white/70 backdrop-blur-md shadow-md hover:bg-white transition"
+            className="absolute bottom-5 right-5 flex items-center gap-2 px-4 py-2 rounded-full 
+                       bg-white/60 backdrop-blur-lg shadow-lg shadow-pink-200/50
+                       hover:bg-white/80 hover:shadow-xl hover:shadow-pink-300/50 transition-all"
           >
             {soundEnabled ? (
               <>
@@ -258,27 +329,52 @@ export default function CaseStudyTestimonials() {
             )}
           </button>
 
-          {/* Navigation */}
+          {/* 3. NEW: PULSING ARROWS */}
           <button
             onClick={prev}
-            className="absolute left-3 top-1/2 -translate-y-1/2 p-3 rounded-full bg-white/60 backdrop-blur-md hover:bg-white/80 transition"
+            className="absolute left-3 top-1/2 -translate-y-1/2 p-3 rounded-full 
+                       bg-white/50 backdrop-blur-lg shadow-lg shadow-pink-200/50
+                       hover:bg-white/70 hover:shadow-xl hover:shadow-pink-300/50 transition-all
+                       animate-pulse-arrow" // <-- NEW Animation Class
           >
             <ChevronLeft className="w-6 h-6 text-pink-500" />
           </button>
           <button
             onClick={next}
-            className="absolute right-3 top-1/2 -translate-y-1/2 p-3 rounded-full bg-white/60 backdrop-blur-md hover:bg-white/80 transition"
+            className="absolute right-3 top-1/2 -translate-y-1/2 p-3 rounded-full 
+                       bg-white/50 backdrop-blur-lg shadow-lg shadow-pink-200/50
+                       hover:bg-white/70 hover:shadow-xl hover:shadow-pink-300/50 transition-all
+                       animate-pulse-arrow" // <-- NEW Animation Class
           >
             <ChevronRight className="w-6 h-6 text-pink-500" />
           </button>
 
-          {/* Progress Bar */}
+          {/* Progress Bar (Untouched) */}
           <div className="absolute bottom-0 left-0 w-full h-1 bg-pink-100">
             <motion.div
               className="h-full bg-gradient-to-r from-pink-500 via-orange-400 to-yellow-400 rounded-full"
               style={{ width: `${progress}%` }}
             />
           </div>
+
+          {/* INDICATOR DOTS (Kept) */}
+          <div className="absolute -bottom-6 left-1/2 transform -translate-x-1/2 flex space-x-2 z-20">
+            {videos.map((_, index) => (
+              <motion.button
+                key={index}
+                onClick={() => changeVideo(index, index > current ? 1 : -1)}
+                whileHover={{ scale: 1.2 }}
+                whileTap={{ scale: 0.9 }}
+                className={`w-3 h-3 rounded-full transition-all 
+                           ${ index === current
+                               ? "bg-pink-600 shadow-md"
+                               : "bg-white/80 backdrop-blur-sm border border-pink-200"
+                           }`}
+                aria-label={`Go to testimonial ${index + 1}`}
+              />
+            ))}
+          </div>
+
         </div>
 
         {/* Case Study */}
@@ -290,7 +386,11 @@ export default function CaseStudyTestimonials() {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -10 }}
               transition={{ duration: 0.8 }}
-              className="mx-auto max-w-[950px] bg-white/70 backdrop-blur-xl rounded-3xl p-8 border border-pink-100 shadow-lg text-left"
+              // 4. NEW: BREATHING SHADOW ON CASE STUDY CARD
+              className="mx-auto max-w-[950px] bg-white/70 backdrop-blur-xl rounded-3xl p-8 border border-pink-100 text-left 
+                relative overflow-hidden before:content-[''] before:absolute before:inset-0 before:rounded-3xl before:p-[2px] 
+                before:bg-gradient-to-r before:from-pink-300 before:to-orange-200 before:z-[-1] before:opacity-50
+                animate-pulse-shadow-card" // <-- NEW Animation Class
             >
               <h3 className="text-xl font-semibold mb-2 bg-gradient-to-r from-pink-500 to-yellow-400 bg-clip-text text-transparent">
                 Case Study
@@ -315,7 +415,9 @@ export default function CaseStudyTestimonials() {
         </AnimatePresence>
       </div>
 
+      {/* --- NEW ANIMATIONS ADDED TO STYLE BLOCK --- */}
       <style>{`
+        /* Original Gradient Animation */
         @keyframes gradientGlow {
           0% { background-position: 0% 50%; }
           50% { background-position: 100% 50%; }
@@ -324,7 +426,87 @@ export default function CaseStudyTestimonials() {
         .animate-gradientGlow {
           animation: gradientGlow 20s ease-in-out infinite alternate;
         }
+
+        /* Flower Floating Animation */
+        @keyframes float {
+            0% { transform: translateY(0px) rotate(-12deg); }
+            50% { transform: translateY(-20px) rotate(-10deg); }
+            100% { transform: translateY(0px) rotate(-12deg); }
+        }
+        .animate-float {
+            animation: float 8s ease-in-out infinite;
+        }
+
+        /* NEW: Arrow Pulsing Animation */
+        @keyframes pulse-arrow {
+            0%, 100% {
+                transform: translateY(-50%) scale(1);
+                opacity: 0.7;
+            }
+            50% {
+                transform: translateY(-50%) scale(1.1);
+                opacity: 1;
+            }
+        }
+        .animate-pulse-arrow {
+            /* We must combine the transform properties */
+            transform: translateY(-50%);
+            animation: pulse-arrow 2.5s ease-in-out infinite;
+        }
+
+        /* NEW: Case Study Card Breathing Shadow Animation */
+        @keyframes pulse-shadow-card {
+            0%, 100% {
+                box-shadow: 0 5px 15px 0 rgba(236, 72, 153, 0.1);
+            }
+            50% {
+                box-shadow: 0 10px 30px 0 rgba(236, 72, 153, 0.25);
+            }
+        }
+        .animate-pulse-shadow-card {
+            animation: pulse-shadow-card 3.5s ease-in-out infinite;
+        }
       `}</style>
     </section>
   );
 }
+
+// --- SVG COMPONENTS FOR FLOWERS (Untouched) ---
+const SingleFlower = ({ className }: { className?: string }) => (
+  <svg
+    className={className}
+    viewBox="0 0 100 100"
+    fill="currentColor"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <circle cx="50" cy="50" r="15" fill="currentColor" />
+    <circle cx="50" cy="20" r="12" fill="currentColor" opacity="0.8" />
+    <circle cx="75" cy="35" r="12" fill="currentColor" opacity="0.8" />
+    <circle cx="80" cy="65" r="12" fill="currentColor" opacity="0.8" />
+    <circle cx="50" cy="80" r="12" fill="currentColor" opacity="0.8" />
+    <circle cx="25" cy="65" r="12" fill="currentColor" opacity="0.8" />
+    <circle cx="20" cy="35" r="12" fill="currentColor" opacity="0.8" />
+  </svg>
+);
+
+const FlowerCluster = ({ className }: { className?: string }) => (
+  <svg
+    className={className}
+    viewBox="0 0 200 200"
+    fill="currentColor"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <g transform="translate(100, 100) scale(0.7)">
+      <SingleFlower />
+    </g>
+    <g transform="translate(30, 40) scale(0.4) rotate(20)">
+      <SingleFlower className="opacity-70" />
+    </g>
+    <g transform="translate(160, 60) scale(0.35) rotate(-40)">
+      <SingleFlower className="opacity-60" />
+    </g>
+    <g transform="translate(70, 170) scale(0.3) rotate(80)">
+      <SingleFlower className="opacity-80" />
+    </g>
+  </svg>
+);
