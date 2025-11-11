@@ -1,8 +1,8 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState, useCallback } from "react";
 import { motion, AnimatePresence, useInView } from "framer-motion";
 import { ChevronLeft, ChevronRight, Volume2, VolumeX } from "lucide-react";
 
-// --- Data remains untouched ---
+// --- Data (All 5 videos) ---
 const videos = [
   {
     src: "https://res.cloudinary.com/dfgpwngl5/video/upload/v1762785178/TESTIMONIAL_2_h8lrxw.mp4",
@@ -100,97 +100,94 @@ export default function CaseStudyTestimonials() {
     }
   };
 
-  // 🔄 Auto next video after ending (Auto-slide feature)
-  useEffect(() => {
-    const v = videoRef.current;
-    if (!v) return;
-    const handleEnd = () => {
-      setDirection(1);
-      setTimeout(() => setCurrent((c) => (c + 1) % videos.length), 500);
-    };
-    v.addEventListener("ended", handleEnd);
-    return () => v.removeEventListener("ended", handleEnd);
-  }, [current]);
+  const handleSectionClick = () => {
+    if (!soundEnabled) {
+      setSoundEnabled(true);
+    }
+  };
 
-  // --- Other existing hooks (timeupdate, visibility, reset, sound) ---
+  // --- ADJUSTED FUNCTIONS ---
+
+  const changeVideo = useCallback(
+    (index: number, dir: number) => {
+      setDirection(dir);
+      setShowText(false); 
+      setTimeout(() => {
+        setCurrent(index); // This will trigger the useEffect to play
+      }, 250); 
+    },
+    [] 
+  );
+
+  const next = useCallback(() => {
+    changeVideo((current + 1) % videos.length, 1);
+  }, [current, videos.length, changeVideo]);
+
+  const prev = useCallback(() => {
+    changeVideo(current === 0 ? videos.length - 1 : current - 1, -1);
+  }, [current, videos.length, changeVideo]);
+
+  // --- CONSOLIDATED HOOKS ---
+
+  // Hook 1: Handles ALL video logic (src changes, play, pause, events)
   useEffect(() => {
     const v = videoRef.current;
     if (!v) return;
-    const update = () =>
+
+    // Define event handlers
+    const handleEnd = () => next();
+    const handleTimeUpdate = () => {
       setProgress((v.currentTime / Math.max(v.duration || 1, 1)) * 100);
-    v.addEventListener("timeupdate", update);
-    return () => v.removeEventListener("timeupdate", update);
-  }, [current]);
+    };
+    const onLoadedData = () => {
+      setProgress(0);
+      setShowText(true);
+      if (isVisible) v.play().catch(() => {});
+    };
+
+    // Attach event listeners
+    v.addEventListener("ended", handleEnd);
+    v.addEventListener("timeupdate", handleTimeUpdate);
+    v.addEventListener("loadeddata", onLoadedData);
+
+    // --- This is the new logic ---
+    // When `current` changes, update the src and load it
+    v.src = videos[current].src;
+    v.load();
+    // The "loadeddata" event will handle playing
+
+    // Cleanup
+    return () => {
+      v.removeEventListener("ended", handleEnd);
+      v.removeEventListener("timeupdate", handleTimeUpdate);
+      v.removeEventListener("loadeddata", onLoadedData);
+    };
+  }, [current, next]); // This hook *only* runs when the slide changes
+
+  // Hook 2: Handles Play/Pause on visibility change
   useEffect(() => {
     const v = videoRef.current;
     if (!v) return;
     if (isVisible) {
-      v.muted = !soundEnabled;
       v.play().catch(() => {});
-      setShowText(true);
     } else {
       v.pause();
     }
-  }, [isVisible, current, soundEnabled]);
+  }, [isVisible]);
+
+  // Hook 3: Handles Mute/Unmute
   useEffect(() => {
     const v = videoRef.current;
     if (!v) return;
-    v.currentTime = 0;
     v.muted = !soundEnabled;
-    v.play().catch(() => {});
-    setShowText(true);
-    setProgress(0);
-  }, [current, soundEnabled]);
-  useEffect(() => {
-    const enableSound = () => {
-      const v = videoRef.current;
-      if (!v) return;
-      v.muted = false;
-      setSoundEnabled(true);
-      v.play().catch(() => {});
-      window.removeEventListener("click", enableSound);
-      window.removeEventListener("touchstart", enableSound);
-    };
-    window.addEventListener("click", enableSound);
-    window.addEventListener("touchstart", enableSound);
-    return () => {
-      window.removeEventListener("click", enableSound);
-      window.removeEventListener("touchstart", enableSound);
-    };
-  }, []);
+  }, [soundEnabled]);
+
+  // Simplified Toggle Sound Function
   const toggleSound = () => {
-    const v = videoRef.current;
-    if (!v) return;
-    const currentTime = v.currentTime;
-    const wasPlaying = !v.paused;
-    v.muted = !v.muted;
-    setSoundEnabled(!v.muted);
-    if (wasPlaying) {
-      v.currentTime = currentTime;
-      v.play().catch(() => {});
-    }
+    setSoundEnabled((prev) => !prev);
   };
-  const changeVideo = (index: number, dir: number) => {
-    setDirection(dir);
-    setShowText(false);
-    setTimeout(() => {
-      setCurrent(index);
-      const v = videoRef.current;
-      if (v) {
-        v.currentTime = 0;
-        v.muted = !soundEnabled;
-        v.play().catch(() => {});
-      }
-      setShowText(true);
-      setProgress(0);
-    }, 250);
-  };
-  const next = () => changeVideo((current + 1) % videos.length, 1);
-  const prev = () =>
-    changeVideo(current === 0 ? videos.length - 1 : current - 1, -1);
-  // --- End of hooks ---
-  
-  // Variants for staggered text animation (Kept)
+
+  // Variants (Unchanged)
   const textContainerVariants = {
     hidden: { opacity: 0 },
     visible: {
@@ -207,17 +204,17 @@ export default function CaseStudyTestimonials() {
     },
   };
 
-  // Helper to format the current slide number
-  const formattedCurrent = String(current + 1).padStart(2, '0');
-  const totalSlides = String(videos.length).padStart(2, '0');
+  const formattedCurrent = String(current + 1).padStart(2, "0");
+  const totalSlides = String(videos.length).padStart(2, "0");
 
   return (
     <section
       ref={sectionRef}
       onMouseMove={handleMouseMove}
+      onClick={handleSectionClick}
       className="relative overflow-hidden py-20 text-center"
     >
-      {/* ORIGINAL GRADIENT BACKGROUND */}
+      {/* Backgrounds, Orbs, Flowers (Unchanged) */}
       <div
         className="absolute inset-0 bg-[length:300%_300%] animate-gradientGlow"
         style={{
@@ -225,8 +222,6 @@ export default function CaseStudyTestimonials() {
             "linear-gradient(135deg,#fff8f6 0%,#fff2ee 25%,#fff8f8 50%,#fff2f0 75%,#fffaf9 100%)",
         }}
       />
-      
-      {/* INTERACTIVE MOUSE SPOTLIGHT */}
       <motion.div
         className="absolute inset-0 z-[1] pointer-events-none"
         style={{
@@ -235,20 +230,27 @@ export default function CaseStudyTestimonials() {
         }}
         transition={{ type: "tween", ease: "backOut", duration: 0.1 }}
       />
-
-      {/* FLOATING BOKEH ORBS (Kept) */}
       <motion.div
         className="absolute top-1/4 left-1/4 w-72 h-72 bg-pink-300/50 rounded-full blur-3xl z-[1] pointer-events-none"
         animate={{ x: [-50, 50, -50], y: [-50, 50, -50] }}
-        transition={{ duration: 30, repeat: Infinity, repeatType: "mirror", ease: "easeInOut" }}
+        transition={{
+          duration: 30,
+          repeat: Infinity,
+          repeatType: "mirror",
+          ease: "easeInOut",
+        }}
       />
       <motion.div
         className="absolute top-1/2 right-1/4 w-96 h-96 bg-orange-200/40 rounded-full blur-3xl z-[1] pointer-events-none"
         animate={{ x: [50, -50, 50], y: [50, -50, 50] }}
-        transition={{ duration: 35, repeat: Infinity, repeatType: "mirror", ease: "easeInOut", delay: 5 }}
+        transition={{
+          duration: 35,
+          repeat: Infinity,
+          repeatType: "mirror",
+          ease: "easeInOut",
+          delay: 5,
+        }}
       />
-
-      {/* INTERACTIVE FLOATING FLOWERS (Kept) */}
       <motion.div
         initial={{ opacity: 0, x: -50, y: -50 }}
         animate={inView ? { opacity: 1, x: 0, y: 0 } : {}}
@@ -263,7 +265,7 @@ export default function CaseStudyTestimonials() {
         animate={inView ? { opacity: 1, x: 0, y: 0 } : {}}
         transition={{ delay: 0.7, duration: 1.5, type: "spring", stiffness: 50 }}
         className="absolute top-20 right-20 z-0 hidden md:block animate-float"
-        style={{ animationDelay: '1s' }}
+        style={{ animationDelay: "1s" }}
         whileHover={{ scale: 1.1, rotate: 5 }}
       >
         <SingleFlower className="w-24 h-24 text-red-300 transform rotate-45" />
@@ -273,27 +275,25 @@ export default function CaseStudyTestimonials() {
         animate={inView ? { opacity: 1, x: 0, y: 0 } : {}}
         transition={{ delay: 1.1, duration: 1.5, type: "spring", stiffness: 50 }}
         className="absolute bottom-10 right-10 z-0 hidden lg:block animate-float"
-        style={{ animationDelay: '2s' }}
+        style={{ animationDelay: "2s" }}
         whileHover={{ scale: 1.1, rotate: 3 }}
       >
         <FlowerCluster className="w-36 h-36 text-yellow-300 transform rotate-12" />
       </motion.div>
-      
-      {/* HEADING WITH GLOW (Kept) */}
+
+      {/* Heading (Unchanged) */}
       <motion.h2
         initial={{ opacity: 0, y: 30 }}
         animate={inView ? { opacity: 1, y: 0 } : {}}
         transition={{ duration: 1 }}
         className="relative z-10 text-5xl font-extrabold mb-10 bg-gradient-to-r from-orange-400 to-pink-500 bg-clip-text text-transparent animate-textGlow
-                   [text-shadow:0_4px_16px_rgba(255,100,150,0.3)]"
+                     [text-shadow:0_4px_16px_rgba(255,100,150,0.3)]"
       >
         Voices of Our Guests
       </motion.h2>
 
-      {/* Content Container */}
+      {/* Content Container (Unchanged) */}
       <div className="relative z-10 flex flex-col items-center justify-center space-y-10">
-
-        {/* WORD-BY-WORD TEXT ANIMATION (Kept) */}
         <AnimatePresence mode="wait">
           {showText && (
             <motion.div
@@ -315,7 +315,11 @@ export default function CaseStudyTestimonials() {
                 variants={textContainerVariants}
               >
                 {videos[current].caseStudy.name.split(" ").map((word, i) => (
-                  <motion.span key={i} variants={wordVariants} className="inline-block mr-[0.25em]">
+                  <motion.span
+                    key={i}
+                    variants={wordVariants}
+                    className="inline-block mr-[0.25em]"
+                  >
                     {word}
                   </motion.span>
                 ))}
@@ -325,7 +329,11 @@ export default function CaseStudyTestimonials() {
                 variants={textContainerVariants}
               >
                 {videos[current].caseStudy.background.split(" ").map((word, i) => (
-                  <motion.span key={i} variants={wordVariants} className="inline-block mr-[0.25em]">
+                  <motion.span
+                    key={i}
+                    variants={wordVariants}
+                    className="inline-block mr-[0.25em]"
+                  >
                     {word}
                   </motion.span>
                 ))}
@@ -336,26 +344,25 @@ export default function CaseStudyTestimonials() {
 
         {/* Video Section */}
         <div className="relative w-[90%] max-w-[950px] h-[550px] md:h-[420px] rounded-[2rem] overflow-hidden border border-pink-100 bg-white/50 backdrop-blur-md shadow-lg">
-          <AnimatePresence mode="wait" custom={direction}>
-            <motion.video
-              key={current}
-              ref={videoRef}
-              src={videos[current].src}
-              playsInline
-              muted={!soundEnabled}
-              loop={false}
-              autoPlay
-              className="w-full h-full object-contain bg-gradient-to-r from-[#fff5f2] via-[#ffe8e2] to-[#fff5f2]"
-              initial={{
-                x: direction > 0 ? "60%" : "-60%", opacity: 0, scale: 0.98,
-              }}
-              animate={{ x: 0, opacity: 1, scale: 1 }}
-              exit={{ x: direction > 0 ? "-40%" : "40%", opacity: 0, scale: 0.96 }}
-              transition={{ duration: 0.7, ease: "easeInOut" }}
-            />
-          </AnimatePresence>
+          {/* --- REMOVED AnimatePresence --- */}
+          <motion.video
+            // --- REMOVED key={current} ---
+            ref={videoRef}
+            src={videos[0].src} // Set initial src
+            playsInline
+            muted={!soundEnabled}
+            loop={false}
+            autoPlay={false} // All playback is handled by hooks
+            preload="auto"
+            className="w-full h-full object-contain bg-gradient-to-r from-[#fff5f2] via-[#ffe8e2] to-[#fff5f2]"
+            // --- ADDED FADE ANIMATION ---
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.5 }}
+          />
+          {/* --- REMOVED AnimatePresence --- */}
 
-          {/* 🎯 NEW: SLIDE COUNTER */}
+          {/* All buttons and indicators (Unchanged) */}
           <motion.div
             key={current}
             className="absolute top-5 left-5 px-3 py-1 rounded-full text-sm font-bold text-pink-600 
@@ -368,8 +375,6 @@ export default function CaseStudyTestimonials() {
             {formattedCurrent} / {totalSlides}
           </motion.div>
 
-
-          {/* PULSING ARROWS & Buttons (Kept) */}
           <button
             onClick={toggleSound}
             className="absolute bottom-5 right-5 flex items-center gap-2 px-4 py-2 rounded-full 
@@ -377,9 +382,17 @@ export default function CaseStudyTestimonials() {
                        hover:bg-white/80 hover:shadow-xl hover:shadow-pink-300/50 transition-all"
           >
             {soundEnabled ? (
-              <><VolumeX className="text-pink-500" /> <span className="text-sm font-semibold text-pink-600">Mute</span></>
+              <>
+                <VolumeX className="text-pink-500" />{" "}
+                <span className="text-sm font-semibold text-pink-600">Mute</span>
+              </>
             ) : (
-              <><Volume2 className="text-pink-500" /> <span className="text-sm font-semibold text-pink-600">Unmute</span></>
+              <>
+                <Volume2 className="text-pink-500" />{" "}
+                <span className="text-sm font-semibold text-pink-600">
+                  Unmute
+                </span>
+              </>
             )}
           </button>
           <button
@@ -401,7 +414,6 @@ export default function CaseStudyTestimonials() {
             <ChevronRight className="w-6 h-6 text-pink-500" />
           </button>
 
-          {/* Progress Bar (Untouched) */}
           <div className="absolute bottom-0 left-0 w-full h-1 bg-pink-100">
             <motion.div
               className="h-full bg-gradient-to-r from-pink-500 via-orange-400 to-yellow-400 rounded-full"
@@ -409,7 +421,6 @@ export default function CaseStudyTestimonials() {
             />
           </div>
 
-          {/* INDICATOR DOTS (Kept) */}
           <div className="absolute -bottom-6 left-1/2 transform -translate-x-1/2 flex space-x-2 z-20">
             {videos.map((_, index) => (
               <motion.button
@@ -418,7 +429,8 @@ export default function CaseStudyTestimonials() {
                 whileHover={{ scale: 1.2 }}
                 whileTap={{ scale: 0.9 }}
                 className={`w-3 h-3 rounded-full transition-all 
-                           ${ index === current
+                           ${
+                             index === current
                                ? "bg-pink-600 shadow-md"
                                : "bg-white/80 backdrop-blur-sm border border-pink-200"
                            }`}
@@ -426,10 +438,9 @@ export default function CaseStudyTestimonials() {
               />
             ))}
           </div>
-
         </div>
 
-        {/* Case Study with Breathing Shadow (Kept) */}
+        {/* Case Study (Unchanged) */}
         <AnimatePresence mode="wait">
           {showText && (
             <motion.div
@@ -439,9 +450,9 @@ export default function CaseStudyTestimonials() {
               exit={{ opacity: 0, y: -10 }}
               transition={{ duration: 0.8 }}
               className="mx-auto max-w-[950px] bg-white/70 backdrop-blur-xl rounded-3xl p-8 border border-pink-100 text-left 
-                relative overflow-hidden before:content-[''] before:absolute before:inset-0 before:rounded-3xl before:p-[2px] 
-                before:bg-gradient-to-r before:from-pink-300 before:to-orange-200 before:z-[-1] before:opacity-50
-                animate-pulse-shadow-card"
+                       relative overflow-hidden before:content-[''] before:absolute before:inset-0 before:rounded-3xl before:p-[2px] 
+                       before:bg-gradient-to-r before:from-pink-300 before:to-orange-200 before:z-[-1] before:opacity-50
+                       animate-pulse-shadow-card"
             >
               <h3 className="text-xl font-semibold mb-2 bg-gradient-to-r from-pink-500 to-yellow-400 bg-clip-text text-transparent">
                 Case Study
@@ -466,7 +477,7 @@ export default function CaseStudyTestimonials() {
         </AnimatePresence>
       </div>
 
-      {/* --- ALL ANIMATIONS IN THE STYLE BLOCK --- */}
+      {/* Styles (Unchanged) */}
       <style>{`
         /* Original Gradient Animation */
         @keyframes gradientGlow {
@@ -521,7 +532,7 @@ export default function CaseStudyTestimonials() {
   );
 }
 
-// --- SVG COMPONENTS FOR FLOWERS (Untouched) ---
+// --- SVG COMPONENTS FOR FLOWERS (Unchanged) ---
 const SingleFlower = ({ className }: { className?: string }) => (
   <svg
     className={className}
