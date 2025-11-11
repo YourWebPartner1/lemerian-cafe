@@ -1,7 +1,8 @@
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { Briefcase, Users, Utensils, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useState, useEffect, useMemo } from "react";
+import { useAutoSlide } from "@/hooks/useAutoSlide";
 
 // ---------- Event Data ----------
 const eventsData = [
@@ -43,7 +44,7 @@ const eventsData = [
   },
 ];
 
-// ---------- Event Card ----------
+// ---------- Event Card (Refactored) ----------
 const EventCard = ({
   event,
   index,
@@ -51,15 +52,13 @@ const EventCard = ({
   event: typeof eventsData[0];
   index: number;
 }) => {
-  const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const Icon = event.icon;
 
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrentImageIndex((prev) => (prev + 1) % event.images.length);
-    }, 4000);
-    return () => clearInterval(interval);
-  }, [event.images.length]);
+  // -----------------------------------------------------------------
+  // 👇 REMOVED the old useState and useEffect
+  // 👇 ADDED our new hook, which does all the work in one line!
+  const { currentIndex } = useAutoSlide(event.images.length, 4000);
+  // -----------------------------------------------------------------
 
   return (
     <motion.div
@@ -70,25 +69,29 @@ const EventCard = ({
       className="group relative overflow-hidden rounded-2xl sm:rounded-3xl shadow-xl hover:shadow-2xl transition-all duration-500 bg-black"
     >
       <div className="relative h-64 sm:h-72 md:h-80 overflow-hidden">
-        {event.images.map((image, imgIndex) => (
+        {/* ----------------------------------------------------------------- */}
+        {/* 👇 MODIFIED this section to be more performant */}
+        <AnimatePresence>
           <motion.div
-            key={imgIndex}
+            key={event.images[currentIndex]} // The key tells AnimatePresence what's changing
             initial={{ opacity: 0 }}
-            animate={{ opacity: imgIndex === currentImageIndex ? 1 : 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }} // This makes it fade out
             transition={{ duration: 1 }}
             className="absolute inset-0"
           >
             <motion.img
-              src={image}
+              src={event.images[currentIndex]} // 👈 Only renders the CURRENT image
               alt={event.title}
               loading="lazy"
               className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent" />
           </motion.div>
-        ))}
+        </AnimatePresence>
+        {/* ----------------------------------------------------------------- */}
 
-        {/* Icon */}
+        {/* Icon (No changes) */}
         <motion.div
           initial={{ scale: 0 }}
           whileInView={{ scale: 1 }}
@@ -98,7 +101,7 @@ const EventCard = ({
           <Icon className="w-6 sm:w-7 h-6 sm:h-7 text-white" />
         </motion.div>
 
-        {/* Overlay Text */}
+        {/* Overlay Text (No changes) */}
         <div className="absolute bottom-0 left-0 w-full p-4 sm:p-6 text-white backdrop-blur-[1px]">
           <h3 className="text-lg sm:text-2xl font-semibold mb-2 drop-shadow-md">
             {event.title}
@@ -108,17 +111,15 @@ const EventCard = ({
           </p>
         </div>
 
-        {/* Light reflection on hover */}
+        {/* Light reflection (No changes) */}
         <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition duration-500 bg-gradient-to-br from-white/5 via-transparent to-white/10 mix-blend-overlay" />
       </div>
     </motion.div>
   );
 };
 
-// ---------- Hero Video Section ----------
+// ---------- Hero Video Section (Refactored) ----------
 const HeroVideoSection = () => {
-  const [currentMediaIndex, setCurrentMediaIndex] = useState(0);
-
   const mediaItems = useMemo(
     () => [
       {
@@ -143,27 +144,29 @@ const HeroVideoSection = () => {
     []
   );
 
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrentMediaIndex((prev) => (prev + 1) % mediaItems.length);
-    }, 8000);
-    return () => clearInterval(interval);
-  }, [mediaItems.length]);
+  // -----------------------------------------------------------------
+  // 👇 REMOVED the old useState and useEffect
+  // 👇 ADDED our hook, which returns the function to change slides
+  const { currentIndex, goToSlide } = useAutoSlide(mediaItems.length, 8000);
+  // -----------------------------------------------------------------
 
   return (
     <div className="relative min-h-[60vh] sm:min-h-[70vh] lg:min-h-[80vh] overflow-hidden bg-black">
-      {mediaItems.map((media, index) => (
+      {/* ----------------------------------------------------------------- */}
+      {/* 👇 MODIFIED this section to be more performant */}
+      <AnimatePresence>
         <motion.div
-          key={index}
+          key={currentIndex} // The key tells AnimatePresence what's changing
           initial={{ opacity: 0 }}
-          animate={{ opacity: index === currentMediaIndex ? 1 : 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
           transition={{ duration: 2, ease: "easeInOut" }}
           className="absolute inset-0"
         >
-          {media.type === "video" ? (
+          {mediaItems[currentIndex].type === "video" ? (
             <video
-              src={media.src}
-              poster={media.poster}
+              src={mediaItems[currentIndex].src} // 👈 Only renders the CURRENT video
+              poster={mediaItems[currentIndex].poster}
               autoPlay
               muted
               loop
@@ -173,16 +176,17 @@ const HeroVideoSection = () => {
             />
           ) : (
             <img
-              src={media.src}
+              src={mediaItems[currentIndex].src} // 👈 Only renders the CURRENT image
               alt=""
               className="w-full h-full object-cover"
             />
           )}
           <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/20 to-[#0b1529]/90" />
         </motion.div>
-      ))}
+      </AnimatePresence>
+      {/* ----------------------------------------------------------------- */}
 
-      {/* Hero Text */}
+      {/* Hero Text (No changes) */}
       <div className="absolute inset-0 flex flex-col items-center justify-center z-10 text-center px-4 sm:px-6">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -196,7 +200,6 @@ const HeroVideoSection = () => {
               Perfect spaces for meetings, dinners & gatherings.
             </span>
           </div>
-
           <h2 className="text-4xl sm:text-5xl md:text-7xl font-bold mb-4 sm:mb-6 text-white drop-shadow-[0_5px_20px_rgba(0,0,0,0.5)]">
             Events & Gatherings
           </h2>
@@ -209,12 +212,12 @@ const HeroVideoSection = () => {
           <motion.button
             key={index}
             animate={{
-              width: index === currentMediaIndex ? 32 : 10,
-              opacity: index === currentMediaIndex ? 1 : 0.5,
+              width: index === currentIndex ? 32 : 10,
+              opacity: index === currentIndex ? 1 : 0.5,
             }}
             transition={{ duration: 0.4 }}
             className="h-1 sm:h-1.5 bg-white/90 rounded-full hover:opacity-100 transition-opacity"
-            onClick={() => setCurrentMediaIndex(index)}
+            onClick={() => goToSlide(index)} // 👈 USE the goToSlide function
           />
         ))}
       </div>
