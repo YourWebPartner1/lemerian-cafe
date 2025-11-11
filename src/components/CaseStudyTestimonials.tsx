@@ -85,20 +85,22 @@ export default function CaseStudyTestimonials() {
   const [soundEnabled, setSoundEnabled] = useState(false);
   const [direction, setDirection] = useState(1);
   const [isVisible, setIsVisible] = useState(false);
+  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
 
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const sectionRef = useRef<HTMLDivElement | null>(null);
   const inView = useInView(sectionRef, { once: false, amount: 0.45 });
 
   useEffect(() => setIsVisible(inView), [inView]);
-  useEffect(() => {
-    const v = videoRef.current;
-    if (!v) return;
-    const update = () =>
-      setProgress((v.currentTime / Math.max(v.duration || 1, 1)) * 100);
-    v.addEventListener("timeupdate", update);
-    return () => v.removeEventListener("timeupdate", update);
-  }, [current]);
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLElement>) => {
+    const rect = sectionRef.current?.getBoundingClientRect();
+    if (rect) {
+      setMousePosition({ x: e.clientX - rect.left, y: e.clientY - rect.top });
+    }
+  };
+
+  // 🔄 Auto next video after ending (Auto-slide feature)
   useEffect(() => {
     const v = videoRef.current;
     if (!v) return;
@@ -108,6 +110,16 @@ export default function CaseStudyTestimonials() {
     };
     v.addEventListener("ended", handleEnd);
     return () => v.removeEventListener("ended", handleEnd);
+  }, [current]);
+
+  // --- Other existing hooks (timeupdate, visibility, reset, sound) ---
+  useEffect(() => {
+    const v = videoRef.current;
+    if (!v) return;
+    const update = () =>
+      setProgress((v.currentTime / Math.max(v.duration || 1, 1)) * 100);
+    v.addEventListener("timeupdate", update);
+    return () => v.removeEventListener("timeupdate", update);
   }, [current]);
   useEffect(() => {
     const v = videoRef.current;
@@ -176,11 +188,36 @@ export default function CaseStudyTestimonials() {
   const next = () => changeVideo((current + 1) % videos.length, 1);
   const prev = () =>
     changeVideo(current === 0 ? videos.length - 1 : current - 1, -1);
+  // --- End of hooks ---
+  
+  // Variants for staggered text animation (Kept)
+  const textContainerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: { staggerChildren: 0.03, delayChildren: 0.2 },
+    },
+  };
+  const wordVariants = {
+    hidden: { opacity: 0, y: 15 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: { type: "spring", stiffness: 100, damping: 10 },
+    },
+  };
+
+  // Helper to format the current slide number
+  const formattedCurrent = String(current + 1).padStart(2, '0');
+  const totalSlides = String(videos.length).padStart(2, '0');
 
   return (
-    <section ref={sectionRef} className="relative overflow-hidden py-20 text-center">
-      
-      {/* 1. ORIGINAL GRADIENT BACKGROUND */}
+    <section
+      ref={sectionRef}
+      onMouseMove={handleMouseMove}
+      className="relative overflow-hidden py-20 text-center"
+    >
+      {/* ORIGINAL GRADIENT BACKGROUND */}
       <div
         className="absolute inset-0 bg-[length:300%_300%] animate-gradientGlow"
         style={{
@@ -188,42 +225,36 @@ export default function CaseStudyTestimonials() {
             "linear-gradient(135deg,#fff8f6 0%,#fff2ee 25%,#fff8f8 50%,#fff2f0 75%,#fffaf9 100%)",
         }}
       />
+      
+      {/* INTERACTIVE MOUSE SPOTLIGHT */}
+      <motion.div
+        className="absolute inset-0 z-[1] pointer-events-none"
+        style={{
+          background: `radial-gradient(600px circle at ${mousePosition.x}px ${mousePosition.y}px, rgba(255, 230, 230, 0.4), transparent 80%)`,
+          opacity: isVisible ? 1 : 0,
+        }}
+        transition={{ type: "tween", ease: "backOut", duration: 0.1 }}
+      />
 
-      {/* 2. NEW: FLOATING BOKEH ORBS (Framer Motion) */}
+      {/* FLOATING BOKEH ORBS (Kept) */}
       <motion.div
         className="absolute top-1/4 left-1/4 w-72 h-72 bg-pink-300/50 rounded-full blur-3xl z-[1] pointer-events-none"
-        animate={{
-          x: [-50, 50, -50],
-          y: [-50, 50, -50],
-        }}
-        transition={{
-          duration: 30,
-          repeat: Infinity,
-          repeatType: "mirror",
-          ease: "easeInOut",
-        }}
+        animate={{ x: [-50, 50, -50], y: [-50, 50, -50] }}
+        transition={{ duration: 30, repeat: Infinity, repeatType: "mirror", ease: "easeInOut" }}
       />
       <motion.div
         className="absolute top-1/2 right-1/4 w-96 h-96 bg-orange-200/40 rounded-full blur-3xl z-[1] pointer-events-none"
-        animate={{
-          x: [50, -50, 50],
-          y: [50, -50, 50],
-        }}
-        transition={{
-          duration: 35,
-          repeat: Infinity,
-          repeatType: "mirror",
-          ease: "easeInOut",
-          delay: 5,
-        }}
+        animate={{ x: [50, -50, 50], y: [50, -50, 50] }}
+        transition={{ duration: 35, repeat: Infinity, repeatType: "mirror", ease: "easeInOut", delay: 5 }}
       />
 
-      {/* ANIMATED FLOATING FLOWERS (Kept) */}
+      {/* INTERACTIVE FLOATING FLOWERS (Kept) */}
       <motion.div
         initial={{ opacity: 0, x: -50, y: -50 }}
         animate={inView ? { opacity: 1, x: 0, y: 0 } : {}}
         transition={{ delay: 0.5, duration: 1.5, type: "spring", stiffness: 50 }}
         className="absolute top-10 left-10 z-0 hidden lg:block animate-float"
+        whileHover={{ scale: 1.1, rotate: -5 }}
       >
         <FlowerCluster className="w-40 h-40 text-pink-300 transform -rotate-12" />
       </motion.div>
@@ -233,6 +264,7 @@ export default function CaseStudyTestimonials() {
         transition={{ delay: 0.7, duration: 1.5, type: "spring", stiffness: 50 }}
         className="absolute top-20 right-20 z-0 hidden md:block animate-float"
         style={{ animationDelay: '1s' }}
+        whileHover={{ scale: 1.1, rotate: 5 }}
       >
         <SingleFlower className="w-24 h-24 text-red-300 transform rotate-45" />
       </motion.div>
@@ -242,6 +274,7 @@ export default function CaseStudyTestimonials() {
         transition={{ delay: 1.1, duration: 1.5, type: "spring", stiffness: 50 }}
         className="absolute bottom-10 right-10 z-0 hidden lg:block animate-float"
         style={{ animationDelay: '2s' }}
+        whileHover={{ scale: 1.1, rotate: 3 }}
       >
         <FlowerCluster className="w-36 h-36 text-yellow-300 transform rotate-12" />
       </motion.div>
@@ -260,31 +293,48 @@ export default function CaseStudyTestimonials() {
       {/* Content Container */}
       <div className="relative z-10 flex flex-col items-center justify-center space-y-10">
 
-        {/* "NOW FEATURING" METADATA (Kept) */}
+        {/* WORD-BY-WORD TEXT ANIMATION (Kept) */}
         <AnimatePresence mode="wait">
           {showText && (
             <motion.div
               key={current}
-              initial={{ opacity: 0, y: -20 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -20 }}
-              transition={{ duration: 0.5 }}
               className="mb-4 relative z-10 text-center"
+              initial="hidden"
+              animate="visible"
+              exit="hidden"
+              variants={textContainerVariants}
             >
-              <p className="text-sm font-medium text-pink-600/80 uppercase tracking-widest">
+              <motion.p
+                className="text-sm font-medium text-pink-600/80 uppercase tracking-widest"
+                variants={wordVariants}
+              >
                 Now Featuring
-              </p>
-              <h3 className="text-3xl font-bold text-gray-800 tracking-tight">
-                {videos[current].caseStudy.name}
-              </h3>
-              <p className="text-md text-gray-500 italic">
-                {videos[current].caseStudy.background}
-              </p>
+              </motion.p>
+              <motion.h3
+                className="text-3xl font-bold text-gray-800 tracking-tight"
+                variants={textContainerVariants}
+              >
+                {videos[current].caseStudy.name.split(" ").map((word, i) => (
+                  <motion.span key={i} variants={wordVariants} className="inline-block mr-[0.25em]">
+                    {word}
+                  </motion.span>
+                ))}
+              </motion.h3>
+              <motion.p
+                className="text-md text-gray-500 italic"
+                variants={textContainerVariants}
+              >
+                {videos[current].caseStudy.background.split(" ").map((word, i) => (
+                  <motion.span key={i} variants={wordVariants} className="inline-block mr-[0.25em]">
+                    {word}
+                  </motion.span>
+                ))}
+              </motion.p>
             </motion.div>
           )}
         </AnimatePresence>
 
-        {/* Video Section (Untouched) */}
+        {/* Video Section */}
         <div className="relative w-[90%] max-w-[950px] h-[550px] md:h-[420px] rounded-[2rem] overflow-hidden border border-pink-100 bg-white/50 backdrop-blur-md shadow-lg">
           <AnimatePresence mode="wait" custom={direction}>
             <motion.video
@@ -297,9 +347,7 @@ export default function CaseStudyTestimonials() {
               autoPlay
               className="w-full h-full object-contain bg-gradient-to-r from-[#fff5f2] via-[#ffe8e2] to-[#fff5f2]"
               initial={{
-                x: direction > 0 ? "60%" : "-60%",
-                opacity: 0,
-                scale: 0.98,
+                x: direction > 0 ? "60%" : "-60%", opacity: 0, scale: 0.98,
               }}
               animate={{ x: 0, opacity: 1, scale: 1 }}
               exit={{ x: direction > 0 ? "-40%" : "40%", opacity: 0, scale: 0.96 }}
@@ -307,9 +355,21 @@ export default function CaseStudyTestimonials() {
             />
           </AnimatePresence>
 
-          {/* POLISHED "GLASS" UI BUTTONS (Kept) */}
-          
-          {/* Sound Button */}
+          {/* 🎯 NEW: SLIDE COUNTER */}
+          <motion.div
+            key={current}
+            className="absolute top-5 left-5 px-3 py-1 rounded-full text-sm font-bold text-pink-600 
+                       bg-white/60 backdrop-blur-lg shadow-md shadow-pink-200/50"
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }}
+            transition={{ duration: 0.3 }}
+          >
+            {formattedCurrent} / {totalSlides}
+          </motion.div>
+
+
+          {/* PULSING ARROWS & Buttons (Kept) */}
           <button
             onClick={toggleSound}
             className="absolute bottom-5 right-5 flex items-center gap-2 px-4 py-2 rounded-full 
@@ -317,25 +377,17 @@ export default function CaseStudyTestimonials() {
                        hover:bg-white/80 hover:shadow-xl hover:shadow-pink-300/50 transition-all"
           >
             {soundEnabled ? (
-              <>
-                <VolumeX className="text-pink-500" />
-                <span className="text-sm font-semibold text-pink-600">Mute</span>
-              </>
+              <><VolumeX className="text-pink-500" /> <span className="text-sm font-semibold text-pink-600">Mute</span></>
             ) : (
-              <>
-                <Volume2 className="text-pink-500" />
-                <span className="text-sm font-semibold text-pink-600">Unmute</span>
-              </>
+              <><Volume2 className="text-pink-500" /> <span className="text-sm font-semibold text-pink-600">Unmute</span></>
             )}
           </button>
-
-          {/* 3. NEW: PULSING ARROWS */}
           <button
             onClick={prev}
             className="absolute left-3 top-1/2 -translate-y-1/2 p-3 rounded-full 
                        bg-white/50 backdrop-blur-lg shadow-lg shadow-pink-200/50
                        hover:bg-white/70 hover:shadow-xl hover:shadow-pink-300/50 transition-all
-                       animate-pulse-arrow" // <-- NEW Animation Class
+                       animate-pulse-arrow"
           >
             <ChevronLeft className="w-6 h-6 text-pink-500" />
           </button>
@@ -344,7 +396,7 @@ export default function CaseStudyTestimonials() {
             className="absolute right-3 top-1/2 -translate-y-1/2 p-3 rounded-full 
                        bg-white/50 backdrop-blur-lg shadow-lg shadow-pink-200/50
                        hover:bg-white/70 hover:shadow-xl hover:shadow-pink-300/50 transition-all
-                       animate-pulse-arrow" // <-- NEW Animation Class
+                       animate-pulse-arrow"
           >
             <ChevronRight className="w-6 h-6 text-pink-500" />
           </button>
@@ -377,7 +429,7 @@ export default function CaseStudyTestimonials() {
 
         </div>
 
-        {/* Case Study */}
+        {/* Case Study with Breathing Shadow (Kept) */}
         <AnimatePresence mode="wait">
           {showText && (
             <motion.div
@@ -386,11 +438,10 @@ export default function CaseStudyTestimonials() {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -10 }}
               transition={{ duration: 0.8 }}
-              // 4. NEW: BREATHING SHADOW ON CASE STUDY CARD
               className="mx-auto max-w-[950px] bg-white/70 backdrop-blur-xl rounded-3xl p-8 border border-pink-100 text-left 
                 relative overflow-hidden before:content-[''] before:absolute before:inset-0 before:rounded-3xl before:p-[2px] 
                 before:bg-gradient-to-r before:from-pink-300 before:to-orange-200 before:z-[-1] before:opacity-50
-                animate-pulse-shadow-card" // <-- NEW Animation Class
+                animate-pulse-shadow-card"
             >
               <h3 className="text-xl font-semibold mb-2 bg-gradient-to-r from-pink-500 to-yellow-400 bg-clip-text text-transparent">
                 Case Study
@@ -415,7 +466,7 @@ export default function CaseStudyTestimonials() {
         </AnimatePresence>
       </div>
 
-      {/* --- NEW ANIMATIONS ADDED TO STYLE BLOCK --- */}
+      {/* --- ALL ANIMATIONS IN THE STYLE BLOCK --- */}
       <style>{`
         /* Original Gradient Animation */
         @keyframes gradientGlow {
@@ -437,7 +488,7 @@ export default function CaseStudyTestimonials() {
             animation: float 8s ease-in-out infinite;
         }
 
-        /* NEW: Arrow Pulsing Animation */
+        /* Arrow Pulsing Animation */
         @keyframes pulse-arrow {
             0%, 100% {
                 transform: translateY(-50%) scale(1);
@@ -449,12 +500,11 @@ export default function CaseStudyTestimonials() {
             }
         }
         .animate-pulse-arrow {
-            /* We must combine the transform properties */
             transform: translateY(-50%);
             animation: pulse-arrow 2.5s ease-in-out infinite;
         }
 
-        /* NEW: Case Study Card Breathing Shadow Animation */
+        /* Case Study Card Breathing Shadow Animation */
         @keyframes pulse-shadow-card {
             0%, 100% {
                 box-shadow: 0 5px 15px 0 rgba(236, 72, 153, 0.1);
