@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence, useInView } from "framer-motion";
-import { ChevronLeft, ChevronRight, Play } from "lucide-react";
+import { ChevronLeft, ChevronRight, Volume2, VolumeX } from "lucide-react";
 
 const videos = [
   {
@@ -79,83 +79,81 @@ const videos = [
 
 export default function CaseStudyTestimonials() {
   const [current, setCurrent] = useState(0);
-  const [isPlaying, setIsPlaying] = useState(false);
-  const [showText, setShowText] = useState(false);
   const [progress, setProgress] = useState(0);
+  const [showText, setShowText] = useState(false);
+  const [soundEnabled, setSoundEnabled] = useState(false);
+  const [direction, setDirection] = useState(1);
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const sectionRef = useRef(null);
   const inView = useInView(sectionRef, { once: true });
 
-  // Handle video progress
+  // Update progress bar
   useEffect(() => {
     const v = videoRef.current;
     if (!v) return;
-
     const updateProgress = () => {
-      const p = (v.currentTime / v.duration) * 100;
-      setProgress(p || 0);
+      const p = (v.currentTime / Math.max(v.duration, 1)) * 100;
+      setProgress(isFinite(p) ? p : 0);
     };
     v.addEventListener("timeupdate", updateProgress);
     return () => v.removeEventListener("timeupdate", updateProgress);
   }, [current]);
 
-  // Move to next after video ends
+  // Auto move to next when video ends
   useEffect(() => {
     const v = videoRef.current;
     if (!v) return;
     const handleEnded = () => {
-      setIsPlaying(false);
       setShowText(false);
       setProgress(0);
-      setTimeout(() => setCurrent((prev) => (prev + 1) % videos.length), 800);
+      setDirection(1);
+      setTimeout(() => setCurrent((p) => (p + 1) % videos.length), 400);
     };
     v.addEventListener("ended", handleEnded);
     return () => v.removeEventListener("ended", handleEnded);
   }, [current]);
 
-  // Reset video state
+  // Play video automatically (muted first)
   useEffect(() => {
-    if (videoRef.current) {
-      videoRef.current.pause();
-      videoRef.current.currentTime = 0;
-      videoRef.current.muted = true;
-    }
-    setIsPlaying(false);
-    setShowText(false);
-    setProgress(0);
-  }, [current]);
-
-  const next = () => setCurrent((p) => (p + 1) % videos.length);
-  const prev = () => setCurrent((p) => (p === 0 ? videos.length - 1 : p - 1));
-
-  const togglePlay = async () => {
     const v = videoRef.current;
     if (!v) return;
-    if (isPlaying) {
-      v.pause();
-      v.muted = true;
-      setIsPlaying(false);
-      setShowText(false);
-    } else {
-      try {
-        v.muted = false;
-        await v.play();
-        setIsPlaying(true);
+    v.muted = !soundEnabled;
+    v.playsInline = true;
+    v.autoplay = true;
+    v.play()
+      .then(() => {
         setTimeout(() => setShowText(true), 1200);
-      } catch {
-        v.play();
-        setIsPlaying(true);
-        setTimeout(() => setShowText(true), 1200);
-      }
-    }
+      })
+      .catch(() => {});
+  }, [current, soundEnabled]);
+
+  // Toggle mute/unmute
+  const toggleSound = () => {
+    const v = videoRef.current;
+    if (!v) return;
+    v.muted = !v.muted;
+    setSoundEnabled(!v.muted);
+  };
+
+  // Navigation handlers
+  const next = () => {
+    setDirection(1);
+    setShowText(false);
+    setTimeout(() => setCurrent((p) => (p + 1) % videos.length), 300);
+  };
+
+  const prev = () => {
+    setDirection(-1);
+    setShowText(false);
+    setTimeout(
+      () => setCurrent((p) => (p === 0 ? videos.length - 1 : p - 1)),
+      300
+    );
   };
 
   return (
-    <section
-      ref={sectionRef}
-      className="relative overflow-hidden py-20 text-center"
-    >
-      {/* Gradient Background */}
+    <section ref={sectionRef} className="relative overflow-hidden py-20 text-center">
+      {/* Animated gradient background */}
       <div
         className="absolute inset-0 bg-[length:300%_300%] animate-gradientGlow"
         style={{
@@ -164,7 +162,7 @@ export default function CaseStudyTestimonials() {
         }}
       />
 
-      {/* Heading */}
+      {/* Title */}
       <motion.h2
         initial={{ opacity: 0, y: 30 }}
         animate={inView ? { opacity: 1, y: 0 } : {}}
@@ -174,48 +172,48 @@ export default function CaseStudyTestimonials() {
         Voices of Our Guests
       </motion.h2>
 
-      {/* Video Section */}
+      {/* Video + Case Study */}
       <div className="relative z-10 flex flex-col items-center justify-center space-y-10">
+        {/* Video Container */}
         <div className="relative w-[90%] max-w-[950px] h-[550px] md:h-[420px] rounded-[2rem] overflow-hidden border border-pink-100 bg-white/50 backdrop-blur-md shadow-[0_8px_30px_rgba(0,0,0,0.05)]">
           <div className="absolute -inset-[3px] rounded-[2rem] bg-gradient-to-r from-pink-200/30 to-yellow-200/30 blur-xl" />
-          <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent animate-shine pointer-events-none rounded-[2rem]" />
 
-          {/* Fade Transition */}
-          <AnimatePresence mode="wait">
+          {/* Video Transition with slide */}
+          <AnimatePresence mode="wait" custom={direction}>
             <motion.video
               key={current}
               ref={videoRef}
               src={videos[current].src}
               className="w-full h-full object-contain bg-gradient-to-r from-[#fff5f2] via-[#ffe8e2] to-[#fff5f2]"
               playsInline
-              loop={false}
-              muted
+              muted={!soundEnabled}
               autoPlay
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.8 }}
+              loop={false}
+              custom={direction}
+              initial={{ x: direction > 0 ? "100%" : "-100%", opacity: 0 }}
+              animate={{ x: 0, opacity: 1 }}
+              exit={{ x: direction > 0 ? "-100%" : "100%", opacity: 0 }}
+              transition={{ duration: 0.6, ease: "easeInOut" }}
             />
           </AnimatePresence>
 
-          {!isPlaying && (
-            <div className="absolute inset-0 flex items-center justify-center bg-black/25">
-              <motion.button
-                onClick={togglePlay}
-                animate={{ scale: [1, 1.08, 1] }}
-                transition={{ repeat: Infinity, duration: 1.6 }}
-                className="w-20 h-20 rounded-full bg-gradient-to-br from-pink-400 to-orange-300 flex items-center justify-center shadow-lg hover:shadow-[0_0_25px_rgba(255,180,150,0.5)] transition"
-              >
-                <Play className="w-8 h-8 text-white" />
-              </motion.button>
-            </div>
-          )}
-          {isPlaying && (
-            <div
-              className="absolute inset-0 cursor-pointer"
-              onClick={togglePlay}
-            />
-          )}
+          {/* Sound Toggle */}
+          <button
+            onClick={toggleSound}
+            className="absolute bottom-5 right-5 flex items-center gap-2 px-4 py-2 rounded-full bg-white/70 backdrop-blur-md shadow-md hover:bg-white transition"
+          >
+            {soundEnabled ? (
+              <>
+                <VolumeX className="text-pink-500" />
+                <span className="text-sm font-semibold text-pink-600">Mute</span>
+              </>
+            ) : (
+              <>
+                <Volume2 className="text-pink-500" />
+                <span className="text-sm font-semibold text-pink-600">Unmute</span>
+              </>
+            )}
+          </button>
 
           {/* Navigation Buttons */}
           <button
@@ -234,14 +232,14 @@ export default function CaseStudyTestimonials() {
           {/* Progress Bar */}
           <div className="absolute bottom-0 left-0 w-full h-1 bg-pink-100 overflow-hidden rounded-b-[2rem]">
             <motion.div
-              className="h-full bg-gradient-to-r from-pink-500 via-orange-400 to-yellow-400 rounded-full shadow-[0_0_15px_rgba(255,170,150,0.6)]"
+              className="h-full bg-gradient-to-r from-pink-500 via-orange-400 to-yellow-400 rounded-full"
               style={{ width: `${progress}%` }}
               transition={{ ease: "linear", duration: 0.2 }}
             />
           </div>
         </div>
 
-        {/* Case Study */}
+        {/* ✅ CASE STUDY SECTION (Unchanged & Preserved) */}
         <AnimatePresence mode="wait">
           {showText && (
             <motion.div
@@ -275,6 +273,7 @@ export default function CaseStudyTestimonials() {
         </AnimatePresence>
       </div>
 
+      {/* Gradient Animation Styles */}
       <style>{`
         @keyframes gradientGlow {
           0% { background-position: 0% 50%; }
@@ -290,13 +289,6 @@ export default function CaseStudyTestimonials() {
         }
         .animate-textGlow {
           animation: textGlow 5s infinite ease-in-out;
-        }
-        @keyframes shine {
-          0% { transform: translateX(-100%); }
-          100% { transform: translateX(100%); }
-        }
-        .animate-shine {
-          animation: shine 6s ease-in-out infinite alternate;
         }
       `}</style>
     </section>
