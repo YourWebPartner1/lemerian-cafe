@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence, useInView } from "framer-motion";
 import { ChevronLeft, ChevronRight, Volume2, VolumeX } from "lucide-react";
 
@@ -80,89 +80,133 @@ const videos = [
 export default function CaseStudyTestimonials() {
   const [current, setCurrent] = useState(0);
   const [progress, setProgress] = useState(0);
-  const [showText, setShowText] = useState(false);
+  const [showText, setShowText] = useState(true);
   const [soundEnabled, setSoundEnabled] = useState(false);
   const [direction, setDirection] = useState(1);
+  const [isVisible, setIsVisible] = useState(false);
+
   const videoRef = useRef<HTMLVideoElement | null>(null);
-  const sectionRef = useRef(null);
-  const inView = useInView(sectionRef, { once: true });
+  const sectionRef = useRef<HTMLDivElement | null>(null);
+  const inView = useInView(sectionRef, { once: false, amount: 0.45 });
 
-  // Update progress bar
+  useEffect(() => setIsVisible(inView), [inView]);
+
+  // Progress bar update
   useEffect(() => {
     const v = videoRef.current;
     if (!v) return;
-    const updateProgress = () => {
-      const p = (v.currentTime / Math.max(v.duration, 1)) * 100;
-      setProgress(isFinite(p) ? p : 0);
-    };
-    v.addEventListener("timeupdate", updateProgress);
-    return () => v.removeEventListener("timeupdate", updateProgress);
+    const update = () =>
+      setProgress((v.currentTime / Math.max(v.duration || 1, 1)) * 100);
+    v.addEventListener("timeupdate", update);
+    return () => v.removeEventListener("timeupdate", update);
   }, [current]);
 
-  // Auto move to next when video ends
+  // Move to next video automatically when one ends
   useEffect(() => {
     const v = videoRef.current;
     if (!v) return;
-    const handleEnded = () => {
-      setShowText(false);
-      setProgress(0);
+    const onEnd = () => {
       setDirection(1);
-      setTimeout(() => setCurrent((p) => (p + 1) % videos.length), 400);
+      setTimeout(() => setCurrent((c) => (c + 1) % videos.length), 400);
     };
-    v.addEventListener("ended", handleEnded);
-    return () => v.removeEventListener("ended", handleEnded);
+    v.addEventListener("ended", onEnd);
+    return () => v.removeEventListener("ended", onEnd);
   }, [current]);
 
-  // Play video automatically (muted first)
+  // Auto play when section visible
   useEffect(() => {
     const v = videoRef.current;
     if (!v) return;
+    if (isVisible) {
+      v.muted = !soundEnabled;
+      v.play().catch(() => {});
+      setShowText(true);
+    } else {
+      v.pause();
+    }
+  }, [isVisible, current, soundEnabled]);
+
+  // Reset + auto play when changing video
+  useEffect(() => {
+    const v = videoRef.current;
+    if (!v) return;
+    v.currentTime = 0;
     v.muted = !soundEnabled;
-    v.playsInline = true;
-    v.autoplay = true;
-    v.play()
-      .then(() => {
-        setTimeout(() => setShowText(true), 1200);
-      })
-      .catch(() => {});
+    v.play().catch(() => {});
+    setShowText(true);
+    setProgress(0);
   }, [current, soundEnabled]);
 
-  // Toggle mute/unmute
+  // Enable sound after first click
+  useEffect(() => {
+    const enableSound = () => {
+      const v = videoRef.current;
+      if (!v) return;
+      v.muted = false;
+      setSoundEnabled(true);
+      v.play().catch(() => {});
+      window.removeEventListener("click", enableSound);
+      window.removeEventListener("touchstart", enableSound);
+    };
+    window.addEventListener("click", enableSound);
+    window.addEventListener("touchstart", enableSound);
+    return () => {
+      window.removeEventListener("click", enableSound);
+      window.removeEventListener("touchstart", enableSound);
+    };
+  }, []);
+
+  // ✅ FIXED: Toggle mute/unmute seamlessly without restart
   const toggleSound = () => {
     const v = videoRef.current;
     if (!v) return;
+    const currentTime = v.currentTime;
+    const wasPaused = v.paused;
+
+    // Toggle mute only
     v.muted = !v.muted;
     setSoundEnabled(!v.muted);
+
+    // Continue from same timestamp
+    v.currentTime = currentTime;
+    if (!wasPaused) {
+      v.play().catch(() => {});
+    }
   };
 
-  // Navigation handlers
-  const next = () => {
-    setDirection(1);
+  // Next/Prev videos
+  const changeVideo = (index: number, dir: number) => {
+    setDirection(dir);
     setShowText(false);
-    setTimeout(() => setCurrent((p) => (p + 1) % videos.length), 300);
+    setTimeout(() => {
+      setCurrent(index);
+      const v = videoRef.current;
+      if (v) {
+        v.currentTime = 0;
+        v.muted = !soundEnabled;
+        v.play().catch(() => {});
+      }
+      setShowText(true);
+      setProgress(0);
+    }, 200);
   };
 
-  const prev = () => {
-    setDirection(-1);
-    setShowText(false);
-    setTimeout(
-      () => setCurrent((p) => (p === 0 ? videos.length - 1 : p - 1)),
-      300
-    );
-  };
+  const next = () => changeVideo((current + 1) % videos.length, 1);
+  const prev = () =>
+    changeVideo(current === 0 ? videos.length - 1 : current - 1, -1);
 
   return (
     <section ref={sectionRef} className="relative overflow-hidden py-20 text-center">
-      {/* Animated gradient background */}
+      {/* Gradient Background */}
       <div
         className="absolute inset-0 bg-[length:300%_300%] animate-gradientGlow"
         style={{
           backgroundImage:
-            "linear-gradient(135deg, #fff8f6 0%, #fff2ee 25%, #fff8f8 50%, #fff2f0 75%, #fffaf9 100%)",
+            "linear-gradient(135deg,#fff8f6 0%,#fff2ee 25%,#fff8f8 50%,#fff2f0 75%,#fffaf9 100%)",
         }}
       />
 
-      {/* Title */}
+      {/* Heading */}
       <motion.h2
         initial={{ opacity: 0, y: 30 }}
         animate={inView ? { opacity: 1, y: 0 } : {}}
@@ -172,32 +216,31 @@ export default function CaseStudyTestimonials() {
         Voices of Our Guests
       </motion.h2>
 
-      {/* Video + Case Study */}
       <div className="relative z-10 flex flex-col items-center justify-center space-y-10">
-        {/* Video Container */}
-        <div className="relative w-[90%] max-w-[950px] h-[550px] md:h-[420px] rounded-[2rem] overflow-hidden border border-pink-100 bg-white/50 backdrop-blur-md shadow-[0_8px_30px_rgba(0,0,0,0.05)]">
-          <div className="absolute -inset-[3px] rounded-[2rem] bg-gradient-to-r from-pink-200/30 to-yellow-200/30 blur-xl" />
-
-          {/* Video Transition with slide */}
+        {/* Video Box */}
+        <div className="relative w-[90%] max-w-[950px] h-[550px] md:h-[420px] rounded-[2rem] overflow-hidden border border-pink-100 bg-white/50 backdrop-blur-md shadow-lg">
           <AnimatePresence mode="wait" custom={direction}>
             <motion.video
               key={current}
               ref={videoRef}
               src={videos[current].src}
-              className="w-full h-full object-contain bg-gradient-to-r from-[#fff5f2] via-[#ffe8e2] to-[#fff5f2]"
               playsInline
               muted={!soundEnabled}
-              autoPlay
               loop={false}
-              custom={direction}
-              initial={{ x: direction > 0 ? "100%" : "-100%", opacity: 0 }}
-              animate={{ x: 0, opacity: 1 }}
-              exit={{ x: direction > 0 ? "-100%" : "100%", opacity: 0 }}
-              transition={{ duration: 0.6, ease: "easeInOut" }}
+              autoPlay
+              className="w-full h-full object-contain bg-gradient-to-r from-[#fff5f2] via-[#ffe8e2] to-[#fff5f2]"
+              initial={{
+                x: direction > 0 ? "60%" : "-60%",
+                opacity: 0,
+                scale: 0.98,
+              }}
+              animate={{ x: 0, opacity: 1, scale: 1 }}
+              exit={{ x: direction > 0 ? "-40%" : "40%", opacity: 0, scale: 0.96 }}
+              transition={{ duration: 0.7, ease: "easeInOut" }}
             />
           </AnimatePresence>
 
-          {/* Sound Toggle */}
+          {/* Mute Button */}
           <button
             onClick={toggleSound}
             className="absolute bottom-5 right-5 flex items-center gap-2 px-4 py-2 rounded-full bg-white/70 backdrop-blur-md shadow-md hover:bg-white transition"
@@ -215,7 +258,7 @@ export default function CaseStudyTestimonials() {
             )}
           </button>
 
-          {/* Navigation Buttons */}
+          {/* Navigation */}
           <button
             onClick={prev}
             className="absolute left-3 top-1/2 -translate-y-1/2 p-3 rounded-full bg-white/60 backdrop-blur-md hover:bg-white/80 transition"
@@ -230,36 +273,35 @@ export default function CaseStudyTestimonials() {
           </button>
 
           {/* Progress Bar */}
-          <div className="absolute bottom-0 left-0 w-full h-1 bg-pink-100 overflow-hidden rounded-b-[2rem]">
+          <div className="absolute bottom-0 left-0 w-full h-1 bg-pink-100">
             <motion.div
               className="h-full bg-gradient-to-r from-pink-500 via-orange-400 to-yellow-400 rounded-full"
               style={{ width: `${progress}%` }}
-              transition={{ ease: "linear", duration: 0.2 }}
             />
           </div>
         </div>
 
-        {/* ✅ CASE STUDY SECTION (Unchanged & Preserved) */}
+        {/* Case Study */}
         <AnimatePresence mode="wait">
           {showText && (
             <motion.div
               key={current}
-              initial={{ opacity: 0, y: 30 }}
+              initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -20 }}
-              transition={{ duration: 1 }}
-              className="mx-auto max-w-[950px] bg-white/70 backdrop-blur-xl rounded-3xl p-8 border border-pink-100 shadow-[0_8px_30px_rgba(255,192,203,0.15)] text-left"
+              exit={{ opacity: 0, y: -10 }}
+              transition={{ duration: 0.8 }}
+              className="mx-auto max-w-[950px] bg-white/70 backdrop-blur-xl rounded-3xl p-8 border border-pink-100 shadow-lg text-left"
             >
               <h3 className="text-xl font-semibold mb-2 bg-gradient-to-r from-pink-500 to-yellow-400 bg-clip-text text-transparent">
                 Case Study
               </h3>
-              <div className="h-[2px] w-24 bg-gradient-to-r from-pink-400 to-yellow-300 mb-4 rounded-full"></div>
+              <div className="h-[2px] w-24 bg-gradient-to-r from-pink-400 to-yellow-300 mb-4 rounded-full" />
               {Object.entries(videos[current].caseStudy).map(([k, v], i) => (
                 <motion.p
                   key={k}
-                  initial={{ opacity: 0, y: 10 }}
+                  initial={{ opacity: 0, y: 8 }}
                   animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.2 + i * 0.15 }}
+                  transition={{ delay: 0.2 + i * 0.1 }}
                   className="text-gray-800 mb-2 leading-relaxed"
                 >
                   <strong className="text-pink-500">
@@ -273,7 +315,6 @@ export default function CaseStudyTestimonials() {
         </AnimatePresence>
       </div>
 
-      {/* Gradient Animation Styles */}
       <style>{`
         @keyframes gradientGlow {
           0% { background-position: 0% 50%; }
@@ -282,13 +323,6 @@ export default function CaseStudyTestimonials() {
         }
         .animate-gradientGlow {
           animation: gradientGlow 20s ease-in-out infinite alternate;
-        }
-        @keyframes textGlow {
-          0%, 100% { filter: drop-shadow(0 0 3px rgba(255,180,120,0.3)); }
-          50% { filter: drop-shadow(0 0 10px rgba(255,160,140,0.5)); }
-        }
-        .animate-textGlow {
-          animation: textGlow 5s infinite ease-in-out;
         }
       `}</style>
     </section>
