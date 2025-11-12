@@ -74,7 +74,7 @@ export default function Hero() {
           style={{ textShadow: "0 8px 40px rgba(0,0,0,0.7)" }}
         >
           <span className="bg-gradient-to-r from-[#f44545] via-[#ffd85a] to-[#265999] bg-clip-text text-transparent drop-shadow-2xl">
-            India’s First Working Café
+            India’s First Workin Café
           </span>
         </motion.h1>
 
