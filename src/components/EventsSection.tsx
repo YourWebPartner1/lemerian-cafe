@@ -1,10 +1,10 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { Briefcase, Users, Utensils, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { useState, useEffect, useMemo } from "react";
+import { useMemo } from "react";
 import { useAutoSlide } from "@/hooks/useAutoSlide";
 
-// ---------- Event Data ----------
+/* ----------------------------- Event Data ----------------------------- */
 const eventsData = [
   {
     id: 1,
@@ -36,29 +36,14 @@ const eventsData = [
     title: "Business Dinners",
     description:
       "Sophisticated dining atmosphere perfect for client dinners and networking events.",
-    images: [
-      "/events/VAR02557.jpg",
-      "/events/DSC_0414.jpg",
-      "/events/DSC_0335.jpg",
-    ],
+    images: ["/events/VAR02557.jpg", "/events/DSC_0414.jpg", "/events/DSC_0335.jpg"],
   },
 ];
 
-// ---------- Event Card (Refactored) ----------
-const EventCard = ({
-  event,
-  index,
-}: {
-  event: typeof eventsData[0];
-  index: number;
-}) => {
+/* ----------------------------- Event Card ----------------------------- */
+const EventCard = ({ event, index }: { event: typeof eventsData[0]; index: number }) => {
   const Icon = event.icon;
-
-  // -----------------------------------------------------------------
-  // 👇 REMOVED the old useState and useEffect
-  // 👇 ADDED our new hook, which does all the work in one line!
   const { currentIndex } = useAutoSlide(event.images.length, 4000);
-  // -----------------------------------------------------------------
 
   return (
     <motion.div
@@ -68,20 +53,18 @@ const EventCard = ({
       transition={{ duration: 0.6, delay: index * 0.2 }}
       className="group relative overflow-hidden rounded-2xl sm:rounded-3xl shadow-xl hover:shadow-2xl transition-all duration-500 bg-black"
     >
-      <div className="relative h-64 sm:h-72 md:h-80 overflow-hidden">
-        {/* ----------------------------------------------------------------- */}
-        {/* 👇 MODIFIED this section to be more performant */}
+      <div className="relative h-60 max-[375px]:h-52 sm:h-72 md:h-80 overflow-hidden">
         <AnimatePresence>
           <motion.div
-            key={event.images[currentIndex]} // The key tells AnimatePresence what's changing
+            key={event.images[currentIndex]}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }} // This makes it fade out
+            exit={{ opacity: 0 }}
             transition={{ duration: 1 }}
             className="absolute inset-0"
           >
             <motion.img
-              src={event.images[currentIndex]} // 👈 Only renders the CURRENT image
+              src={event.images[currentIndex]}
               alt={event.title}
               loading="lazy"
               className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
@@ -89,135 +72,107 @@ const EventCard = ({
             <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent" />
           </motion.div>
         </AnimatePresence>
-        {/* ----------------------------------------------------------------- */}
 
-        {/* Icon (No changes) */}
         <motion.div
           initial={{ scale: 0 }}
           whileInView={{ scale: 1 }}
           transition={{ duration: 0.5, delay: index * 0.2 + 0.3 }}
-          className="absolute top-4 sm:top-5 right-4 sm:right-5 w-12 sm:w-14 h-12 sm:h-14 rounded-full bg-gradient-to-br from-[#f44545] to-[#265999] flex items-center justify-center shadow-lg"
+          className="absolute top-3 sm:top-5 right-3 sm:right-5 w-10 max-[375px]:w-9 h-10 max-[375px]:h-9 sm:w-12 sm:h-12 rounded-full bg-gradient-to-br from-[#f44545] to-[#265999] flex items-center justify-center shadow-lg"
         >
-          <Icon className="w-6 sm:w-7 h-6 sm:h-7 text-white" />
+          <Icon className="w-5 sm:w-6 h-5 sm:h-6 text-white" />
         </motion.div>
 
-        {/* Overlay Text (No changes) */}
-        <div className="absolute bottom-0 left-0 w-full p-4 sm:p-6 text-white backdrop-blur-[1px]">
-          <h3 className="text-lg sm:text-2xl font-semibold mb-2 drop-shadow-md">
+        <div className="absolute bottom-0 left-0 w-full p-3 sm:p-6 text-white backdrop-blur-[1px]">
+          <h3 className="text-base sm:text-2xl font-semibold mb-1 sm:mb-2 drop-shadow-md">
             {event.title}
           </h3>
-          <p className="text-xs sm:text-sm text-gray-200 leading-relaxed">
+          <p className="text-[13px] sm:text-sm text-gray-200 leading-relaxed">
             {event.description}
           </p>
         </div>
 
-        {/* Light reflection (No changes) */}
         <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition duration-500 bg-gradient-to-br from-white/5 via-transparent to-white/10 mix-blend-overlay" />
       </div>
     </motion.div>
   );
 };
 
-// ---------- Hero Video Section (Refactored) ----------
+/* ----------------------------- Hero Video ----------------------------- */
 const HeroVideoSection = () => {
   const mediaItems = useMemo(
     () => [
       {
         type: "video",
         src: "https://res.cloudinary.com/dfgpwngl5/video/upload/v1762596879/hero_gauoit.mp4",
-        poster:
-          "https://images.unsplash.com/photo-1511795409834-ef04bbd61622?w=1920",
       },
       {
         type: "video",
         src: "https://res.cloudinary.com/dfgpwngl5/video/upload/v1762695135/1_lxvgz5.mp4",
-        poster:
-          "https://images.unsplash.com/photo-1542744173-8e7e53415bb0?w=1920",
       },
       {
         type: "video",
         src: "https://res.cloudinary.com/dfgpwngl5/video/upload/v1762705465/2_mp4_mjp7w2.mp4",
-        poster:
-          "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=1920",
       },
     ],
     []
   );
 
-  // -----------------------------------------------------------------
-  // 👇 REMOVED the old useState and useEffect
-  // 👇 ADDED our hook, which returns the function to change slides
   const { currentIndex, goToSlide } = useAutoSlide(mediaItems.length, 8000);
-  // -----------------------------------------------------------------
 
   return (
-    <div className="relative min-h-[60vh] sm:min-h-[70vh] lg:min-h-[80vh] overflow-hidden bg-black">
-      {/* ----------------------------------------------------------------- */}
-      {/* 👇 MODIFIED this section to be more performant */}
+    <div className="relative min-h-[55vh] max-[375px]:min-h-[50vh] sm:min-h-[70vh] lg:min-h-[80vh] overflow-hidden bg-black">
       <AnimatePresence>
         <motion.div
-          key={currentIndex} // The key tells AnimatePresence what's changing
+          key={currentIndex}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           transition={{ duration: 2, ease: "easeInOut" }}
           className="absolute inset-0"
         >
-          {mediaItems[currentIndex].type === "video" ? (
-            <video
-              src={mediaItems[currentIndex].src} // 👈 Only renders the CURRENT video
-              poster={mediaItems[currentIndex].poster}
-              autoPlay
-              muted
-              loop
-              playsInline
-              preload="auto"
-              className="w-full h-full object-cover brightness-[0.9]"
-            />
-          ) : (
-            <img
-              src={mediaItems[currentIndex].src} // 👈 Only renders the CURRENT image
-              alt=""
-              className="w-full h-full object-cover"
-            />
-          )}
+          <video
+            src={mediaItems[currentIndex].src}
+            autoPlay
+            muted
+            loop
+            playsInline
+            preload="auto"
+            className="w-full h-full object-cover brightness-[0.9]"
+          />
           <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/20 to-[#0b1529]/90" />
         </motion.div>
       </AnimatePresence>
-      {/* ----------------------------------------------------------------- */}
 
-      {/* Hero Text (No changes) */}
-      <div className="absolute inset-0 flex flex-col items-center justify-center z-10 text-center px-4 sm:px-6">
+      <div className="absolute inset-0 flex flex-col items-center justify-center z-10 text-center px-4 max-[375px]:px-3 sm:px-6">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
-          className="max-w-2xl sm:max-w-3xl"
+          className="max-w-xl sm:max-w-3xl"
         >
-          <div className="inline-flex items-center gap-2 px-4 sm:px-6 py-2 sm:py-3 rounded-full bg-white/10 backdrop-blur-md border border-white/20 mb-4 sm:mb-6">
+          <div className="inline-flex items-center gap-2 px-3 sm:px-6 py-2 sm:py-3 rounded-full bg-white/10 backdrop-blur-md border border-white/20 mb-4 sm:mb-6">
             <Sparkles className="w-4 sm:w-5 h-4 sm:h-5 text-white" />
-            <span className="text-xs sm:text-sm md:text-base font-medium text-white">
+            <span className="text-[11px] sm:text-sm md:text-base font-medium text-white">
               Perfect spaces for meetings, dinners & gatherings.
             </span>
           </div>
-          <h2 className="text-4xl sm:text-5xl md:text-7xl font-bold mb-4 sm:mb-6 text-white drop-shadow-[0_5px_20px_rgba(0,0,0,0.5)]">
+          <h2 className="text-[clamp(2rem,6vw,4.5rem)] font-bold mb-3 sm:mb-6 text-white drop-shadow-[0_5px_20px_rgba(0,0,0,0.5)] leading-tight">
             Events & Gatherings
           </h2>
         </motion.div>
       </div>
 
-      {/* Indicators */}
-      <div className="absolute bottom-6 sm:bottom-10 left-1/2 transform -translate-x-1/2 flex gap-2 sm:gap-3 z-10">
+      <div className="absolute bottom-5 sm:bottom-10 left-1/2 -translate-x-1/2 flex gap-1.5 sm:gap-3 z-10">
         {mediaItems.map((_, index) => (
           <motion.button
             key={index}
             animate={{
-              width: index === currentIndex ? 32 : 10,
+              width: index === currentIndex ? 28 : 10,
               opacity: index === currentIndex ? 1 : 0.5,
             }}
             transition={{ duration: 0.4 }}
-            className="h-1 sm:h-1.5 bg-white/90 rounded-full hover:opacity-100 transition-opacity"
-            onClick={() => goToSlide(index)} // 👈 USE the goToSlide function
+            className="h-1.5 sm:h-1.5 bg-white/90 rounded-full hover:opacity-100 transition-opacity"
+            onClick={() => goToSlide(index)}
           />
         ))}
       </div>
@@ -225,7 +180,7 @@ const HeroVideoSection = () => {
   );
 };
 
-// ---------- Main Section ----------
+/* ----------------------------- Main Section ----------------------------- */
 const EventsSection = () => {
   const handleScrollToContact = () => {
     document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" });
@@ -245,24 +200,24 @@ const EventsSection = () => {
 
       <HeroVideoSection />
 
-      <div className="py-16 sm:py-20 md:py-24 px-4 sm:px-6 md:px-10 relative">
+      <div className="py-14 max-[375px]:py-10 sm:py-20 md:py-24 px-4 max-[375px]:px-3 sm:px-6 md:px-10 relative">
         <div className="max-w-7xl mx-auto relative z-10">
           <motion.div
             initial={{ opacity: 0, y: 40 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7 }}
-            className="text-center mb-12 sm:mb-16"
+            className="text-center mb-10 sm:mb-16"
           >
-            <h3 className="text-3xl sm:text-4xl md:text-5xl font-extrabold bg-gradient-to-r from-[#f44545] to-[#265999] bg-clip-text text-transparent mb-4">
+            <h3 className="text-[clamp(1.8rem,5vw,3rem)] font-extrabold bg-gradient-to-r from-[#f44545] to-[#265999] bg-clip-text text-transparent mb-3 sm:mb-4">
               Choose Your Event Space
             </h3>
-            <p className="text-gray-300 text-base sm:text-lg max-w-2xl mx-auto">
+            <p className="text-gray-300 text-sm sm:text-base md:text-lg max-w-2xl mx-auto px-2">
               Spaces curated for success — whether you’re hosting formal meetings,
               business dinners, or networking events.
             </p>
           </motion.div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-10 mb-16">
+          <div className="grid grid-cols-[repeat(auto-fit,minmax(270px,1fr))] gap-6 sm:gap-10 mb-16">
             {eventsData.map((event, index) => (
               <EventCard key={event.id} event={event} index={index} />
             ))}
@@ -278,7 +233,7 @@ const EventsSection = () => {
               onClick={handleScrollToContact}
               variant="premium"
               size="xl"
-              className="relative px-6 sm:px-8 py-3 sm:py-5 text-base sm:text-lg rounded-full font-semibold bg-gradient-to-r from-[#f44545] to-[#265999] hover:from-[#265999] hover:to-[#f44545] transition-all duration-500 shadow-lg hover:shadow-2xl"
+              className="relative px-6 sm:px-8 py-3 sm:py-5 text-sm sm:text-lg rounded-full font-semibold bg-gradient-to-r from-[#f44545] to-[#265999] hover:from-[#265999] hover:to-[#f44545] transition-all duration-500 shadow-lg hover:shadow-2xl min-h-[44px]"
             >
               Get Quotation
               <Sparkles className="w-4 sm:w-5 h-4 sm:h-5 ml-2 animate-pulse" />

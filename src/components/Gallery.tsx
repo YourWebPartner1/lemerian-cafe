@@ -7,18 +7,16 @@ export default function Gallery() {
   const SLIDE_INTERVAL = 5000;
 
   const images = [
-  { url: "/gallery/cozy-work-environment.jpg", title: "Cozy Work Environment" },
-  { url: "/gallery/modern-interior.jpg", title: "Modern Interior" },
-  { url: "/gallery/lemerian-signature-soup.jpg", title: "Lemerian Signature Soup" },
-  { url: "/gallery/collaborative-spaces.jpg", title: "Collaborative Spaces" },
-  { url: "/gallery/chefs-signature-meal.jpg", title: "Chef’s Signature Meal" },
-  { url: "/gallery/productive-workspace.jpg", title: "Productive Workspace" },
-  { url: "/gallery/creamy-garlic-pasta.jpg", title: "Creamy Garlic Pasta" },
-  { url: "/gallery/community-events.jpg", title: "Community Events" },
-  { url: "/gallery/private-meeting-rooms.jpg", title: "Private Meeting Rooms" },
-];
-
-
+    { url: "/gallery/cozy-work-environment.jpg", title: "Cozy Work Environment" },
+    { url: "/gallery/modern-interior.jpg", title: "Modern Interior" },
+    { url: "/gallery/lemerian-signature-soup.jpg", title: "Lemerian Signature Soup" },
+    { url: "/gallery/collaborative-spaces.jpg", title: "Collaborative Spaces" },
+    { url: "/gallery/chefs-signature-meal.jpg", title: "Chef’s Signature Meal" },
+    { url: "/gallery/productive-workspace.jpg", title: "Productive Workspace" },
+    { url: "/gallery/creamy-garlic-pasta.jpg", title: "Creamy Garlic Pasta" },
+    { url: "/gallery/community-events.jpg", title: "Community Events" },
+    { url: "/gallery/private-meeting-rooms.jpg", title: "Private Meeting Rooms" },
+  ];
 
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
   const [direction, setDirection] = useState(0);
@@ -101,7 +99,7 @@ export default function Gallery() {
   };
 
   return (
-    <section className="relative py-16 sm:py-20 md:py-24 overflow-hidden bg-gradient-to-br from-[#fefefe] via-[#eef4fb] to-[#e9f1fb]">
+    <section className="relative py-14 max-[375px]:py-10 sm:py-20 md:py-24 overflow-hidden bg-gradient-to-br from-[#fefefe] via-[#eef4fb] to-[#e9f1fb]">
       {/* Background aurora */}
       <div className="pointer-events-none absolute inset-0 -z-10">
         <motion.div
@@ -115,25 +113,25 @@ export default function Gallery() {
         />
       </div>
 
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 md:px-8 relative z-10">
+      <div className="max-w-6xl mx-auto px-4 max-[375px]:px-3 sm:px-6 md:px-8 relative z-10">
         {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: 40 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
           viewport={{ once: true }}
-          className="text-center mb-12 sm:mb-16"
+          className="text-center mb-10 sm:mb-16"
         >
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold mb-3 bg-gradient-to-r from-[#f44545] to-[#265999] bg-clip-text text-transparent">
+          <h2 className="text-[clamp(1.8rem,5vw,3rem)] font-extrabold mb-3 bg-gradient-to-r from-[#f44545] to-[#265999] bg-clip-text text-transparent">
             Experience the Atmosphere
           </h2>
-          <p className="text-gray-600 max-w-2xl mx-auto text-sm sm:text-base md:text-lg">
+          <p className="text-gray-600 max-w-2xl mx-auto text-sm sm:text-base md:text-lg leading-relaxed">
             Step inside our world — where comfort meets creativity and every corner tells a story.
           </p>
         </motion.div>
 
         {/* Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
+        <div className="grid grid-cols-[repeat(auto-fit,minmax(260px,1fr))] gap-5 sm:gap-8">
           {images.map((img, idx) => {
             const transform = cardTransforms[idx] ?? "perspective(1000px) rotateX(0) rotateY(0)";
             const isActive = hoveredIndex === idx;
@@ -151,7 +149,7 @@ export default function Gallery() {
                 <img
                   src={img.url}
                   alt={img.title}
-                  className="w-full h-56 sm:h-64 md:h-72 lg:h-80 object-cover transition-transform duration-700 group-hover:scale-105"
+                  className="w-full h-52 max-[375px]:h-48 sm:h-64 md:h-72 lg:h-80 object-cover transition-transform duration-700 group-hover:scale-105"
                 />
 
                 {/* Overlay glow */}
@@ -186,7 +184,7 @@ export default function Gallery() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4"
+            className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-3 sm:p-4"
             onClick={() => setSelectedIndex(null)}
             onMouseEnter={() => setIsHoveredLightbox(true)}
             onMouseLeave={() => setIsHoveredLightbox(false)}
@@ -197,9 +195,9 @@ export default function Gallery() {
                 e.stopPropagation();
                 setSelectedIndex(null);
               }}
-              className="absolute top-4 sm:top-6 right-4 sm:right-6 z-50 text-white hover:text-gray-300"
+              className="absolute top-3 sm:top-6 right-3 sm:right-6 z-50 text-white hover:text-gray-300"
             >
-              <X className="w-7 sm:w-8 h-7 sm:h-8" />
+              <X className="w-6 sm:w-8 h-6 sm:h-8" />
             </button>
 
             {/* Prev / Next */}
@@ -208,9 +206,9 @@ export default function Gallery() {
                 e.stopPropagation();
                 handlePrev();
               }}
-              className="absolute left-3 sm:left-6 z-50 p-2 sm:p-3 rounded-full bg-black/40 hover:bg-black/60 transition"
+              className="absolute left-2 sm:left-6 z-50 p-2 sm:p-3 rounded-full bg-black/40 hover:bg-black/60 transition"
             >
-              <ChevronLeft className="w-6 sm:w-8 h-6 sm:h-8 text-white" />
+              <ChevronLeft className="w-5 sm:w-8 h-5 sm:h-8 text-white" />
             </button>
 
             <button
@@ -218,9 +216,9 @@ export default function Gallery() {
                 e.stopPropagation();
                 handleNext();
               }}
-              className="absolute right-3 sm:right-6 z-50 p-2 sm:p-3 rounded-full bg-black/40 hover:bg-black/60 transition"
+              className="absolute right-2 sm:right-6 z-50 p-2 sm:p-3 rounded-full bg-black/40 hover:bg-black/60 transition"
             >
-              <ChevronRight className="w-6 sm:w-8 h-6 sm:h-8 text-white" />
+              <ChevronRight className="w-5 sm:w-8 h-5 sm:h-8 text-white" />
             </button>
 
             {/* Image */}
@@ -238,7 +236,7 @@ export default function Gallery() {
                 alt={images[selectedIndex].title}
                 className="max-w-[90vw] max-h-[80vh] object-contain rounded-xl sm:rounded-2xl shadow-2xl"
               />
-              <p className="mt-3 sm:mt-4 text-white text-base sm:text-lg font-semibold text-center">
+              <p className="mt-3 sm:mt-4 text-white text-sm sm:text-lg font-semibold text-center">
                 {images[selectedIndex].title}
               </p>
             </motion.div>

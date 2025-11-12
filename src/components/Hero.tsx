@@ -26,10 +26,10 @@ export default function Hero() {
   return (
     <section
       id="hero"
-      className="relative min-h-[70vh] sm:min-h-[90vh] lg:h-screen flex items-center justify-center overflow-hidden text-white"
+      className="relative min-h-[80vh] sm:min-h-[90vh] lg:h-screen flex items-center justify-center overflow-hidden text-white"
     >
       {/* 🎬 Background Video */}
-      <div className="absolute inset-0 w-full h-full">
+      <div className="absolute inset-0 w-full h-full z-0">
         <video
           autoPlay
           muted
@@ -45,8 +45,8 @@ export default function Hero() {
         </video>
       </div>
 
-      {/* Overlays */}
-      <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/40 to-black/70" />
+      {/* Gradient Overlays */}
+      <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/40 to-black/80" />
       <motion.div
         className="absolute inset-0 bg-gradient-to-br from-[#265999]/25 via-transparent to-[#f44545]/25"
         style={{ transform: `translateY(${scroll * 0.3}px)` }}
@@ -54,23 +54,23 @@ export default function Hero() {
 
       {/* Floating Lights */}
       <motion.div
-        className="absolute top-16 right-6 sm:right-10 w-20 sm:w-24 h-20 sm:h-24 bg-gradient-to-br from-[#f44545] to-[#FFD700] rounded-full blur-3xl opacity-40 sm:opacity-50"
+        className="absolute top-12 right-4 sm:right-10 w-16 sm:w-24 h-16 sm:h-24 bg-gradient-to-br from-[#f44545] to-[#FFD700] rounded-full blur-3xl opacity-40"
         animate={{ y: [0, -15, 0], opacity: [0.3, 0.6, 0.3] }}
         transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
       />
       <motion.div
-        className="absolute bottom-32 left-10 sm:left-20 w-24 sm:w-32 h-24 sm:h-32 bg-gradient-to-br from-[#265999] to-[#f44545] rounded-full blur-3xl opacity-30 sm:opacity-40"
+        className="absolute bottom-28 left-6 sm:left-20 w-20 sm:w-32 h-20 sm:h-32 bg-gradient-to-br from-[#265999] to-[#f44545] rounded-full blur-3xl opacity-30"
         animate={{ y: [0, 15, 0], opacity: [0.4, 0.7, 0.4] }}
         transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
       />
 
-      {/* Main Text */}
-      <div className="relative z-10 text-center px-4 sm:px-6 max-w-5xl mx-auto">
+      {/* Text + Buttons */}
+      <div className="relative z-10 text-center px-4 sm:px-6 md:px-10 max-w-5xl mx-auto">
         <motion.h1
           initial={{ opacity: 0, y: 40 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1 }}
-          className="text-4xl sm:text-5xl md:text-7xl font-extrabold mb-6 leading-tight"
+          className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold mb-5 sm:mb-6 leading-tight"
           style={{ textShadow: "0 8px 40px rgba(0,0,0,0.7)" }}
         >
           <span className="bg-gradient-to-r from-[#f44545] via-[#ffd85a] to-[#265999] bg-clip-text text-transparent drop-shadow-2xl">
@@ -82,7 +82,7 @@ export default function Hero() {
           initial={{ opacity: 0, y: 40 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.3, duration: 0.8 }}
-          className="text-base sm:text-lg md:text-xl text-gray-100 mb-10 sm:mb-12 max-w-2xl mx-auto leading-relaxed"
+          className="text-sm sm:text-base md:text-lg lg:text-xl text-gray-100 mb-8 sm:mb-12 max-w-2xl mx-auto leading-relaxed px-2"
           style={{ textShadow: "0 4px 25px rgba(0,0,0,0.45)" }}
         >
           Collaborate, create, and connect over premium coffee, high-speed Wi-Fi, and delicious food — all under one roof.
@@ -93,7 +93,7 @@ export default function Hero() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.5, duration: 0.8 }}
-          className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center mb-12 sm:mb-16"
+          className="flex flex-col sm:flex-row gap-3 sm:gap-5 justify-center mb-12 sm:mb-16"
         >
           <button
             onClick={() => scrollToSection("packages")}
@@ -118,12 +118,12 @@ export default function Hero() {
           </button>
         </motion.div>
 
-        {/* Feature Icons */}
+        {/* Features */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.8, duration: 0.8 }}
-          className="flex flex-wrap justify-center gap-4 sm:gap-8 text-white"
+          className="flex flex-wrap justify-center gap-4 sm:gap-8 text-white px-2"
         >
           <Feature
             icon={<Coffee className="w-5 sm:w-6 h-5 sm:h-6 text-[#f44545]" />}
@@ -157,7 +157,7 @@ export default function Hero() {
         <svg
           viewBox="0 0 1200 120"
           preserveAspectRatio="none"
-          className="w-full h-[80px] sm:h-[100px] md:h-[120px] fill-[#fff]"
+          className="w-full h-[70px] sm:h-[100px] md:h-[120px] fill-[#fff]"
         >
           <path d="M985.66,83.29C906.67,52,823.78,28.53,743.4,19.49c-82.26-9.35-168.06-3.07-249.9,17.39C408.9,60.76,329.77,97.74,250,109.1c-110.44,15.73-221.18-7.93-330-36.17V0H1200V27.35C1132.19,55.07,1060,98.89,985.66,83.29Z" />
         </svg>
@@ -166,7 +166,7 @@ export default function Hero() {
   );
 }
 
-// ✅ Feature component with subtle glow
+// ✅ Feature component (unchanged except minor responsive gap)
 interface FeatureProps {
   icon: JSX.Element;
   text: string;

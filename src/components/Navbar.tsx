@@ -13,14 +13,12 @@ export default function Navbar() {
   const location = useLocation();
 
   useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 20);
-    };
+    const handleScroll = () => setIsScrolled(window.scrollY > 20);
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // 🔸 Smooth scroll to section
+  // Smooth scroll
   const scrollToSection = (id: string) => {
     setActive(id);
     if (location.pathname === "/") {
@@ -41,10 +39,10 @@ export default function Navbar() {
       initial={{ y: -60, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.6 }}
-      className={`fixed top-0 left-0 right-0 z-50 backdrop-blur-xl transition-all duration-700 border-b ${
+      className={`fixed top-0 left-0 right-0 z-[9999] transition-all duration-700 border-b backdrop-blur-md ${
         isScrolled
-          ? "bg-white/85 border-gray-200/60 shadow-md"
-          : "bg-gradient-to-b from-white/10 to-transparent border-transparent text-white"
+          ? "bg-white/90 border-gray-200/60 shadow-md"
+          : "bg-gradient-to-b from-black/40 to-transparent border-transparent"
       }`}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -57,7 +55,7 @@ export default function Navbar() {
           >
             <motion.img
               src={`${import.meta.env.BASE_URL}logo1-removebg-preview.png`}
-              alt="Lemerian Workin Café Logo"
+              alt="Lemerian Working Café Logo"
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.6 }}
@@ -96,7 +94,7 @@ export default function Navbar() {
               }}
               whileHover={{ scale: 1.05 }}
               transition={{ duration: 0.3 }}
-              className={`relative px-6 py-2 rounded-full font-semibold text-sm lg:text-base shadow-md hover:shadow-lg transition-all duration-500 ${
+              className={`relative px-5 sm:px-6 py-2 rounded-full font-semibold text-sm lg:text-base shadow-md hover:shadow-lg transition-all duration-500 whitespace-nowrap ${
                 isContactClicked
                   ? "bg-gradient-to-r from-[#265999] to-[#FFD700] text-white"
                   : "bg-gradient-to-r from-[#f44545] to-[#265999] text-white"
@@ -125,26 +123,24 @@ export default function Navbar() {
       <AnimatePresence>
         {isOpen && (
           <motion.div
-            initial={{ opacity: 0, y: -20 }}
+            initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
+            exit={{ opacity: 0, y: -10 }}
             transition={{ duration: 0.3 }}
-            className="md:hidden bg-white/95 backdrop-blur-lg border-t border-gray-200/50 shadow-lg rounded-b-2xl"
+            className="md:hidden bg-white/95 backdrop-blur-lg border-t border-gray-200/50 shadow-xl rounded-b-2xl"
           >
-            <div className="px-6 py-5 space-y-2 sm:space-y-3">
-              {["about", "packages", "events", "gallery", "contact"].map(
-                (section) => (
-                  <motion.button
-                    key={section}
-                    onClick={() => scrollToSection(section)}
-                    whileHover={{ scale: 1.05, x: 4 }}
-                    transition={{ duration: 0.25 }}
-                    className="block w-full text-left py-2 text-base sm:text-lg font-medium text-gray-800 hover:text-[#f44545] transition-all"
-                  >
-                    {section.charAt(0).toUpperCase() + section.slice(1)}
-                  </motion.button>
-                )
-              )}
+            <div className="px-6 py-5 space-y-3">
+              {["about", "packages", "events", "gallery", "contact"].map((section) => (
+                <motion.button
+                  key={section}
+                  onClick={() => scrollToSection(section)}
+                  whileHover={{ scale: 1.05, x: 4 }}
+                  transition={{ duration: 0.25 }}
+                  className="block w-full text-left py-2 text-base font-medium text-gray-800 hover:text-[#f44545] transition-all"
+                >
+                  {section.charAt(0).toUpperCase() + section.slice(1)}
+                </motion.button>
+              ))}
             </div>
           </motion.div>
         )}
