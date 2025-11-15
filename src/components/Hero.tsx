@@ -1,11 +1,27 @@
 import { Coffee, Wifi, Users } from "lucide-react";
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
+<<<<<<< HEAD
+=======
+import { gtagEvent } from "@/main"; // ⭐ Google Event Tracker
+>>>>>>> 67fe7313bdaee1a1ebb4fdc684c358f504de906a
 
 export default function Hero() {
   const [scroll, setScroll] = useState<number>(0);
   const [isClicked, setIsClicked] = useState(false);
 
+<<<<<<< HEAD
+=======
+  /* ---------------------------------------------------------
+     ⭐ Track when user sees the HERO section
+  --------------------------------------------------------- */
+  useEffect(() => {
+    gtagEvent("view_hero_section", {
+      page_section: "hero",
+    });
+  }, []);
+
+>>>>>>> 67fe7313bdaee1a1ebb4fdc684c358f504de906a
   useEffect(() => {
     const handleScroll = () => setScroll(window.scrollY);
     window.addEventListener("scroll", handleScroll);
@@ -16,10 +32,28 @@ export default function Hero() {
     const video = document.querySelector("video");
     if (video) {
       video.addEventListener("canplay", () => video.classList.add("ready"));
+<<<<<<< HEAD
+=======
+
+      /* ⭐ Track Video Loaded */
+      video.addEventListener("canplay", () => {
+        gtagEvent("hero_video_loaded");
+      });
+
+      /* ⭐ Track if the user interacts with video indirectly */
+      gtagEvent("hero_video_displayed");
+>>>>>>> 67fe7313bdaee1a1ebb4fdc684c358f504de906a
     }
   }, []);
 
   const scrollToSection = (id: string) => {
+<<<<<<< HEAD
+=======
+    gtagEvent("hero_scroll_to_section", {
+      target_section: id,
+    });
+
+>>>>>>> 67fe7313bdaee1a1ebb4fdc684c358f504de906a
     document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
   };
 
@@ -74,7 +108,11 @@ export default function Hero() {
           style={{ textShadow: "0 8px 40px rgba(0,0,0,0.7)" }}
         >
           <span className="bg-gradient-to-r from-[#f44545] via-[#ffd85a] to-[#265999] bg-clip-text text-transparent drop-shadow-2xl">
+<<<<<<< HEAD
             India’s First Workin Café
+=======
+            India’s First Workin Café
+>>>>>>> 67fe7313bdaee1a1ebb4fdc684c358f504de906a
           </span>
         </motion.h1>
 
@@ -95,16 +133,34 @@ export default function Hero() {
           transition={{ delay: 0.5, duration: 0.8 }}
           className="flex flex-col sm:flex-row gap-3 sm:gap-5 justify-center mb-12 sm:mb-16"
         >
+<<<<<<< HEAD
           <button
             onClick={() => scrollToSection("packages")}
+=======
+          {/* ⭐ Track Explore Packages button */}
+          <button
+            onClick={() => {
+              gtagEvent("click_explore_packages");
+              scrollToSection("packages");
+            }}
+>>>>>>> 67fe7313bdaee1a1ebb4fdc684c358f504de906a
             className="px-6 sm:px-8 py-3 sm:py-4 rounded-full text-base sm:text-lg font-semibold bg-gradient-to-r from-[#f44545] to-[#265999] shadow-lg hover:shadow-2xl hover:scale-105 transition-all duration-300"
           >
             Explore Packages
           </button>
 
+<<<<<<< HEAD
           <button
             onClick={() => {
               scrollToSection("contact");
+=======
+          {/* ⭐ Track Get in Touch button */}
+          <button
+            onClick={() => {
+              gtagEvent("click_get_in_touch");
+              scrollToSection("contact");
+
+>>>>>>> 67fe7313bdaee1a1ebb4fdc684c358f504de906a
               setIsClicked(true);
               setTimeout(() => setIsClicked(false), 600);
             }}
@@ -166,12 +222,17 @@ export default function Hero() {
   );
 }
 
+<<<<<<< HEAD
 // ✅ Feature component (unchanged except minor responsive gap)
+=======
+// Feature Component (unchanged)
+>>>>>>> 67fe7313bdaee1a1ebb4fdc684c358f504de906a
 interface FeatureProps {
   icon: JSX.Element;
   text: string;
 }
 
+<<<<<<< HEAD
 const Feature: React.FC<FeatureProps> = ({ icon, text }) => (
   <motion.div
     whileHover={{ scale: 1.1 }}
@@ -182,3 +243,17 @@ const Feature: React.FC<FeatureProps> = ({ icon, text }) => (
     <span className="font-medium text-xs sm:text-sm md:text-base">{text}</span>
   </motion.div>
 );
+=======
+const Feature: React.FC<FeatureProps> = ({ icon, text }) => {
+  return (
+    <motion.div
+      whileHover={{ scale: 1.1 }}
+      transition={{ duration: 0.3 }}
+      className="flex items-center gap-2 bg-white/10 backdrop-blur-md px-3 sm:px-4 py-1.5 sm:py-2 rounded-full border border-white/20 hover:border-white/40 shadow-[0_0_15px_rgba(255,255,255,0.15)] transition-all"
+    >
+      {icon}
+      <span className="font-medium text-xs sm:text-sm md:text-base">{text}</span>
+    </motion.div>
+  );
+};
+>>>>>>> 67fe7313bdaee1a1ebb4fdc684c358f504de906a

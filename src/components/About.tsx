@@ -3,6 +3,12 @@ import { motion } from "framer-motion";
 import { Coffee, Briefcase, Heart, Zap } from "lucide-react";
 import VisionSection from "@/components/VisionSection";
 
+<<<<<<< HEAD
+=======
+// ⬇️ Google Analytics Event Import
+import { gtagEvent } from "../main";
+
+>>>>>>> 67fe7313bdaee1a1ebb4fdc684c358f504de906a
 type FeatureItem = {
   icon: React.ComponentType<{ className?: string }>;
   title: string;
@@ -24,6 +30,14 @@ const About: React.FC = () => {
   >([]);
 
   useEffect(() => {
+<<<<<<< HEAD
+=======
+    // ⬇️ GA Event for Page View
+    gtagEvent("view_about_section", {
+      page: "About Section Viewed",
+    });
+
+>>>>>>> 67fe7313bdaee1a1ebb4fdc684c358f504de906a
     const arr = Array.from({ length: PARTICLE_COUNT }).map(() => ({
       left: Math.random() * 100,
       topStart: 100 + Math.random() * 40,
@@ -134,6 +148,18 @@ const About: React.FC = () => {
             <motion.button
               whileHover={{ scale: 1.03 }}
               transition={{ duration: 0.2 }}
+<<<<<<< HEAD
+=======
+
+              // ⬇️ GA EVENT for Button Click
+              onClick={() =>
+                gtagEvent("click_about_discover", {
+                  section: "about",
+                  action: "Discover Our Space Clicked",
+                })
+              }
+
+>>>>>>> 67fe7313bdaee1a1ebb4fdc684c358f504de906a
               className="mt-3 sm:mt-4 px-5 sm:px-8 py-2.5 sm:py-3 rounded-full font-semibold text-white bg-gradient-to-r from-[#FF5E8E] to-[#FF8A00] shadow-md hover:shadow-xl transition-all"
             >
               Discover Our Space

@@ -3,6 +3,10 @@ import { Menu, X } from "lucide-react";
 import { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
+<<<<<<< HEAD
+=======
+import { gtagEvent } from "@/main"; // ⭐ Google Event Tracker
+>>>>>>> 67fe7313bdaee1a1ebb4fdc684c358f504de906a
 
 export default function Navbar() {
   const [isContactClicked, setIsContactClicked] = useState(false);
@@ -12,6 +16,16 @@ export default function Navbar() {
   const navigate = useNavigate();
   const location = useLocation();
 
+<<<<<<< HEAD
+=======
+  /* ---------------------------------------------------------
+     ⭐ Track that the navbar was viewed
+  --------------------------------------------------------- */
+  useEffect(() => {
+    gtagEvent("view_navbar");
+  }, []);
+
+>>>>>>> 67fe7313bdaee1a1ebb4fdc684c358f504de906a
   useEffect(() => {
     const handleScroll = () => setIsScrolled(window.scrollY > 20);
     window.addEventListener("scroll", handleScroll);
@@ -20,6 +34,17 @@ export default function Navbar() {
 
   // Smooth scroll
   const scrollToSection = (id: string) => {
+<<<<<<< HEAD
+=======
+    /* ---------------------------------------------------------
+       ⭐ Track each menu click
+    --------------------------------------------------------- */
+    gtagEvent("navbar_click", {
+      section: id,
+      device: window.innerWidth < 768 ? "mobile" : "desktop",
+    });
+
+>>>>>>> 67fe7313bdaee1a1ebb4fdc684c358f504de906a
     setActive(id);
     if (location.pathname === "/") {
       const el = document.getElementById(id);
@@ -47,11 +72,22 @@ export default function Navbar() {
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-14 sm:h-16">
+<<<<<<< HEAD
+=======
+          
+>>>>>>> 67fe7313bdaee1a1ebb4fdc684c358f504de906a
           {/* 🔹 Logo */}
           <motion.div
             className="flex items-center cursor-pointer"
             whileHover={{ scale: 1.05 }}
+<<<<<<< HEAD
             onClick={() => scrollToSection("hero")}
+=======
+            onClick={() => {
+              gtagEvent("navbar_logo_click");
+              scrollToSection("hero");
+            }}
+>>>>>>> 67fe7313bdaee1a1ebb4fdc684c358f504de906a
           >
             <motion.img
               src={`${import.meta.env.BASE_URL}logo1-removebg-preview.png`}
@@ -88,6 +124,10 @@ export default function Navbar() {
             {/* Contact Button */}
             <motion.button
               onClick={() => {
+<<<<<<< HEAD
+=======
+                gtagEvent("navbar_contact_click");
+>>>>>>> 67fe7313bdaee1a1ebb4fdc684c358f504de906a
                 scrollToSection("contact");
                 setIsContactClicked(true);
                 setTimeout(() => setIsContactClicked(false), 600);
@@ -110,7 +150,16 @@ export default function Navbar() {
               className={`transition-colors ${
                 isScrolled ? "text-gray-800" : "text-white"
               }`}
+<<<<<<< HEAD
               onClick={() => setIsOpen(!isOpen)}
+=======
+              onClick={() => {
+                setIsOpen(!isOpen);
+                gtagEvent("navbar_mobile_toggle", {
+                  state: !isOpen ? "opened" : "closed",
+                });
+              }}
+>>>>>>> 67fe7313bdaee1a1ebb4fdc684c358f504de906a
               aria-label="Toggle navigation menu"
             >
               {isOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}

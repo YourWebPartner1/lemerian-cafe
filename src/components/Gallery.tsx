@@ -1,6 +1,10 @@
 import { useState, useEffect, useRef } from "react";
 import { X, ChevronLeft, ChevronRight } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+<<<<<<< HEAD
+=======
+import { gtagEvent } from "@/main"; // ⭐ Google Event Tracker
+>>>>>>> 67fe7313bdaee1a1ebb4fdc684c358f504de906a
 
 export default function Gallery() {
   const AUTO_SLIDE_MODE: "pause" | "always" = "pause";
@@ -26,14 +30,41 @@ export default function Gallery() {
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
   const [cardTransforms, setCardTransforms] = useState<Record<number, string>>({});
 
+<<<<<<< HEAD
   const handleNext = (e?: React.MouseEvent) => {
     if (e) e.stopPropagation();
+=======
+  /* ------------------------------------------------------------
+      ⭐ Track Page View Once
+  ------------------------------------------------------------ */
+  useEffect(() => {
+    gtagEvent("view_gallery_section", {
+      page_section: "gallery",
+    });
+  }, []);
+
+  const handleNext = (e?: React.MouseEvent) => {
+    if (e) e.stopPropagation();
+
+    gtagEvent("gallery_lightbox_next", {
+      current_index: selectedIndex,
+    });
+
+>>>>>>> 67fe7313bdaee1a1ebb4fdc684c358f504de906a
     setDirection(1);
     setSelectedIndex((prev) => (prev !== null ? (prev + 1) % images.length : 0));
   };
 
   const handlePrev = (e?: React.MouseEvent) => {
     if (e) e.stopPropagation();
+<<<<<<< HEAD
+=======
+
+    gtagEvent("gallery_lightbox_prev", {
+      current_index: selectedIndex,
+    });
+
+>>>>>>> 67fe7313bdaee1a1ebb4fdc684c358f504de906a
     setDirection(-1);
     setSelectedIndex((prev) =>
       prev !== null ? (prev - 1 + images.length) % images.length : images.length - 1
@@ -46,7 +77,14 @@ export default function Gallery() {
       if (selectedIndex !== null) {
         if (e.key === "ArrowRight") handleNext();
         if (e.key === "ArrowLeft") handlePrev();
+<<<<<<< HEAD
         if (e.key === "Escape") setSelectedIndex(null);
+=======
+        if (e.key === "Escape") {
+          gtagEvent("gallery_lightbox_close");
+          setSelectedIndex(null);
+        }
+>>>>>>> 67fe7313bdaee1a1ebb4fdc684c358f504de906a
       }
     };
     window.addEventListener("keydown", onKey);
@@ -57,7 +95,14 @@ export default function Gallery() {
   useEffect(() => {
     if (selectedIndex !== null) {
       if (AUTO_SLIDE_MODE === "always" || (AUTO_SLIDE_MODE === "pause" && !isHoveredLightbox)) {
+<<<<<<< HEAD
         autoSlideRef.current = setTimeout(() => handleNext(), SLIDE_INTERVAL);
+=======
+        autoSlideRef.current = setTimeout(() => {
+          gtagEvent("gallery_auto_slide", { index: selectedIndex });
+          handleNext();
+        }, SLIDE_INTERVAL);
+>>>>>>> 67fe7313bdaee1a1ebb4fdc684c358f504de906a
       }
       return () => {
         if (autoSlideRef.current) clearTimeout(autoSlideRef.current);
@@ -67,7 +112,14 @@ export default function Gallery() {
 
   // Card tilt logic (desktop only)
   const handleCardMouseMove = (index: number, e: React.MouseEvent<HTMLDivElement>) => {
+<<<<<<< HEAD
     if (window.innerWidth < 768) return; // disable tilt on mobile
+=======
+    if (window.innerWidth < 768) return;
+
+    gtagEvent("gallery_hover_effect", { image_index: index });
+
+>>>>>>> 67fe7313bdaee1a1ebb4fdc684c358f504de906a
     const el = e.currentTarget;
     const rect = el.getBoundingClientRect();
     const px = (e.clientX - rect.left) / rect.width;
@@ -143,7 +195,17 @@ export default function Gallery() {
                 className="relative rounded-2xl sm:rounded-3xl overflow-hidden shadow-lg group cursor-pointer transition-all duration-500"
                 onMouseMove={(e) => handleCardMouseMove(idx, e)}
                 onMouseLeave={(e) => handleCardMouseLeave(idx, e)}
+<<<<<<< HEAD
                 onClick={() => setSelectedIndex(idx)}
+=======
+                onClick={() => {
+                  gtagEvent("gallery_image_open", {
+                    image_index: idx,
+                    image_title: img.title,
+                  });
+                  setSelectedIndex(idx);
+                }}
+>>>>>>> 67fe7313bdaee1a1ebb4fdc684c358f504de906a
                 style={{ transform }}
               >
                 <img
@@ -185,7 +247,14 @@ export default function Gallery() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-3 sm:p-4"
+<<<<<<< HEAD
             onClick={() => setSelectedIndex(null)}
+=======
+            onClick={() => {
+              gtagEvent("gallery_lightbox_close");
+              setSelectedIndex(null);
+            }}
+>>>>>>> 67fe7313bdaee1a1ebb4fdc684c358f504de906a
             onMouseEnter={() => setIsHoveredLightbox(true)}
             onMouseLeave={() => setIsHoveredLightbox(false)}
           >
@@ -193,6 +262,10 @@ export default function Gallery() {
             <button
               onClick={(e) => {
                 e.stopPropagation();
+<<<<<<< HEAD
+=======
+                gtagEvent("gallery_lightbox_close");
+>>>>>>> 67fe7313bdaee1a1ebb4fdc684c358f504de906a
                 setSelectedIndex(null);
               }}
               className="absolute top-3 sm:top-6 right-3 sm:right-6 z-50 text-white hover:text-gray-300"
@@ -204,7 +277,11 @@ export default function Gallery() {
             <button
               onClick={(e) => {
                 e.stopPropagation();
+<<<<<<< HEAD
                 handlePrev();
+=======
+                handlePrev(e);
+>>>>>>> 67fe7313bdaee1a1ebb4fdc684c358f504de906a
               }}
               className="absolute left-2 sm:left-6 z-50 p-2 sm:p-3 rounded-full bg-black/40 hover:bg-black/60 transition"
             >
@@ -214,7 +291,11 @@ export default function Gallery() {
             <button
               onClick={(e) => {
                 e.stopPropagation();
+<<<<<<< HEAD
                 handleNext();
+=======
+                handleNext(e);
+>>>>>>> 67fe7313bdaee1a1ebb4fdc684c358f504de906a
               }}
               className="absolute right-2 sm:right-6 z-50 p-2 sm:p-3 rounded-full bg-black/40 hover:bg-black/60 transition"
             >

@@ -4,12 +4,25 @@ import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { useRef, useState, useEffect, useMemo } from "react";
 import Reveal from "@/components/Reveal";
+<<<<<<< HEAD
+=======
+import { gtagEvent } from "@/main";   // ✅ ADD THIS ONLY
+>>>>>>> 67fe7313bdaee1a1ebb4fdc684c358f504de906a
 
 export default function VisionSection() {
   const ref = useRef(null);
   const [typedText, setTypedText] = useState("");
 
+<<<<<<< HEAD
   // ✅ define image paths here instead of using <img> outside the component
+=======
+  // Track when section appears
+  useEffect(() => {
+    gtagEvent("view_vision_section", { section: "vision" });   // ✅ TRACK
+  }, []);
+
+  // images
+>>>>>>> 67fe7313bdaee1a1ebb4fdc684c358f504de906a
   const visionLaptop = "/about/vision-laptop.jpg";
   const visionIndia = "/about/vision-india.jpg";
   const cafehero = "/about/cafe-hero.jpg";
@@ -211,6 +224,10 @@ export default function VisionSection() {
             <Button
               size="lg"
               className="relative z-10 text-lg font-semibold px-10 sm:px-12 py-5 sm:py-6 bg-gradient-to-r from-[#FF5E8E] to-[#FF8A00] text-white shadow-xl rounded-full hover:opacity-95 transition-all"
+<<<<<<< HEAD
+=======
+              onClick={() => gtagEvent("click_join_community_button")}   // ✅ TRACK BUTTON CLICK
+>>>>>>> 67fe7313bdaee1a1ebb4fdc684c358f504de906a
             >
               Join the Lemerian Community
             </Button>

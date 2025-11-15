@@ -1,5 +1,10 @@
 import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
+<<<<<<< HEAD
+=======
+import { gtagEvent } from "../main"; // ⭐ Added for Google Tracking
+
+>>>>>>> 67fe7313bdaee1a1ebb4fdc684c358f504de906a
 import Hero from "../components/Hero";
 import About from "../components/About";
 import Packages from "../components/Packages";
@@ -8,6 +13,7 @@ import Gallery from "../components/Gallery";
 import Contact from "../components/Contact";
 import CaseStudyTestimonials from "../components/CaseStudyTestimonials";
 
+<<<<<<< HEAD
 
 
 
@@ -16,6 +22,26 @@ const Home: React.FC = () => {
 
   useEffect(() => {
     // 👇 Detect if the user navigated here with a target section
+=======
+const Home: React.FC = () => {
+  const location = useLocation();
+
+  /* ---------------------------------------------------------
+      ⭐ Send Google Analytics Page View Event
+  ---------------------------------------------------------- */
+  useEffect(() => {
+    gtagEvent("page_view", {
+      page_title: "Home Page",
+      page_location: window.location.href,
+      page_path: "/",
+    });
+  }, []);
+
+  /* ---------------------------------------------------------
+      Existing scroll-to-section logic (Untouched)
+  ---------------------------------------------------------- */
+  useEffect(() => {
+>>>>>>> 67fe7313bdaee1a1ebb4fdc684c358f504de906a
     const target = (location.state as any)?.scrollTo;
     if (target) {
       const handleScroll = () => {
@@ -26,7 +52,10 @@ const Home: React.FC = () => {
         }
       };
 
+<<<<<<< HEAD
       // Delay ensures elements are mounted before scroll
+=======
+>>>>>>> 67fe7313bdaee1a1ebb4fdc684c358f504de906a
       const timeout = setTimeout(handleScroll, 200);
       return () => clearTimeout(timeout);
     }
@@ -54,9 +83,13 @@ const Home: React.FC = () => {
         <Gallery />
       </section>
 
+<<<<<<< HEAD
 
 
       {/* ✅ Add Testimonial section here */}
+=======
+      {/* Testimonials */}
+>>>>>>> 67fe7313bdaee1a1ebb4fdc684c358f504de906a
       <section id="CaseStudyTestimonials">
         <CaseStudyTestimonials />
       </section>

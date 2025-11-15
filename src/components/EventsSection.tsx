@@ -1,9 +1,18 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { Briefcase, Users, Utensils, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
+<<<<<<< HEAD
 import { useMemo } from "react";
 import { useAutoSlide } from "@/hooks/useAutoSlide";
 
+=======
+import { useMemo, useEffect } from "react";
+import { useAutoSlide } from "@/hooks/useAutoSlide";
+
+// ⬇️ GOOGLE ANALYTICS IMPORT
+import { gtagEvent } from "../main";
+
+>>>>>>> 67fe7313bdaee1a1ebb4fdc684c358f504de906a
 /* ----------------------------- Event Data ----------------------------- */
 const eventsData = [
   {
@@ -45,6 +54,17 @@ const EventCard = ({ event, index }: { event: typeof eventsData[0]; index: numbe
   const Icon = event.icon;
   const { currentIndex } = useAutoSlide(event.images.length, 4000);
 
+<<<<<<< HEAD
+=======
+  // ⬇️ GA track: event card viewed
+  useEffect(() => {
+    gtagEvent("view_event_card", {
+      event_id: event.id,
+      event_title: event.title,
+    });
+  }, []);
+
+>>>>>>> 67fe7313bdaee1a1ebb4fdc684c358f504de906a
   return (
     <motion.div
       initial={{ opacity: 0, y: 40 }}
@@ -101,6 +121,7 @@ const EventCard = ({ event, index }: { event: typeof eventsData[0]; index: numbe
 const HeroVideoSection = () => {
   const mediaItems = useMemo(
     () => [
+<<<<<<< HEAD
       {
         type: "video",
         src: "https://res.cloudinary.com/dfgpwngl5/video/upload/v1762596879/hero_gauoit.mp4",
@@ -113,12 +134,28 @@ const HeroVideoSection = () => {
         type: "video",
         src: "https://res.cloudinary.com/dfgpwngl5/video/upload/v1762705465/2_mp4_mjp7w2.mp4",
       },
+=======
+      { type: "video", src: "https://res.cloudinary.com/dfgpwngl5/video/upload/v1762596879/hero_gauoit.mp4" },
+      { type: "video", src: "https://res.cloudinary.com/dfgpwngl5/video/upload/v1762695135/1_lxvgz5.mp4" },
+      { type: "video", src: "https://res.cloudinary.com/dfgpwngl5/video/upload/v1762705465/2_mp4_mjp7w2.mp4" },
+>>>>>>> 67fe7313bdaee1a1ebb4fdc684c358f504de906a
     ],
     []
   );
 
   const { currentIndex, goToSlide } = useAutoSlide(mediaItems.length, 8000);
 
+<<<<<<< HEAD
+=======
+  // ⬇️ GA track: slide changed
+  useEffect(() => {
+    gtagEvent("event_video_slide_change", {
+      slide_index: currentIndex,
+      video_source: mediaItems[currentIndex].src,
+    });
+  }, [currentIndex]);
+
+>>>>>>> 67fe7313bdaee1a1ebb4fdc684c358f504de906a
   return (
     <div className="relative min-h-[55vh] max-[375px]:min-h-[50vh] sm:min-h-[70vh] lg:min-h-[80vh] overflow-hidden bg-black">
       <AnimatePresence>
@@ -172,7 +209,16 @@ const HeroVideoSection = () => {
             }}
             transition={{ duration: 0.4 }}
             className="h-1.5 sm:h-1.5 bg-white/90 rounded-full hover:opacity-100 transition-opacity"
+<<<<<<< HEAD
             onClick={() => goToSlide(index)}
+=======
+
+            // ⬇️ GA track: dot click
+            onClick={() => {
+              gtagEvent("event_video_dot_clicked", { dot_index: index });
+              goToSlide(index);
+            }}
+>>>>>>> 67fe7313bdaee1a1ebb4fdc684c358f504de906a
           />
         ))}
       </div>
@@ -182,7 +228,21 @@ const HeroVideoSection = () => {
 
 /* ----------------------------- Main Section ----------------------------- */
 const EventsSection = () => {
+<<<<<<< HEAD
   const handleScrollToContact = () => {
+=======
+
+  // ⬇️ GA track: Events section viewed
+  useEffect(() => {
+    gtagEvent("view_events_section", { page: "Events Section" });
+  }, []);
+
+  const handleScrollToContact = () => {
+    
+    // ⬇️ GA track: user clicked Get Quotation
+    gtagEvent("click_get_quotation", { action: "scroll_to_contact" });
+
+>>>>>>> 67fe7313bdaee1a1ebb4fdc684c358f504de906a
     document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" });
   };
 
