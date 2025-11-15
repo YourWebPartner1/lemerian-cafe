@@ -9,6 +9,8 @@ import Contact from "../components/Contact";
 import CaseStudyTestimonials from "../components/CaseStudyTestimonials";
 
 
+
+
 const Home: React.FC = () => {
   const location = useLocation();
 
@@ -51,6 +53,8 @@ const Home: React.FC = () => {
       <section id="gallery">
         <Gallery />
       </section>
+
+
 
       {/* ✅ Add Testimonial section here */}
       <section id="CaseStudyTestimonials">

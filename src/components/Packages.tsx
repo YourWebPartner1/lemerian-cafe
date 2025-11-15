@@ -1,4 +1,5 @@
-import { useEffect, useState } from "react";
+// src/components/Packages.tsx
+import React, { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   Coffee,
@@ -11,6 +12,8 @@ import {
   X,
   FileText,
 } from "lucide-react";
+import CashfreePayment from "./CashfreePayment";
+
 
 /* -------------------------------------------------------------------------- */
 /*                            Terms & Conditions Data                          */
@@ -102,7 +105,7 @@ const termsAndConditions = [
 /* -------------------------------------------------------------------------- */
 /*                                   Component                                  */
 /* -------------------------------------------------------------------------- */
-const Packages = () => {
+const Packages: React.FC = () => {
   /* ----------------------------- Pricing Data ---------------------------- */
   const dailyPasses = [
     {
@@ -160,14 +163,11 @@ const Packages = () => {
   ];
 
   /* ------------------------------- State -------------------------------- */
-  const [showCompare, setShowCompare] =
-    useState<boolean>(false);
-  const [showTerms, setShowTerms] =
-    useState<boolean>(false);
+  const [showCompare, setShowCompare] = useState<boolean>(false);
+  const [showTerms, setShowTerms] = useState<boolean>(false);
   const [compareTab, setCompareTab] =
     useState<"daily" | "membership">("daily");
-  const [planType, setPlanType] =
-    useState<"daily" | "membership">("daily");
+  const [planType, setPlanType] = useState<"daily" | "membership">("daily");
 
   /* ------------------------------ Lifecycle ------------------------------ */
   useEffect(() => {
@@ -386,33 +386,24 @@ const Packages = () => {
               <div className="flex justify-center mb-6 sm:mb-8 gap-3 sm:gap-4 flex-wrap">
                 <button
                   onClick={() => setCompareTab("daily")}
-                  className={`px-4 sm:px-6 py-2 rounded-full font-semibold ${
-                    compareTab === "daily" ? "bg-gradient-to-r from-orange-500 to-pink-500 text-white" : "bg-gray-100 text-gray-700"
-                  }`}
+                  className={`px-4 sm:px-6 py-2 rounded-full font-semibold ${compareTab === "daily" ? "bg-gradient-to-r from-orange-500 to-pink-500 text-white" : "bg-gray-100 text-gray-700"}`}
                 >
                   Daily Passes
                 </button>
 
                 <button
                   onClick={() => setCompareTab("membership")}
-                  className={`px-4 sm:px-6 py-2 rounded-full font-semibold ${
-                    compareTab === "membership" ? "bg-gradient-to-r from-orange-500 to-pink-500 text-white" : "bg-gray-100 text-gray-700"
-                  }`}
+                  className={`px-4 sm:px-6 py-2 rounded-full font-semibold ${compareTab === "membership" ? "bg-gradient-to-r from-orange-500 to-pink-500 text-white" : "bg-gray-100 text-gray-700"}`}
                 >
                   Membership Plans
                 </button>
               </div>
 
               {/* Horizontally scrollable container for tables on small screens */}
-              <div className="overflow-x-auto">
-                {compareTab === "daily" ? <DailyCompare /> : <MembershipCompare />}
-              </div>
+              <div className="overflow-x-auto">{compareTab === "daily" ? <DailyCompare /> : <MembershipCompare />}</div>
 
               <div className="mt-8 flex justify-center">
-                <button
-                  onClick={() => setShowCompare(false)}
-                  className="px-6 py-3 rounded-full border border-gray-200 text-gray-700"
-                >
+                <button onClick={() => setShowCompare(false)} className="px-6 py-3 rounded-full border border-gray-200 text-gray-700">
                   Close
                 </button>
               </div>
@@ -444,10 +435,7 @@ const Packages = () => {
               onClick={(e) => e.stopPropagation()}
               className="relative bg-white rounded-3xl shadow-2xl w-full max-w-2xl overflow-hidden"
             >
-              <button
-                onClick={() => setShowTerms(false)}
-                className="absolute right-4 top-4 text-gray-600 hover:text-gray-900 z-10"
-              >
+              <button onClick={() => setShowTerms(false)} className="absolute right-4 top-4 text-gray-600 hover:text-gray-900 z-10">
                 <X className="w-6 h-6" />
               </button>
 
@@ -464,20 +452,14 @@ const Packages = () => {
                 <ol className="list-decimal list-inside space-y-4 text-gray-700">
                   {termsAndConditions.map((term, index) => (
                     <li key={index} className="text-sm sm:text-base">
-                      <strong className="font-semibold text-gray-900">
-                        {term.title}:
-                      </strong>{" "}
-                      {term.description}
+                      <strong className="font-semibold text-gray-900">{term.title}:</strong> {term.description}
                     </li>
                   ))}
                 </ol>
               </div>
 
               <div className="p-6 bg-gray-50 border-t border-gray-100 flex justify-end">
-                <button
-                  onClick={() => setShowTerms(false)}
-                  className="px-6 py-3 rounded-full font-semibold bg-gradient-to-r from-orange-500 to-pink-500 text-white shadow-md hover:shadow-lg transition-shadow"
-                >
+                <button onClick={() => setShowTerms(false)} className="px-6 py-3 rounded-full font-semibold bg-gradient-to-r from-orange-500 to-pink-500 text-white shadow-md hover:shadow-lg transition-shadow">
                   I Understand
                 </button>
               </div>
@@ -493,14 +475,10 @@ const Packages = () => {
 /*                               Subcomponents                                */
 /* -------------------------------------------------------------------------- */
 
-const PricingGrid = ({ title, icon, plans }: any) => {
+const PricingGrid: React.FC<{ title: string; icon: React.ReactNode; plans: any[] }> = ({ title, icon, plans }) => {
   return (
     <section className="mb-20">
-      <motion.h2
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 mb-10 text-center flex items-center justify-center gap-3"
-      >
+      <motion.h2 initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 mb-10 text-center flex items-center justify-center gap-3">
         {icon}
         {title}
       </motion.h2>
@@ -508,65 +486,110 @@ const PricingGrid = ({ title, icon, plans }: any) => {
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 lg:gap-10">
         {plans.map((plan: any) => {
           return (
-            <motion.div
-              key={plan.title}
-              whileHover={{ scale: 1.05, y: -10 }}
-              transition={{ duration: 0.3 }}
-              className="relative bg-white rounded-3xl p-6 sm:p-8 shadow-xl hover:shadow-2xl transition-all duration-500"
-            >
+            <motion.div key={plan.title} whileHover={{ scale: 1.05, y: -10 }} transition={{ duration: 0.3 }} className="relative bg-white rounded-3xl p-6 sm:p-8 shadow-xl hover:shadow-2xl transition-all duration-500">
               {plan.popular && (
-                <span
-                  className={`absolute -top-4 left-1/2 -translate-x-1/2 px-4 py-1 rounded-full text-sm text-white bg-gradient-to-r ${plan.gradient}`}
-                >
+                <span className={`absolute -top-4 left-1/2 -translate-x-1/2 px-4 py-1 rounded-full text-sm text-white bg-gradient-to-r ${plan.gradient}`}>
                   <Star className="inline-block w-4 h-4 mr-1" /> Popular
                 </span>
               )}
 
-              <div
-                className={`inline-flex items-center justify-center w-14 sm:w-16 h-14 sm:h-16 rounded-2xl bg-gradient-to-r ${plan.gradient} mb-6 shadow-lg`}
-              >
+              <div className={`inline-flex items-center justify-center w-14 sm:w-16 h-14 sm:h-16 rounded-2xl bg-gradient-to-r ${plan.gradient} mb-6 shadow-lg`}>
                 <Coffee className="w-6 sm:w-8 h-6 sm:h-8 text-white" />
               </div>
 
-              <h3 className="text-xl sm:text-2xl font-bold mb-2 text-gray-900">
-                {plan.title}
-              </h3>
+              <h3 className="text-xl sm:text-2xl font-bold mb-2 text-gray-900">{plan.title}</h3>
 
               <div className="flex items-baseline mb-6">
-                <span className="text-4xl sm:text-5xl font-bold text-gray-900">
-                  {plan.price}
-                </span>
-                <span className="text-lg sm:text-xl text-gray-500 ml-2">
-                  {plan.period}
-                </span>
+                <span className="text-4xl sm:text-5xl font-bold text-gray-900">{plan.price}</span>
+                <span className="text-lg sm:text-xl text-gray-500 ml-2">{plan.period}</span>
               </div>
 
               <ul className="space-y-3 sm:space-y-4 mb-8 text-gray-700">
                 {plan.features.map((f: string, i: number) => {
                   return (
                     <li key={i} className="flex gap-3 items-center">
-                      <div
-                        className={`w-6 h-6 flex items-center justify-center rounded-full bg-gradient-to-r ${plan.gradient} text-white`}
-                      >
-                        ✓
-                      </div>
+                      <div className={`w-6 h-6 flex items-center justify-center rounded-full bg-gradient-to-r ${plan.gradient} text-white`}>✓</div>
                       {f}
                     </li>
                   );
                 })}
               </ul>
 
+              {/* ---------- Payment button (correct redirect logic) ---------- */}
               <button
-                onClick={() => {
-                  const msg = `Hi! I'm interested in the ${plan.title} (${plan.price}${plan.period}) plan.`;
-                  window.open(
-                    `https://wa.me/7075701406?text=${encodeURIComponent(msg)}`,
-                    "_blank"
+                onClick={async () => {
+                  // parse numeric amount from labels like "₹2,699" or "₹399"
+                  const amount = Number(
+                    plan.price.replace(/[₹,]/g, "").trim()
                   );
+
+                  try {
+                    const res = await fetch("http://localhost:4000/create-order", {
+                      method: "POST",
+                      headers: { "Content-Type": "application/json" },
+                      body: JSON.stringify({
+                        amount,
+                        // TODO: replace mock user data with your real user info
+                        customer_id: "USER_001",
+                        customer_phone: "9999999999",
+                        customer_name: "Cafe User",
+                      }),
+                    });
+
+                    const data = await res.json();
+                    console.log("ORDER RESPONSE:", data);
+
+                    /**
+                     * Backend may return:
+                     *  - { success: true, order: <orderObject> }
+                     *  - or directly return the order object depending on implementation.
+                     * We'll check several locations defensively.
+                     */
+                    const rawOrder = data?.order || data;
+                    // Cashfree provides `payment_session_id` on the order object
+                    let sessionId: string | undefined =
+                      rawOrder?.payment_session_id ||
+                      rawOrder?.payments?.payment_session_id ||
+                      rawOrder?.paymentSessionId ||
+                      rawOrder?.payment_session;
+
+                    // defensive: if there's nested .order.payments.url style, build checkout URL using payment_session_id if present,
+                    // otherwise use direct payments.url if that's what your backend returned.
+                    if (!sessionId) {
+                      // Check for payments.url (older/alternate)
+                      const paymentsUrl =
+                        rawOrder?.payments?.url || rawOrder?.payment_url || rawOrder?.payments;
+                      if (typeof paymentsUrl === "string") {
+                        // redirect directly to payments.url if available
+                        window.location.href = paymentsUrl;
+                        return;
+                      }
+
+                      alert("Payment session missing! Check backend response (see console).");
+                      console.error("Missing payment session, backend returned:", rawOrder);
+                      return;
+                    }
+
+                    // Some Cashfree responses append stray "payment" text at the end of the session id string.
+                    // Remove any trailing "payment" occurrences.
+                    const cleanSessionId = sessionId.replace(/payment$/i, "").trim();
+
+                    // Final checkout URL (sandbox)
+                    const checkoutUrl = `https://sandbox.cashfree.com/pg/view/checkout?payment_session_id=${encodeURIComponent(
+                      cleanSessionId
+                    )}`;
+
+                    console.log("Redirecting to checkout:", checkoutUrl);
+                    // perform redirect
+                    window.location.href = checkoutUrl;
+                  } catch (err) {
+                    console.error("Create-order failed:", err);
+                    alert("Unable to create payment. Check console for details.");
+                  }
                 }}
-                className={`w-full py-3 sm:py-4 rounded-xl font-semibold text-white bg-gradient-to-r ${plan.gradient} shadow-md hover:shadow-lg transition-transform hover:scale-105`}
+                className={`w-full py-3 sm:py-4 rounded-xl font-semibold text-white bg-gradient-to-r ${plan.gradient} shadow-md`}
               >
-                {title.includes("Membership") ? "Subscribe Now" : "Get Started"}
+                {plan.title.includes("Membership") ? "Subscribe Now" : "Get Started"}
               </button>
             </motion.div>
           );
@@ -576,21 +599,19 @@ const PricingGrid = ({ title, icon, plans }: any) => {
   );
 };
 
-const AddonCard = ({ icon, title, price, color }: any) => {
+const AddonCard: React.FC<{ icon: React.ReactNode; title: string; price: string; color: string }> = ({ icon, title, price, color }) => {
   return (
     <motion.div whileHover={{ scale: 1.05, y: -5 }} className={`bg-gradient-to-br ${color} rounded-2xl p-6 text-center shadow-md`}>
       <div className="w-10 h-10 mx-auto mb-3">{icon}</div>
 
-      <h3 className="text-lg sm:text-xl font-bold text-gray-900 mb-2">
-        {title}
-      </h3>
+      <h3 className="text-lg sm:text-xl font-bold text-gray-900 mb-2">{title}</h3>
 
       <p className="text-2xl sm:text-3xl font-bold text-gray-700">{price}</p>
     </motion.div>
   );
 };
 
-const DailyCompare = () => {
+const DailyCompare: React.FC = () => {
   return (
     <div className="overflow-x-auto w-full">
       <table className="w-full text-center text-sm sm:text-base min-w-[600px]">
@@ -626,18 +647,31 @@ const DailyCompare = () => {
           </tr>
 
           <tr>
-            <td className="p-3 font-semibold">Price</td>
-            <td>₹399/day</td>
-            <td>₹499/day</td>
-            <td>₹799/day</td>
-          </tr>
+  <td className="p-3 font-semibold">Price</td>
+
+  <td className="flex flex-col items-center gap-2">
+    ₹399/day
+    <CashfreePayment amount={399} />
+  </td>
+
+  <td className="flex flex-col items-center gap-2">
+    ₹499/day
+    <CashfreePayment amount={499} />
+  </td>
+
+  <td className="flex flex-col items-center gap-2">
+    ₹799/day
+    <CashfreePayment amount={799} />
+  </td>
+</tr>
+
         </tbody>
       </table>
     </div>
   );
 };
 
-const MembershipCompare = () => {
+const MembershipCompare: React.FC = () => {
   return (
     <div className="overflow-x-auto w-full">
       <table className="w-full text-center text-sm sm:text-base min-w-[600px]">
@@ -675,10 +709,19 @@ const MembershipCompare = () => {
           </tr>
 
           <tr>
-            <td className="p-3 font-semibold">Price</td>
-            <td>₹2,699/week</td>
-            <td>₹9,999/month</td>
-          </tr>
+  <td className="p-3 font-semibold">Price</td>
+
+  <td className="flex flex-col items-center gap-2">
+    ₹2,699/week
+    <CashfreePayment amount={2699} />
+  </td>
+
+  <td className="flex flex-col items-center gap-2">
+    ₹9,999/month
+    <CashfreePayment amount={9999} />
+  </td>
+</tr>
+
         </tbody>
       </table>
     </div>
